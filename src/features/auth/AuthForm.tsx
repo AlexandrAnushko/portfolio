@@ -78,7 +78,11 @@ export function AuthForm({
           classNameContainer="w-full mb-3"
         />
 
-        <Button text={submitText} type="submit" className="max-w-[60%]" />
+        <Button
+          text={submitText}
+          type="submit"
+          className="max-w-[60%] text-white"
+        />
       </form>
     </div>
   );
