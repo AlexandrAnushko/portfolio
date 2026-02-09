@@ -2,7 +2,9 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { Toaster } from "sonner";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
+import { ConfigProvider } from "antd";
 import { Header } from "@/shared/components/Header";
+import { antdTheme } from "@/lib/antdTheme";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -28,11 +30,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen min-w-screen flex flex-col`}
       >
         <AntdRegistry>
-          {/* <Header /> */}
-          {children}
+          <ConfigProvider theme={antdTheme}>
+            <Header />
+            {children}
+          </ConfigProvider>
         </AntdRegistry>
         <Toaster richColors position="bottom-right" />
       </body>
