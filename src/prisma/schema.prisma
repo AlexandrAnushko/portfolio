@@ -27,6 +27,7 @@ model Todo {
   text String 
   done Boolean @default(false) 
   createdAt DateTime @default(now()) 
+  date DateTime
 
   userId String 
   user User @relation(fields: [userId], references: [id]) 
