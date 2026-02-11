@@ -7,6 +7,7 @@ import { Input } from "@/shared/components/Input";
 import { Button } from "@/shared/components/Button";
 import { authFormSchema, AuthFormValues } from "./authSchema";
 import { useRouter } from "next/navigation";
+import { ROUTES } from "@/shared/constants/routes";
 
 interface AuthFormProps {
   submitText: string;
@@ -48,7 +49,7 @@ export function AuthForm({
       toast.success(successText);
 
       onClose();
-      if (isLogin) router.push("/users");
+      if (isLogin) router.push(ROUTES.TODO_LIST);
     } else {
       toast.error(isLogin ? "Неверный логин или пароль" : "Ошибка регистрации");
     }
