@@ -7,10 +7,16 @@ import { getUserId } from "@/lib/getUserId";
 export async function getTodos() {
   const userId = await getUserId();
   if (!userId) return [];
-  return prisma.todo.findMany({
+
+  const todos = await prisma.todo.findMany({
     where: { userId },
     orderBy: { createdAt: "asc" },
   });
+
+  return todos.map((t) => ({
+    ...t,
+    date: t.date.toISOString(),
+  }));
 }
 
 // Получение задач по дате

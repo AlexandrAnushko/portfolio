@@ -4,7 +4,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { Input } from "@/shared/components/Input";
-import { Button } from "@/shared/components/Button";
+import { Button } from "@/shared/components/antd/Button";
 import { authFormSchema, AuthFormValues } from "./authSchema";
 import { useRouter } from "next/navigation";
 import { ROUTES } from "@/shared/constants/routes";
@@ -81,8 +81,9 @@ export function AuthForm({
 
         <Button
           text={submitText}
-          type="submit"
-          className="max-w-[60%] text-white"
+          htmlType="submit"
+          color="blue"
+          containerClassName="max-w-[60%]"
         />
       </form>
     </div>

@@ -31,18 +31,22 @@ export const Header = () => {
   };
 
   return (
-    <header className="flex justify-between items-center py-2 px-4 bg-black">
+    <header className="flex justify-between items-center py-2 px-4 bg-black shadow-sm shadow-white">
       <Link href={ROUTES.ROOT}>
         <div className="text-white">Logo</div>
       </Link>
       <div className="text-white">{RoutesTitle[pathname]}</div>
       {pathname === ROUTES.ROOT ? (
-        <div className="flex gap-3">
+        <div className="flex gap-3 max-w-[10%]">
           <Button text="Sign In" onClick={onSignInOpen} />
           <Button text="Sign Up" onClick={onSignUpOpen} />
         </div>
       ) : (
-        <Button text="Выйти" onClick={onLogout} />
+        <Button
+          text="Выйти"
+          onClick={onLogout}
+          containerClassName="max-w-[5%]"
+        />
       )}
       <Modal
         title={isSignIn ? "Вход" : "Регистрация"}

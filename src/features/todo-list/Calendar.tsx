@@ -1,20 +1,21 @@
+import { Button } from "@/shared/components/antd/Button";
 import { Calendar as AntdCalendar } from "antd";
-import type { CalendarProps } from "antd";
 import type { Dayjs } from "dayjs";
 
-export type Source = "year" | "month" | "date" | "customize";
-
 type Props = {
-  onPanelChange: (value: Dayjs, mode: CalendarProps<Dayjs>["mode"]) => void;
-  onSelect: (date: Dayjs, info: { source: Source }) => void;
+  onSelect: (date: Dayjs) => void;
+  onShowAll: () => void;
 };
 
-export const Calendar = ({ onPanelChange, onSelect }: Props) => {
+export const Calendar = ({ onSelect, onShowAll }: Props) => {
   return (
-    <AntdCalendar
-      fullscreen={false}
-      onPanelChange={onPanelChange}
-      onSelect={onSelect}
-    />
+    <div className="flex flex-col gap-y-2">
+      <AntdCalendar fullscreen={false} onSelect={onSelect} />
+      <Button
+        onClick={onShowAll}
+        text="Показать за всё время"
+        color="transparent"
+      />
+    </div>
   );
 };
