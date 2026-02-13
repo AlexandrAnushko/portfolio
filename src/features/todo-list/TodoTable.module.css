@@ -1,0 +1,11 @@
+.todo-table :global(.ant-pagination-item-link svg) {
+  fill: white !important;
+}
+
+.todo-table :global(.ant-table) {
+  min-height: 265px;
+}
+
+.todo-table :global(.ant-table) {
+  --ant-table-cell-padding-block: 4px !important;
+}

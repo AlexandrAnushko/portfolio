@@ -25,7 +25,12 @@ export const InputPanel = ({ selectedDate, loadTodos }: Props) => {
         onChange={(e) => setNewTodo(e.target.value)}
         onPressEnter={handleAdd}
       />
-      <Button onClick={handleAdd} text="Добавить" color="blue" />
+      <Button
+        onClick={handleAdd}
+        text="Добавить"
+        color="green"
+        containerClassName="max-w-[15%]"
+      />
     </div>
   );
 };

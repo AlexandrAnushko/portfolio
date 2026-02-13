@@ -3,7 +3,7 @@
 import { useEffect, useState, useTransition } from "react";
 import type { Dayjs } from "dayjs";
 
-import { getTodosByDate, updateTodo } from "../../app/actions/todos";
+import { getTodos, getTodosByDate, updateTodo } from "../../app/actions/todos";
 import { Todo } from "@/features/todo-list/types";
 import { Calendar } from "./Calendar";
 import { InputPanel } from "./InputPanel";
@@ -18,6 +18,7 @@ export default function TodoClient({ initialDate, initialTodos }: Props) {
   const [editingTodo, setEditingTodo] = useState<Todo | null>(null);
   const [editText, setEditText] = useState("");
   const [selectedDate, setSelectedDate] = useState<string>(initialDate);
+  const [isShowAll, setIsShowAll] = useState(false);
 
   const [isPending, startTransition] = useTransition();
 
@@ -25,6 +26,17 @@ export default function TodoClient({ initialDate, initialTodos }: Props) {
     startTransition(async () => {
       const data = await getTodosByDate(date);
       setTodos(data);
+      if (isShowAll) {
+        setIsShowAll(false);
+      }
+    });
+  };
+
+  const loadAllTodos = () => {
+    startTransition(async () => {
+      const data = await getTodos();
+      setTodos(data);
+      setIsShowAll(true);
     });
   };
 
@@ -51,7 +63,7 @@ export default function TodoClient({ initialDate, initialTodos }: Props) {
     <>
       <div className="flex gap-10 p-4">
         <div className="w-75">
-          <Calendar onSelect={onSelect} />
+          <Calendar onSelect={onSelect} onShowAll={loadAllTodos} />
         </div>
 
         <div className="flex flex-col max-w-200 min-w-200">
@@ -63,6 +75,7 @@ export default function TodoClient({ initialDate, initialTodos }: Props) {
             setEditingTodo={setEditingTodo}
             setEditText={setEditText}
             selectedDate={selectedDate}
+            isShowAll={isShowAll}
           />
         </div>
       </div>
