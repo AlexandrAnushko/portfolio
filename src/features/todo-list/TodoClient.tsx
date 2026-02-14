@@ -49,7 +49,11 @@ export default function TodoClient({ initialDate, initialTodos }: Props) {
 
     startTransition(async () => {
       await updateTodo(editingTodo.id, editText);
-      loadTodos(selectedDate);
+      if (isShowAll) {
+        loadAllTodos();
+      } else {
+        loadTodos(selectedDate);
+      }
       setEditingTodo(null);
     });
   };
@@ -72,6 +76,7 @@ export default function TodoClient({ initialDate, initialTodos }: Props) {
           <TodoTable
             todos={todos}
             loadTodos={loadTodos}
+            loadAllTodos={loadAllTodos}
             setEditingTodo={setEditingTodo}
             setEditText={setEditText}
             selectedDate={selectedDate}

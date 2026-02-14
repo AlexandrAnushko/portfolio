@@ -15,6 +15,7 @@ type Props = {
   loadTodos: (selectedDate: string) => void;
   setEditingTodo: (item: Todo | null) => void;
   setEditText: (text: string) => void;
+  loadAllTodos: () => void;
 };
 
 const classNames = createStaticStyles(({ css }) => ({
@@ -28,20 +29,29 @@ export const TodoTable = ({
   selectedDate,
   isShowAll,
   loadTodos,
+  loadAllTodos,
   setEditingTodo,
   setEditText,
 }: Props) => {
   const handleToggle = (id: string) => {
     startTransition(async () => {
       await toggleTodo(id);
-      loadTodos(selectedDate);
+      if (isShowAll) {
+        loadAllTodos();
+      } else {
+        loadTodos(selectedDate);
+      }
     });
   };
 
   const handleDelete = (id: string) => {
     startTransition(async () => {
       await deleteTodo(id);
-      loadTodos(selectedDate);
+      if (isShowAll) {
+        loadAllTodos();
+      } else {
+        loadTodos(selectedDate);
+      }
     });
   };
 
