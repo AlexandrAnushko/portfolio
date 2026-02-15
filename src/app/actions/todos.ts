@@ -2,6 +2,15 @@
 
 import prisma from "@/lib/db";
 import { getUserId } from "@/lib/getUserId";
+import { getStartAndEndOfDate } from "@/shared/utils/getStartAndEndOfDate";
+
+type DeleteWhere = {
+  userId: string;
+  date?: {
+    gte: Date;
+    lte: Date;
+  };
+};
 
 // Получить все задачи
 export async function getAllTodos() {
@@ -24,11 +33,7 @@ export async function getTodosByDate(date: string) {
   const userId = await getUserId();
   if (!userId) return [];
 
-  const start = new Date(date);
-  start.setHours(0, 0, 0, 0);
-
-  const end = new Date(date);
-  end.setHours(23, 59, 59, 999);
+  const { start, end } = getStartAndEndOfDate(date);
 
   const todos = await prisma.todo.findMany({
     where: {
@@ -84,12 +89,33 @@ export async function updateTodo(id: string, text: string) {
   });
 }
 
-// Удалить задачу
-export async function deleteTodo(id: string) {
+export async function deleteTodoById(id: string) {
   const userId = await getUserId();
   if (!userId) throw new Error("Unauthorized");
 
   await prisma.todo.delete({
     where: { id, userId },
+  });
+}
+
+export async function deleteTodos(date?: string) {
+  const userId = await getUserId();
+  if (!userId) throw new Error("Unauthorized");
+
+  const where: DeleteWhere = {
+    userId,
+  };
+
+  if (date) {
+    // delete all tasks for the specified day
+    const { start, end } = getStartAndEndOfDate(date);
+    where.date = {
+      gte: start,
+      lte: end,
+    };
+  }
+
+  await prisma.todo.deleteMany({
+    where,
   });
 }

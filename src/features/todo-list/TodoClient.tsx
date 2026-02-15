@@ -4,6 +4,7 @@ import { useEffect, useState, useTransition } from "react";
 import type { Dayjs } from "dayjs";
 
 import {
+  deleteTodos,
   getAllTodos,
   getTodosByDate,
   updateTodo,
@@ -13,6 +14,7 @@ import { Calendar } from "./Calendar";
 import { InputPanel } from "./InputPanel";
 import { TodoTable } from "./TodoTable";
 import { EditModal } from "./EditModal";
+import { DeleteModal } from "@/shared/components/DeleteModal";
 
 type Props = { initialDate: string; initialTodos: Todo[] };
 type DateAndMode = { selectedDate: string; isShowAll: boolean };
@@ -22,6 +24,7 @@ export default function TodoClient({ initialDate, initialTodos }: Props) {
 
   const [editingTodo, setEditingTodo] = useState<Todo | null>(null);
   const [editText, setEditText] = useState("");
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [dateAndMode, setDateAndMode] = useState<DateAndMode>({
     selectedDate: initialDate,
     isShowAll: false,
@@ -66,6 +69,13 @@ export default function TodoClient({ initialDate, initialTodos }: Props) {
     setDateAndMode({ ...dateAndMode, isShowAll: true });
   };
 
+  const deleteAllTodos = async () => {
+    await deleteTodos(
+      dateAndMode.isShowAll ? undefined : dateAndMode.selectedDate,
+    );
+    loadTodos();
+  };
+
   return (
     <>
       <div className="flex gap-10 p-4">
@@ -77,6 +87,7 @@ export default function TodoClient({ initialDate, initialTodos }: Props) {
           <InputPanel
             selectedDate={dateAndMode.selectedDate}
             loadTodos={loadTodos}
+            handleShowDeleteModal={setShowDeleteModal}
           />
 
           <TodoTable
@@ -96,6 +107,18 @@ export default function TodoClient({ initialDate, initialTodos }: Props) {
         setEditText={setEditText}
         handleSaveEdit={handleSaveEdit}
       />
+      {/* {showDeleteModal && ( */}
+      <DeleteModal
+        text={
+          dateAndMode.isShowAll
+            ? "Вы уверены что хотите удалить все задачи пользователя за всё время?"
+            : "Вы уверены что хотите удалить все задачи за указанную дату?"
+        }
+        setOpen={setShowDeleteModal}
+        action={deleteAllTodos}
+        open={showDeleteModal}
+      />
+      {/* )} */}
     </>
   );
 }

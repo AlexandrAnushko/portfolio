@@ -6,9 +6,14 @@ import { addTodo } from "../../app/actions/todos";
 type Props = {
   selectedDate: string;
   loadTodos: () => void;
+  handleShowDeleteModal: (show: boolean) => void;
 };
 
-export const InputPanel = ({ selectedDate, loadTodos }: Props) => {
+export const InputPanel = ({
+  selectedDate,
+  loadTodos,
+  handleShowDeleteModal,
+}: Props) => {
   const [newTodo, setNewTodo] = useState("");
   const handleAdd = () => {
     startTransition(async () => {
@@ -16,6 +21,9 @@ export const InputPanel = ({ selectedDate, loadTodos }: Props) => {
       loadTodos();
       setNewTodo("");
     });
+  };
+  const handleDeleteAll = () => {
+    handleShowDeleteModal(true);
   };
   return (
     <div className="flex gap-2 mb-4">
@@ -29,7 +37,13 @@ export const InputPanel = ({ selectedDate, loadTodos }: Props) => {
         onClick={handleAdd}
         text="Добавить"
         color="green"
-        containerClassName="max-w-[15%]"
+        containerClassName="max-w-[10%]"
+      />
+      <Button
+        onClick={handleDeleteAll}
+        text="Удалить все"
+        color="lightRed"
+        containerClassName="max-w-[12%]"
       />
     </div>
   );

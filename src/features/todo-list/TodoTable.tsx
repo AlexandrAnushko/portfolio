@@ -2,7 +2,7 @@ import { Button } from "@/shared/components/antd/Button";
 import { Checkbox, Table, TableColumnsType } from "antd";
 import { Todo } from "./types";
 import { startTransition } from "react";
-import { deleteTodo, toggleTodo } from "@/app/actions/todos";
+import { deleteTodoById, toggleTodo } from "@/app/actions/todos";
 import { formatDate } from "@/shared/utils/formatDate";
 import { Pencil, Trash2 } from "lucide-react";
 import { createStaticStyles } from "antd-style";
@@ -38,7 +38,7 @@ export const TodoTable = ({
 
   const handleDelete = (id: string) => {
     startTransition(async () => {
-      await deleteTodo(id);
+      await deleteTodoById(id);
       loadTodos();
     });
   };
@@ -46,6 +46,7 @@ export const TodoTable = ({
   const columns: TableColumnsType<Todo> = [
     {
       key: "task",
+      title: "Список",
       render: (item, _, index) => (
         <div className="flex items-center gap-3 w-full border rounded-xl p-2 bg-amber-100">
           <Checkbox
@@ -90,6 +91,7 @@ export const TodoTable = ({
     ...(isShowAll
       ? [
           {
+            title: "Дата",
             dataIndex: "date",
             render: (d: string) => formatDate(d),
             width: 120,
