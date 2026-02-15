@@ -10,12 +10,10 @@ import styles from "./TodoTable.module.css";
 
 type Props = {
   todos: Todo[];
-  selectedDate: string;
   isShowAll: boolean;
-  loadTodos: (selectedDate: string) => void;
+  loadTodos: () => void;
   setEditingTodo: (item: Todo | null) => void;
   setEditText: (text: string) => void;
-  loadAllTodos: () => void;
 };
 
 const classNames = createStaticStyles(({ css }) => ({
@@ -26,32 +24,22 @@ const classNames = createStaticStyles(({ css }) => ({
 
 export const TodoTable = ({
   todos,
-  selectedDate,
   isShowAll,
   loadTodos,
-  loadAllTodos,
   setEditingTodo,
   setEditText,
 }: Props) => {
   const handleToggle = (id: string) => {
     startTransition(async () => {
       await toggleTodo(id);
-      if (isShowAll) {
-        loadAllTodos();
-      } else {
-        loadTodos(selectedDate);
-      }
+      loadTodos();
     });
   };
 
   const handleDelete = (id: string) => {
     startTransition(async () => {
       await deleteTodo(id);
-      if (isShowAll) {
-        loadAllTodos();
-      } else {
-        loadTodos(selectedDate);
-      }
+      loadTodos();
     });
   };
 
@@ -102,7 +90,6 @@ export const TodoTable = ({
     ...(isShowAll
       ? [
           {
-            title: "Дата",
             dataIndex: "date",
             render: (d: string) => formatDate(d),
             width: 120,

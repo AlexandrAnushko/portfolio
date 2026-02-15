@@ -4,7 +4,7 @@ import prisma from "@/lib/db";
 import { getUserId } from "@/lib/getUserId";
 
 // Получить все задачи
-export async function getTodos() {
+export async function getAllTodos() {
   const userId = await getUserId();
   if (!userId) return [];
 

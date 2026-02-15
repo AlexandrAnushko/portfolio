@@ -5,7 +5,7 @@ import { addTodo } from "../../app/actions/todos";
 
 type Props = {
   selectedDate: string;
-  loadTodos: (selectedDate: string) => void;
+  loadTodos: () => void;
 };
 
 export const InputPanel = ({ selectedDate, loadTodos }: Props) => {
@@ -13,7 +13,7 @@ export const InputPanel = ({ selectedDate, loadTodos }: Props) => {
   const handleAdd = () => {
     startTransition(async () => {
       await addTodo(newTodo, selectedDate);
-      loadTodos(selectedDate);
+      loadTodos();
       setNewTodo("");
     });
   };
