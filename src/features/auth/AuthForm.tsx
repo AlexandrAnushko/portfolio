@@ -8,6 +8,7 @@ import { Button } from "@/shared/components/antd/Button";
 import { authFormSchema, AuthFormValues } from "./authSchema";
 import { useRouter } from "next/navigation";
 import { ROUTES } from "@/shared/constants/routes";
+import { useAuth } from "@/shared/hooks/useAuth";
 
 interface AuthFormProps {
   submitText: string;
@@ -24,6 +25,7 @@ export function AuthForm({
   onClose,
   isLogin = false,
 }: AuthFormProps) {
+  const { refresh } = useAuth();
   const router = useRouter();
 
   const {
@@ -47,7 +49,7 @@ export function AuthForm({
 
     if (result.ok) {
       toast.success(successText);
-
+      await refresh();
       onClose();
       if (isLogin) router.push(ROUTES.TODOS);
     } else {

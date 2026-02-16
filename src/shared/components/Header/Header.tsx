@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import Link from "next/link";
-// import { Button } from "../antd/Button";
 import { Modal } from "../antd/Modal";
 import { AuthForm } from "@/features/auth/AuthForm";
 import {
@@ -10,12 +9,12 @@ import {
   ROUTES,
   unauthorizedHeaderLinks,
 } from "../../constants/routes";
-import { BurgerMenu } from "./BurgerMenu";
 import { Button } from "../Button";
+import { useAuth } from "@/shared/hooks/useAuth";
 
-type Props = { isAuthorized: boolean };
+export const Header = () => {
+  const { isAuthorized, refresh } = useAuth();
 
-export const Header = ({ isAuthorized }: Props) => {
   const [open, setOpen] = useState(false);
   const [isSignIn, setIsSignIn] = useState(true);
 
@@ -31,6 +30,7 @@ export const Header = ({ isAuthorized }: Props) => {
 
   const onLogout = async () => {
     await fetch("/api/auth/logout", { method: "POST" });
+    await refresh();
     window.location.href = "/";
   };
 
