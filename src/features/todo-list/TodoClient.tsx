@@ -50,16 +50,6 @@ export default function TodoClient({ initialDate, initialTodos }: Props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dateAndMode]);
 
-  const handleSaveEdit = () => {
-    if (!editingTodo) return;
-
-    startTransition(async () => {
-      await updateTodo(editingTodo.id, editText);
-      loadTodos();
-      setEditingTodo(null);
-    });
-  };
-
   const onSelect = (date: Dayjs) => {
     const iso = date.format("YYYY-MM-DD");
     setDateAndMode({ selectedDate: iso, isShowAll: false });
@@ -105,9 +95,8 @@ export default function TodoClient({ initialDate, initialTodos }: Props) {
         editingTodo={editingTodo}
         setEditingTodo={setEditingTodo}
         setEditText={setEditText}
-        handleSaveEdit={handleSaveEdit}
+        loadTodos={loadTodos}
       />
-      {/* {showDeleteModal && ( */}
       <DeleteModal
         text={
           dateAndMode.isShowAll
@@ -118,7 +107,6 @@ export default function TodoClient({ initialDate, initialTodos }: Props) {
         action={deleteAllTodos}
         open={showDeleteModal}
       />
-      {/* )} */}
     </>
   );
 }

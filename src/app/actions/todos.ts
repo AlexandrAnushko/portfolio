@@ -4,6 +4,11 @@ import prisma from "@/lib/db";
 import { getUserId } from "@/lib/getUserId";
 import { getStartAndEndOfDate } from "@/shared/utils/getStartAndEndOfDate";
 
+type TodoData = {
+  text: string;
+  date?: Date;
+};
+
 type DeleteWhere = {
   userId: string;
   date?: {
@@ -79,13 +84,19 @@ export async function toggleTodo(id: string) {
 }
 
 // Изменить текст
-export async function updateTodo(id: string, text: string) {
+export async function updateTodo(id: string, text: string, date?: string) {
   const userId = await getUserId();
   if (!userId) throw new Error("Unauthorized");
 
+  const data: TodoData = { text };
+
+  if (date) {
+    data.date = new Date(date);
+  }
+
   await prisma.todo.update({
     where: { id, userId },
-    data: { text },
+    data,
   });
 }
 
