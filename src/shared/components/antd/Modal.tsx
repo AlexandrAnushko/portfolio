@@ -8,21 +8,27 @@ const stylesObject: ModalProps["styles"] = {
 };
 
 type Props = {
-  children: React.ReactNode;
-  title: string;
   open: boolean;
   onOk: (e: React.MouseEvent<HTMLButtonElement>) => void;
   onCancel: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  children?: React.ReactNode;
+  title?: string;
   centered?: boolean;
+  confirmLoading?: boolean;
+  okText?: string;
+  cancelText?: string;
 };
 
 export const Modal = ({
   children,
-  title,
   open,
   onOk,
   onCancel,
+  title,
   centered = true,
+  confirmLoading,
+  okText = "Ок",
+  cancelText = "Отмена",
 }: Props) => {
   return (
     <AntdModal
@@ -32,6 +38,9 @@ export const Modal = ({
       onOk={onOk}
       onCancel={onCancel}
       styles={stylesObject}
+      confirmLoading={confirmLoading}
+      okText={okText}
+      cancelText={cancelText}
     >
       {children}
     </AntdModal>

@@ -1,9 +1,16 @@
 export const ROUTES = {
   ROOT: "/",
-  TODO_LIST: "/todo-list",
+  TODOS: "/todos",
+  PROFILE: "/profile",
 };
 
 export const RoutesTitle = {
   [ROUTES.ROOT]: "",
-  [ROUTES.TODO_LIST]: "Задачи",
+  [ROUTES.TODOS]: "Задачи",
+  [ROUTES.PROFILE]: "Профиль",
 };
+
+export const burgerMenuLinks = [
+  { href: ROUTES.PROFILE, label: RoutesTitle[ROUTES.PROFILE] },
+  { href: ROUTES.TODOS, label: RoutesTitle[ROUTES.TODOS] },
+];

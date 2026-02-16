@@ -1,10 +1,24 @@
 "use server";
 
 import prisma from "@/lib/db";
-import { getUserId } from "@/lib/getUserId";
+import { getUserId } from "./getUserId";
+import { getStartAndEndOfDate } from "@/shared/utils/getStartAndEndOfDate";
+
+type TodoData = {
+  text: string;
+  date?: Date;
+};
+
+type DeleteWhere = {
+  userId: string;
+  date?: {
+    gte: Date;
+    lte: Date;
+  };
+};
 
 // Получить все задачи
-export async function getTodos() {
+export async function getAllTodos() {
   const userId = await getUserId();
   if (!userId) return [];
 
@@ -24,11 +38,7 @@ export async function getTodosByDate(date: string) {
   const userId = await getUserId();
   if (!userId) return [];
 
-  const start = new Date(date);
-  start.setHours(0, 0, 0, 0);
-
-  const end = new Date(date);
-  end.setHours(23, 59, 59, 999);
+  const { start, end } = getStartAndEndOfDate(date);
 
   const todos = await prisma.todo.findMany({
     where: {
@@ -74,22 +84,49 @@ export async function toggleTodo(id: string) {
 }
 
 // Изменить текст
-export async function updateTodo(id: string, text: string) {
+export async function updateTodo(id: string, text: string, date?: string) {
   const userId = await getUserId();
   if (!userId) throw new Error("Unauthorized");
 
+  const data: TodoData = { text };
+
+  if (date) {
+    data.date = new Date(date);
+  }
+
   await prisma.todo.update({
     where: { id, userId },
-    data: { text },
+    data,
   });
 }
 
-// Удалить задачу
-export async function deleteTodo(id: string) {
+export async function deleteTodoById(id: string) {
   const userId = await getUserId();
   if (!userId) throw new Error("Unauthorized");
 
   await prisma.todo.delete({
     where: { id, userId },
+  });
+}
+
+export async function deleteTodos(date?: string) {
+  const userId = await getUserId();
+  if (!userId) throw new Error("Unauthorized");
+
+  const where: DeleteWhere = {
+    userId,
+  };
+
+  if (date) {
+    // delete all tasks for the specified day
+    const { start, end } = getStartAndEndOfDate(date);
+    where.date = {
+      gte: start,
+      lte: end,
+    };
+  }
+
+  await prisma.todo.deleteMany({
+    where,
   });
 }

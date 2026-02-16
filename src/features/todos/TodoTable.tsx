@@ -2,7 +2,7 @@ import { Button } from "@/shared/components/antd/Button";
 import { Checkbox, Table, TableColumnsType } from "antd";
 import { Todo } from "./types";
 import { startTransition } from "react";
-import { deleteTodo, toggleTodo } from "@/app/actions/todos";
+import { deleteTodoById, toggleTodo } from "@/app/actions/todos";
 import { formatDate } from "@/shared/utils/formatDate";
 import { Pencil, Trash2 } from "lucide-react";
 import { createStaticStyles } from "antd-style";
@@ -10,9 +10,8 @@ import styles from "./TodoTable.module.css";
 
 type Props = {
   todos: Todo[];
-  selectedDate: string;
   isShowAll: boolean;
-  loadTodos: (selectedDate: string) => void;
+  loadTodos: () => void;
   setEditingTodo: (item: Todo | null) => void;
   setEditText: (text: string) => void;
 };
@@ -25,7 +24,6 @@ const classNames = createStaticStyles(({ css }) => ({
 
 export const TodoTable = ({
   todos,
-  selectedDate,
   isShowAll,
   loadTodos,
   setEditingTodo,
@@ -34,20 +32,21 @@ export const TodoTable = ({
   const handleToggle = (id: string) => {
     startTransition(async () => {
       await toggleTodo(id);
-      loadTodos(selectedDate);
+      loadTodos();
     });
   };
 
   const handleDelete = (id: string) => {
     startTransition(async () => {
-      await deleteTodo(id);
-      loadTodos(selectedDate);
+      await deleteTodoById(id);
+      loadTodos();
     });
   };
 
   const columns: TableColumnsType<Todo> = [
     {
       key: "task",
+      title: "Список",
       render: (item, _, index) => (
         <div className="flex items-center gap-3 w-full border rounded-xl p-2 bg-amber-100">
           <Checkbox

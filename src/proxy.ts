@@ -18,5 +18,5 @@ export default function proxy(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/todo-list/:path*"], // protected routes
+  matcher: ["/todos/:path*", "/profile/:path*"], // protected routes
 };
