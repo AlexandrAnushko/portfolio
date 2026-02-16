@@ -3,7 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { Toaster } from "sonner";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
 import { ConfigProvider } from "antd";
-import { Header } from "@/shared/components/Header";
+import { HeaderContainer } from "@/shared/components/Header/HeaderContainer";
 import { antdTheme } from "@/lib/antdTheme";
 import "./globals.css";
 
@@ -34,7 +34,7 @@ export default function RootLayout({
       >
         <AntdRegistry>
           <ConfigProvider theme={antdTheme}>
-            <Header />
+            <HeaderContainer />
             {children}
           </ConfigProvider>
         </AntdRegistry>

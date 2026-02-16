@@ -1,7 +1,7 @@
 "use server";
 
 import prisma from "@/lib/db";
-import { getUserId } from "@/lib/getUserId";
+import { getUserId } from "./getUserId";
 import { getStartAndEndOfDate } from "@/shared/utils/getStartAndEndOfDate";
 
 type TodoData = {

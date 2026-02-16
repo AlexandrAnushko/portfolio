@@ -7,9 +7,8 @@ import {
   deleteTodos,
   getAllTodos,
   getTodosByDate,
-  updateTodo,
 } from "../../app/actions/todos";
-import { Todo } from "@/features/todo-list/types";
+import { Todo } from "@/features/todos/types";
 import { Calendar } from "./Calendar";
 import { InputPanel } from "./InputPanel";
 import { TodoTable } from "./TodoTable";

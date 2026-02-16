@@ -1,4 +1,4 @@
-import TodoClient from "../../features/todo-list/TodoClient";
+import TodoClient from "../../features/todos/TodoClient";
 import { getTodosByDate } from "../actions/todos";
 
 export default async function TodoPage() {
