@@ -1,4 +1,4 @@
-import { Button } from "@/shared/components/antd/Button";
+import { Button } from "@/shared/components/Button";
 import { Input } from "antd";
 import { startTransition, useState } from "react";
 import { addTodo } from "../../app/actions/todos";
@@ -37,8 +37,13 @@ export const InputPanel = ({
         onPressEnter={handleAdd}
       />
       <div className="flex flex-col max-w-[14%] gap-2">
-        <Button onClick={handleAdd} text="Добавить" color="green" />
-        <Button onClick={handleDeleteAll} text="Удалить все" color="lightRed" />
+        <Button onClick={handleAdd} text="Add" textTransform="normal-case" />
+        <Button
+          onClick={handleDeleteAll}
+          text="Delete All"
+          mode="secondary"
+          textTransform="normal-case"
+        />
       </div>
     </div>
   );

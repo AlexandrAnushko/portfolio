@@ -2,18 +2,20 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Button } from "../antd/Button";
+// import { Button } from "../antd/Button";
 import { Modal } from "../antd/Modal";
 import { AuthForm } from "@/features/auth/AuthForm";
-import { usePathname } from "next/navigation";
-import { ROUTES, RoutesTitle } from "../../constants/routes";
+import {
+  authorizedHeaderLinks,
+  ROUTES,
+  unauthorizedHeaderLinks,
+} from "../../constants/routes";
 import { BurgerMenu } from "./BurgerMenu";
+import { Button } from "../Button";
 
-type Props = { isAuth: boolean };
+type Props = { isAuthorized: boolean };
 
-export const Header = ({ isAuth }: Props) => {
-  const pathname = usePathname();
-
+export const Header = ({ isAuthorized }: Props) => {
   const [open, setOpen] = useState(false);
   const [isSignIn, setIsSignIn] = useState(true);
 
@@ -27,20 +29,41 @@ export const Header = ({ isAuth }: Props) => {
     setOpen(true);
   };
 
+  const onLogout = async () => {
+    await fetch("/api/auth/logout", { method: "POST" });
+    window.location.href = "/";
+  };
+
   return (
-    <header className="flex justify-between items-center py-2 px-4 bg-black shadow-sm shadow-white">
+    <header className="flex justify-between items-center p-8">
       <Link href={ROUTES.ROOT}>
-        <div className="text-white">Logo</div>
-      </Link>
-      <div className="text-white">{RoutesTitle[pathname]}</div>
-      {isAuth ? (
-        <BurgerMenu />
-      ) : (
-        <div className="flex gap-3 max-w-[10%]">
-          <Button text="Sign In" onClick={onSignInOpen} />
-          <Button text="Sign Up" onClick={onSignUpOpen} />
+        <div className="text-white text-3xl">
+          A<span className="text-primary">.</span>
         </div>
-      )}
+      </Link>
+      <nav className="flex gap-12 items-center">
+        {(isAuthorized ? authorizedHeaderLinks : unauthorizedHeaderLinks).map(
+          (l) => (
+            <Link
+              key={l.href}
+              href={l.href}
+              className="text-base font-semibold text-grey-text hover:text-secondary transition-colors uppercase whitespace-nowrap"
+            >
+              {l.label}
+            </Link>
+          ),
+        )}
+
+        {isAuthorized ? (
+          <Button text="Logout" onClick={onLogout} mode="secondary" />
+        ) : (
+          <div className="flex gap-4">
+            <Button text="Sign In" onClick={onSignInOpen} />
+            <Button text="Sign Up" onClick={onSignUpOpen} mode="secondary" />
+          </div>
+        )}
+      </nav>
+
       <Modal
         title={isSignIn ? "Вход" : "Регистрация"}
         centered

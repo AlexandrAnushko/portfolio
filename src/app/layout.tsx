@@ -28,9 +28,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className="h-full">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen min-w-screen flex flex-col`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col min-h-full overflow-y-auto overflow-x-clip`}
       >
         <AntdRegistry>
           <ConfigProvider theme={antdTheme}>

@@ -5,7 +5,7 @@ import { useState, useTransition } from "react";
 import { Calendar } from "./Calendar";
 import dayjs, { Dayjs } from "dayjs";
 import { updateTodo } from "@/app/actions/todos";
-import { Button } from "@/shared/components/antd/Button";
+import { Button } from "@/shared/components/Button";
 
 const { TextArea } = Input;
 
@@ -63,9 +63,9 @@ export const EditModal = ({
       />
       <Button
         onClick={() => setShowCalendar(true)}
-        text="Изменить дату"
-        color="green"
-        containerClassName="mt-2 max-w-[30%]"
+        text="Edit date"
+        textTransform="normal-case"
+        extra="mt-2 max-w-[30%]"
       />
       <Modal
         title="Изменить дату задачи"

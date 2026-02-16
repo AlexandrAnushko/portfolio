@@ -4,5 +4,5 @@ import { Header } from "./Header";
 export const HeaderContainer = async () => {
   const userId = await getUserId();
 
-  return <Header isAuth={!!userId} />;
+  return <Header isAuthorized={!!userId} />;
 };
