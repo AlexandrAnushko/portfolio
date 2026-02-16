@@ -1,16 +1,37 @@
 import NextLink from "next/link";
+import { ButtonMode } from "../types/global";
+import clsx from "clsx";
 
 interface LinkProps {
   text: string;
   href: string;
-  bgColor: string;
+  mode?: ButtonMode;
+  className?: string;
 }
 
-export const Link = ({ text, href, bgColor }: LinkProps) => {
+export const Link = ({
+  text,
+  href,
+  mode = "primary",
+  className,
+}: LinkProps) => {
   return (
     <NextLink
       href={href}
-      className={`px-5 py-2 text-white rounded-md ${bgColor} hover:opacity-90 transition-opacity hover:outline-zinc-200 hover:outline`}
+      className={clsx(
+        `${className} rounded-md focus:ring-white text-white text-center text-nowrap text-sm xl:text-base uppercase font-semibold cursor-pointer py-2 px-4 xl:py-3 xl:px-8 
+              active:scale-90 transition-all duration-300 ${
+                mode === "primary"
+                  ? "bg-primary"
+                  : mode === "secondary"
+                    ? "bg-secondary"
+                    : "bg-transparent"
+              }`,
+        {
+          "hover:bg-primary-accent": mode === "primary",
+          "hover:bg-secondary-accent": mode === "secondary",
+        },
+      )}
     >
       {text}
     </NextLink>

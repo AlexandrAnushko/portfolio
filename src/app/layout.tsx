@@ -1,10 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import { Toaster } from "sonner";
-import { AntdRegistry } from "@ant-design/nextjs-registry";
-import { ConfigProvider } from "antd";
-import { HeaderContainer } from "@/shared/components/Header/HeaderContainer";
-import { antdTheme } from "@/lib/antdTheme";
+import { Header } from "@/shared/components/Header/Header";
+import { ClientProviders } from "@/lib/providers/ClientProviders";
+import { AuthProvider } from "@/lib/providers/AuthContext";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -28,17 +26,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className="h-full">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen min-w-screen flex flex-col`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col min-h-full overflow-y-auto overflow-x-clip`}
       >
-        <AntdRegistry>
-          <ConfigProvider theme={antdTheme}>
-            <HeaderContainer />
-            {children}
-          </ConfigProvider>
-        </AntdRegistry>
-        <Toaster richColors position="bottom-right" />
+        <AuthProvider>
+          <Header />
+          <ClientProviders>{children}</ClientProviders>
+        </AuthProvider>
       </body>
     </html>
   );
