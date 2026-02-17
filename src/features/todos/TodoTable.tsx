@@ -9,6 +9,7 @@ import { createStaticStyles } from "antd-style";
 import styles from "./TodoTable.module.css";
 
 type Props = {
+  userId: string;
   todos: Todo[];
   isShowAll: boolean;
   loadTodos: () => void;
@@ -23,6 +24,7 @@ const classNames = createStaticStyles(({ css }) => ({
 }));
 
 export const TodoTable = ({
+  userId,
   todos,
   isShowAll,
   loadTodos,
@@ -31,14 +33,14 @@ export const TodoTable = ({
 }: Props) => {
   const handleToggle = (id: string) => {
     startTransition(async () => {
-      await toggleTodo(id);
+      await toggleTodo(userId, id, isShowAll);
       loadTodos();
     });
   };
 
   const handleDelete = (id: string) => {
     startTransition(async () => {
-      await deleteTodoById(id);
+      await deleteTodoById(userId, id, isShowAll);
       loadTodos();
     });
   };
@@ -46,7 +48,7 @@ export const TodoTable = ({
   const columns: TableColumnsType<Todo> = [
     {
       key: "task",
-      title: "Список",
+      title: "Task List",
       render: (item, _, index) => (
         <div className="flex items-center gap-3 w-full border rounded-xl p-2 bg-amber-100">
           <Checkbox
@@ -91,7 +93,7 @@ export const TodoTable = ({
     ...(isShowAll
       ? [
           {
-            title: "Дата",
+            title: "Date",
             dataIndex: "date",
             render: (d: string) => formatDate(d),
             width: 120,

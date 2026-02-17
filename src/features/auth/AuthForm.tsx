@@ -4,11 +4,11 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { Input } from "@/shared/components/Input";
-import { Button } from "@/shared/components/antd/Button";
 import { authFormSchema, AuthFormValues } from "./authSchema";
 import { useRouter } from "next/navigation";
 import { ROUTES } from "@/shared/constants/routes";
 import { useAuth } from "@/shared/hooks/useAuth";
+import { Button } from "@/shared/components/Button";
 
 interface AuthFormProps {
   submitText: string;
@@ -69,6 +69,7 @@ export function AuthForm({
           type="email"
           register={register}
           error={errors.email?.message}
+          className="bg-white"
           classNameContainer="w-full mb-3"
         />
 
@@ -78,15 +79,11 @@ export function AuthForm({
           placeholder="Пароль"
           register={register}
           error={errors.password?.message}
+          className="bg-white"
           classNameContainer="w-full mb-3"
         />
 
-        <Button
-          text={submitText}
-          htmlType="submit"
-          color="blue"
-          containerClassName="max-w-[60%]"
-        />
+        <Button text={submitText} type="submit" size="small" />
       </form>
     </div>
   );

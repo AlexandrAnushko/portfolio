@@ -2,24 +2,27 @@ import { Button } from "@/shared/components/Button";
 import { Input } from "antd";
 import { startTransition, useState } from "react";
 import { addTodo } from "../../app/actions/todos";
+import { DateAndMode } from "./types";
 
 const { TextArea } = Input;
 
 type Props = {
-  selectedDate: string;
+  userId: string;
+  dateAndMode: DateAndMode;
   loadTodos: () => void;
   handleShowDeleteModal: (show: boolean) => void;
 };
 
 export const InputPanel = ({
-  selectedDate,
+  userId,
+  dateAndMode,
   loadTodos,
   handleShowDeleteModal,
 }: Props) => {
   const [newTodo, setNewTodo] = useState("");
   const handleAdd = () => {
     startTransition(async () => {
-      await addTodo(newTodo, selectedDate);
+      await addTodo(userId, newTodo, dateAndMode);
       loadTodos();
       setNewTodo("");
     });
@@ -31,7 +34,7 @@ export const InputPanel = ({
     <div className="flex gap-2 mb-4">
       <TextArea
         rows={3}
-        placeholder="Добавить задачу..."
+        placeholder="Add task..."
         value={newTodo}
         onChange={(e) => setNewTodo(e.target.value)}
         onPressEnter={handleAdd}

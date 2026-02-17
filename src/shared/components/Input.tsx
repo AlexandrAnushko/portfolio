@@ -43,12 +43,12 @@ export const Input = <T extends object>({
       {...rest}
     />
     {error && (
-      <p
+      <div
         id={`${String(name)}-error`}
-        className="absolute left-76 top-3.5 text-xs text-red-500 px-3 min-w-80"
+        className="absolute left-5 top-[-40] z-10 bg-black rounded-sm p-2"
       >
-        {error}
-      </p>
+        <p className="text-red-500 px-3 whitespace-nowrap">{error}</p>
+      </div>
     )}
   </div>
 );

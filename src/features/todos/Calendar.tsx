@@ -15,7 +15,7 @@ export const Calendar = ({ onSelect, onShowAll, value }: Props) => {
       {onShowAll && (
         <Button
           onClick={onShowAll}
-          text="Показать за всё время"
+          text="Show tasks for all time"
           color="transparent"
         />
       )}

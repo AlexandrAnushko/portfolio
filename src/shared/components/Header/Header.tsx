@@ -64,23 +64,24 @@ export const Header = () => {
         )}
       </nav>
 
-      <Modal
-        title={isSignIn ? "Вход" : "Регистрация"}
-        centered
-        open={open}
-        onOk={() => setOpen(false)}
-        onCancel={() => setOpen(false)}
-      >
-        <AuthForm
-          successText={
-            isSignIn ? "Авторизация успешна!" : "Регистрация успешна!"
-          }
-          submitText={isSignIn ? "Войти" : "Зарегистрироваться"}
-          apiUrl={isSignIn ? "/api/auth/login" : "/api/auth/register"}
-          isLogin={isSignIn}
-          onClose={() => setOpen(false)}
-        />
-      </Modal>
+      {open && (
+        <Modal
+          title={isSignIn ? "Sign In" : "Sign Up"}
+          centered
+          open={open}
+          onCancel={() => setOpen(false)}
+        >
+          <AuthForm
+            successText={
+              isSignIn ? "Login successful!" : "Registration successful!"
+            }
+            submitText={isSignIn ? "Sign In" : "Sign Up"}
+            apiUrl={isSignIn ? "/api/auth/login" : "/api/auth/register"}
+            isLogin={isSignIn}
+            onClose={() => setOpen(false)}
+          />
+        </Modal>
+      )}
     </header>
   );
 };

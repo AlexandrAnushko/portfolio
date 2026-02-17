@@ -26,6 +26,7 @@ export default function Home() {
             alt="author photo"
             width={500}
             height={500}
+            loading="eager"
           />
         </div>
       </section>
