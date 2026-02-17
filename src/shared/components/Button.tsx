@@ -10,6 +10,7 @@ type Props = {
   isLoading?: boolean;
   isDisabled?: boolean;
   textTransform?: "uppercase" | "lowercase" | "capitalize" | "normal-case";
+  size?: "small" | "large";
 };
 
 export const Button = ({
@@ -21,6 +22,7 @@ export const Button = ({
   isLoading,
   isDisabled,
   textTransform = "uppercase",
+  size = "large",
 }: Props) => {
   return (
     <button
@@ -28,8 +30,9 @@ export const Button = ({
       disabled={isDisabled || isLoading}
       type={type}
       className={clsx(
-        `${extra} flex items-center justify-center rounded-md focus:ring-white text-white cursor-pointer py-2 px-4 xl:py-3 xl:px-8 
-        active:scale-90 transition-all duration-300 ${
+        `flex items-center justify-center rounded-md focus:ring-white text-white cursor-pointer py-2 px-4
+        ${size === "large" ? "xl:py-3 xl:px-8" : "xl:py-2 xl:px-6"} 
+        active:scale-90 transition-all duration-300 ${extra} ${
           mode === "primary"
             ? "bg-primary"
             : mode === "secondary"

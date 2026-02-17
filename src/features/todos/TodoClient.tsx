@@ -8,18 +8,20 @@ import {
   getAllTodos,
   getTodosByDate,
 } from "../../app/actions/todos";
-import { Todo } from "@/features/todos/types";
+import { DateAndMode, Todo } from "@/features/todos/types";
 import { Calendar } from "./Calendar";
 import { InputPanel } from "./InputPanel";
 import { TodoTable } from "./TodoTable";
 import { EditModal } from "./EditModal";
 import { DeleteModal } from "@/shared/components/DeleteModal";
+import { useAuth } from "@/shared/hooks/useAuth";
 
-type Props = { initialDate: string; initialTodos: Todo[] };
-type DateAndMode = { selectedDate: string; isShowAll: boolean };
+const initialDate = new Date().toISOString().slice(0, 10);
 
-export default function TodoClient({ initialDate, initialTodos }: Props) {
-  const [todos, setTodos] = useState<Todo[]>(initialTodos);
+export default function TodoClient() {
+  const { userId } = useAuth();
+
+  const [todos, setTodos] = useState<Todo[]>([]);
 
   const [editingTodo, setEditingTodo] = useState<Todo | null>(null);
   const [editText, setEditText] = useState("");
@@ -31,23 +33,25 @@ export default function TodoClient({ initialDate, initialTodos }: Props) {
 
   const [isPending, startTransition] = useTransition();
 
+  useEffect(() => {
+    loadTodos();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dateAndMode]);
+
+  if (!userId) return null;
+
   const loadTodos = () => {
     startTransition(async () => {
       let data: Todo[] = [];
       if (dateAndMode.isShowAll) {
-        data = await getAllTodos();
+        data = await getAllTodos(userId);
       } else {
-        data = await getTodosByDate(dateAndMode.selectedDate);
+        data = await getTodosByDate(userId, dateAndMode.selectedDate);
       }
 
       setTodos(data);
     });
   };
-
-  useEffect(() => {
-    loadTodos();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dateAndMode]);
 
   const onSelect = (date: Dayjs) => {
     const iso = date.format("YYYY-MM-DD");
@@ -60,6 +64,7 @@ export default function TodoClient({ initialDate, initialTodos }: Props) {
 
   const deleteAllTodos = async () => {
     await deleteTodos(
+      userId,
       dateAndMode.isShowAll ? undefined : dateAndMode.selectedDate,
     );
     loadTodos();
@@ -74,12 +79,14 @@ export default function TodoClient({ initialDate, initialTodos }: Props) {
 
         <div className="flex flex-col max-w-200 min-w-200">
           <InputPanel
-            selectedDate={dateAndMode.selectedDate}
+            userId={userId}
+            dateAndMode={dateAndMode}
             loadTodos={loadTodos}
             handleShowDeleteModal={setShowDeleteModal}
           />
 
           <TodoTable
+            userId={userId}
             todos={todos}
             loadTodos={loadTodos}
             setEditingTodo={setEditingTodo}
@@ -90,17 +97,19 @@ export default function TodoClient({ initialDate, initialTodos }: Props) {
       </div>
 
       <EditModal
+        userId={userId}
         editText={editText}
         editingTodo={editingTodo}
         setEditingTodo={setEditingTodo}
         setEditText={setEditText}
         loadTodos={loadTodos}
+        isShowAll={dateAndMode.isShowAll}
       />
       <DeleteModal
         text={
           dateAndMode.isShowAll
-            ? "Вы уверены что хотите удалить все задачи пользователя за всё время?"
-            : "Вы уверены что хотите удалить все задачи за указанную дату?"
+            ? "Are you sure you want to delete all user tasks for all time?"
+            : "Are you sure you want to delete all tasks for the specified date?"
         }
         setOpen={setShowDeleteModal}
         action={deleteAllTodos}

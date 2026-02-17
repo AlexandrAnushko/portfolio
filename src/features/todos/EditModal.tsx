@@ -10,16 +10,20 @@ import { Button } from "@/shared/components/Button";
 const { TextArea } = Input;
 
 type Props = {
+  userId: string;
   editText: string;
   editingTodo: Todo | null;
+  isShowAll: boolean;
   setEditingTodo: (item: Todo | null) => void;
   setEditText: (text: string) => void;
   loadTodos: () => void;
 };
 
 export const EditModal = ({
+  userId,
   editText,
   editingTodo,
+  isShowAll,
   setEditingTodo,
   setEditText,
   loadTodos,
@@ -37,7 +41,7 @@ export const EditModal = ({
     if (!editingTodo) return;
 
     startTransition(async () => {
-      await updateTodo(editingTodo.id, editText, date);
+      await updateTodo(userId, editingTodo.id, editText, isShowAll, date);
       loadTodos();
       setEditingTodo(null);
     });
@@ -50,7 +54,7 @@ export const EditModal = ({
 
   return (
     <Modal
-      title="Изменить задачу"
+      title="Edit task"
       open={!!editingTodo}
       onOk={handleSaveEdit}
       onCancel={() => setEditingTodo(null)}
@@ -68,7 +72,7 @@ export const EditModal = ({
         extra="mt-2 max-w-[30%]"
       />
       <Modal
-        title="Изменить дату задачи"
+        title="Edit task date"
         open={showCalendar}
         onOk={() => setShowCalendar(false)}
         onCancel={onCancel}

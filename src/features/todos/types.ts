@@ -4,3 +4,5 @@ export type Todo = {
   done: boolean;
   date: string;
 };
+
+export type DateAndMode = { selectedDate: string; isShowAll: boolean };

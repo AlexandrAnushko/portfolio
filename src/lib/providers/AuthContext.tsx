@@ -8,11 +8,18 @@ type AuthContextType = {
   refresh: () => Promise<void>;
 };
 
+type Auth = {
+  isAuthorized: boolean | null;
+  userId: string | null;
+};
+
 export const AuthContext = createContext<AuthContextType | null>(null);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [isAuthorized, setIsAuthorized] = useState<boolean | null>(null);
-  const [userId, setUserId] = useState<string | null>(null);
+  const [auth, setAuth] = useState<Auth>({
+    isAuthorized: null,
+    userId: null,
+  });
 
   const refresh = async () => {
     try {
@@ -20,13 +27,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const data = await res.json();
 
       Promise.resolve().then(() => {
-        setIsAuthorized(data.isAuth);
-        setUserId(data.userId);
+        setAuth({
+          isAuthorized: data.isAuth,
+          userId: data.userId,
+        });
       });
     } catch {
       Promise.resolve().then(() => {
-        setIsAuthorized(false);
-        setUserId(null);
+        setAuth({
+          isAuthorized: null,
+          userId: null,
+        });
       });
     }
   };
@@ -36,7 +47,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ isAuthorized, userId, refresh }}>
+    <AuthContext.Provider
+      value={{ isAuthorized: auth.isAuthorized, userId: auth.userId, refresh }}
+    >
       {children}
     </AuthContext.Provider>
   );
