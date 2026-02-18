@@ -1,54 +1,36 @@
 import { Modal } from "@/shared/components/antd/Modal";
 import { Input } from "antd";
 import { Todo } from "./types";
-import { useState, useTransition } from "react";
+import { useState } from "react";
 import { Calendar } from "./Calendar";
 import dayjs, { Dayjs } from "dayjs";
-import { updateTodo } from "@/app/actions/todos";
 import { Button } from "@/shared/components/Button";
 
 const { TextArea } = Input;
 
 type Props = {
-  userId: string;
-  editText: string;
-  editingTodo: Todo | null;
+  editingTodo: Todo;
   isShowAll: boolean;
+  handleSaveEdit: (text: string, date: string) => void;
   setEditingTodo: (item: Todo | null) => void;
-  setEditText: (text: string) => void;
-  loadTodos: () => void;
 };
 
 export const EditModal = ({
-  userId,
-  editText,
   editingTodo,
-  isShowAll,
+  handleSaveEdit,
   setEditingTodo,
-  setEditText,
-  loadTodos,
 }: Props) => {
-  const [isPending, startTransition] = useTransition();
   const [showCalendar, setShowCalendar] = useState(false);
-  const [date, setDate] = useState(editingTodo?.date);
+  const [editText, setEditText] = useState(editingTodo.text);
+  const [editDate, setEditDate] = useState(editingTodo.date);
 
   const onSelect = (date: Dayjs) => {
     const iso = date.format("YYYY-MM-DD");
-    setDate(iso);
-  };
-
-  const handleSaveEdit = () => {
-    if (!editingTodo) return;
-
-    startTransition(async () => {
-      await updateTodo(userId, editingTodo.id, editText, isShowAll, date);
-      loadTodos();
-      setEditingTodo(null);
-    });
+    setEditDate(iso);
   };
 
   const onCancel = () => {
-    setDate(editingTodo?.date);
+    setEditDate(editingTodo?.date);
     setShowCalendar(false);
   };
 
@@ -56,14 +38,14 @@ export const EditModal = ({
     <Modal
       title="Edit task"
       open={!!editingTodo}
-      onOk={handleSaveEdit}
+      onOk={() => handleSaveEdit(editText, editDate)}
       onCancel={() => setEditingTodo(null)}
     >
       <TextArea
         rows={3}
         value={editText}
         onChange={(e) => setEditText(e.target.value)}
-        onPressEnter={handleSaveEdit}
+        onPressEnter={() => handleSaveEdit(editText, editDate)}
       />
       <Button
         onClick={() => setShowCalendar(true)}
@@ -77,7 +59,7 @@ export const EditModal = ({
         onOk={() => setShowCalendar(false)}
         onCancel={onCancel}
       >
-        <Calendar onSelect={onSelect} value={dayjs(date)} />
+        <Calendar onSelect={onSelect} value={dayjs(editDate)} />
       </Modal>
     </Modal>
   );
