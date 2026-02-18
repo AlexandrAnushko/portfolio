@@ -86,7 +86,7 @@ export const TodoTable = ({
       : []),
   ];
 
-  return isPending ? (
+  return isPending && todos.length === 0 ? (
     <TodoTableSkeleton />
   ) : (
     <Table
