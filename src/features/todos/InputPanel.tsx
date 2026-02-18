@@ -1,42 +1,37 @@
-import { Button } from "@/shared/components/Button";
 import { Input } from "antd";
-import { startTransition, useState } from "react";
-import { addTodo } from "../../app/actions/todos";
-import { DateAndMode } from "./types";
+import { Button } from "@/shared/components/Button";
+import { ChangeEvent } from "react";
 
 const { TextArea } = Input;
 
 type Props = {
-  userId: string;
-  dateAndMode: DateAndMode;
-  loadTodos: () => void;
+  text: string;
+  setText: (text: string) => void;
+  handleAdd: () => void;
   handleShowDeleteModal: (show: boolean) => void;
 };
 
 export const InputPanel = ({
-  userId,
-  dateAndMode,
-  loadTodos,
+  text,
+  setText,
+  handleAdd,
   handleShowDeleteModal,
 }: Props) => {
-  const [newTodo, setNewTodo] = useState("");
-  const handleAdd = () => {
-    startTransition(async () => {
-      await addTodo(userId, newTodo, dateAndMode);
-      loadTodos();
-      setNewTodo("");
-    });
-  };
   const handleDeleteAll = () => {
     handleShowDeleteModal(true);
   };
+
+  const onChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    setText(e.target.value);
+  };
+
   return (
     <div className="flex gap-2 mb-4">
       <TextArea
         rows={3}
         placeholder="Add task..."
-        value={newTodo}
-        onChange={(e) => setNewTodo(e.target.value)}
+        value={text}
+        onChange={onChange}
         onPressEnter={handleAdd}
       />
       <div className="flex flex-col max-w-[14%] gap-2">

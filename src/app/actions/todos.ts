@@ -3,7 +3,7 @@
 import prisma from "@/lib/db";
 import { getStartAndEndOfDate } from "@/shared/utils/getStartAndEndOfDate";
 import { TODOS_TAGS } from "@/shared/constants/tags";
-import { cacheTag, revalidateTag } from "next/cache";
+import { cacheTag, updateTag } from "next/cache";
 import { DateAndMode } from "@/features/todos/types";
 
 type TodoData = {
@@ -19,7 +19,6 @@ type DeleteWhere = {
   };
 };
 
-// Получить все задачи
 export const getAllTodos = async (userId: string) => {
   "use cache";
   cacheTag(TODOS_TAGS.ALL);
@@ -35,7 +34,6 @@ export const getAllTodos = async (userId: string) => {
   }));
 };
 
-// Получение задач по дате
 export const getTodosByDate = async (userId: string, date: string) => {
   "use cache";
   cacheTag(TODOS_TAGS.BY_DATE);
@@ -53,14 +51,12 @@ export const getTodosByDate = async (userId: string, date: string) => {
     orderBy: { createdAt: "asc" },
   });
 
-  // Приводим дату к строке
   return todos.map((t) => ({
     ...t,
     date: t.date.toISOString(),
   }));
 };
 
-// Добавить задачу
 export async function addTodo(
   userId: string,
   text: string,
@@ -70,13 +66,10 @@ export async function addTodo(
   await prisma.todo.create({
     data: { text, date: new Date(dateAndMode.selectedDate), userId },
   });
-  revalidateTag(
-    dateAndMode.isShowAll ? TODOS_TAGS.ALL : TODOS_TAGS.BY_DATE,
-    "max",
-  );
+  updateTag(dateAndMode.isShowAll ? TODOS_TAGS.ALL : TODOS_TAGS.BY_DATE);
 }
 
-// Переключить done
+// Toggle Todo done field
 export async function toggleTodo(
   userId: string,
   id: string,
@@ -92,10 +85,10 @@ export async function toggleTodo(
     where: { id },
     data: { done: !todo.done },
   });
-  revalidateTag(isShowAll ? TODOS_TAGS.ALL : TODOS_TAGS.BY_DATE, "max");
+  updateTag(isShowAll ? TODOS_TAGS.ALL : TODOS_TAGS.BY_DATE);
 }
 
-// Изменить текст
+// change text and date
 export async function updateTodo(
   userId: string,
   id: string,
@@ -113,7 +106,7 @@ export async function updateTodo(
     where: { id, userId },
     data,
   });
-  revalidateTag(isShowAll ? TODOS_TAGS.ALL : TODOS_TAGS.BY_DATE, "max");
+  updateTag(isShowAll ? TODOS_TAGS.ALL : TODOS_TAGS.BY_DATE);
 }
 
 export async function deleteTodoById(
@@ -125,7 +118,7 @@ export async function deleteTodoById(
     where: { id, userId },
   });
 
-  revalidateTag(isShowAll ? TODOS_TAGS.ALL : TODOS_TAGS.BY_DATE, "max");
+  updateTag(isShowAll ? TODOS_TAGS.ALL : TODOS_TAGS.BY_DATE);
 }
 
 export async function deleteTodos(userId: string, date?: string) {
@@ -145,5 +138,5 @@ export async function deleteTodos(userId: string, date?: string) {
   await prisma.todo.deleteMany({
     where,
   });
-  revalidateTag(date ? TODOS_TAGS.BY_DATE : TODOS_TAGS.ALL, "max");
+  updateTag(date ? TODOS_TAGS.BY_DATE : TODOS_TAGS.ALL);
 }

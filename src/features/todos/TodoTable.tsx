@@ -1,20 +1,19 @@
 import { Button } from "@/shared/components/antd/Button";
 import { Checkbox, Table, TableColumnsType } from "antd";
 import { Todo } from "./types";
-import { startTransition } from "react";
-import { deleteTodoById, toggleTodo } from "@/app/actions/todos";
 import { formatDate } from "@/shared/utils/formatDate";
 import { Pencil, Trash2 } from "lucide-react";
 import { createStaticStyles } from "antd-style";
 import styles from "./TodoTable.module.css";
+import { TodoTableSkeleton } from "./skeletons/TodoTableSkeleton";
 
 type Props = {
-  userId: string;
   todos: Todo[];
   isShowAll: boolean;
-  loadTodos: () => void;
+  isPending: boolean;
+  handleToggle: (id: string) => void;
+  handleDelete: (id: string) => void;
   setEditingTodo: (item: Todo | null) => void;
-  setEditText: (text: string) => void;
 };
 
 const classNames = createStaticStyles(({ css }) => ({
@@ -24,27 +23,13 @@ const classNames = createStaticStyles(({ css }) => ({
 }));
 
 export const TodoTable = ({
-  userId,
   todos,
   isShowAll,
-  loadTodos,
+  isPending,
+  handleToggle,
+  handleDelete,
   setEditingTodo,
-  setEditText,
 }: Props) => {
-  const handleToggle = (id: string) => {
-    startTransition(async () => {
-      await toggleTodo(userId, id, isShowAll);
-      loadTodos();
-    });
-  };
-
-  const handleDelete = (id: string) => {
-    startTransition(async () => {
-      await deleteTodoById(userId, id, isShowAll);
-      loadTodos();
-    });
-  };
-
   const columns: TableColumnsType<Todo> = [
     {
       key: "task",
@@ -70,7 +55,6 @@ export const TodoTable = ({
             <Button
               onClick={() => {
                 setEditingTodo(item);
-                setEditText(item.text);
               }}
               icon={<Pencil color="green" />}
               shape="round"
@@ -101,7 +85,10 @@ export const TodoTable = ({
         ]
       : []),
   ];
-  return (
+
+  return isPending ? (
+    <TodoTableSkeleton />
+  ) : (
     <Table
       dataSource={todos}
       columns={columns}
