@@ -60,10 +60,25 @@ export default function TodoClient() {
   if (!userId) return null;
 
   const handleAdd = () => {
+    if (!newTodoText.trim()) return;
+
+    const optimisticTodo: Todo = {
+      id: crypto.randomUUID(),
+      text: newTodoText,
+      done: false,
+      date: dateAndMode.selectedDate,
+    };
+
+    setTodos((prev) => [...prev, optimisticTodo]);
+    setNewTodoText("");
+
     startTransition(async () => {
-      await addTodo(userId, newTodoText, dateAndMode);
-      loadTodos();
-      setNewTodoText("");
+      try {
+        await addTodo(userId, newTodoText, dateAndMode);
+        loadTodos();
+      } catch {
+        setTodos((prev) => prev.filter((t) => t.id !== optimisticTodo.id));
+      }
     });
   };
 
@@ -84,16 +99,30 @@ export default function TodoClient() {
   };
 
   const handleToggle = (id: string) => {
+    const prevTodos = [...todos];
+    setTodos((prev) =>
+      prev.map((t) => (t.id === id ? { ...t, done: !t.done } : t)),
+    );
     startTransition(async () => {
-      await toggleTodo(userId, id, dateAndMode.isShowAll);
-      loadTodos();
+      try {
+        await toggleTodo(userId, id, dateAndMode.isShowAll);
+        loadTodos();
+      } catch {
+        setTodos(prevTodos);
+      }
     });
   };
 
   const handleDelete = (id: string) => {
+    const prevTodos = [...todos];
+    setTodos((prev) => prev.filter((t) => t.id !== id));
     startTransition(async () => {
-      await deleteTodoById(userId, id, dateAndMode.isShowAll);
-      loadTodos();
+      try {
+        await deleteTodoById(userId, id, dateAndMode.isShowAll);
+        loadTodos();
+      } catch {
+        setTodos(prevTodos);
+      }
     });
   };
 
