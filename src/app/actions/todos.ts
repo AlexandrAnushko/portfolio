@@ -21,11 +21,11 @@ type DeleteWhere = {
 
 export const getAllTodos = async (userId: string) => {
   "use cache";
-  cacheTag(TODOS_TAGS.ALL);
+  cacheTag(`${TODOS_TAGS.ALL}-${userId}`);
 
   const todos = await prisma.todo.findMany({
     where: { userId },
-    orderBy: { createdAt: "asc" },
+    orderBy: { date: "asc" },
   });
 
   return todos.map((t) => ({
@@ -36,7 +36,7 @@ export const getAllTodos = async (userId: string) => {
 
 export const getTodosByDate = async (userId: string, date: string) => {
   "use cache";
-  cacheTag(TODOS_TAGS.BY_DATE);
+  cacheTag(`${TODOS_TAGS.BY_DATE}-${userId}-${date}`);
 
   const { start, end } = getStartAndEndOfDate(date);
 
@@ -48,7 +48,7 @@ export const getTodosByDate = async (userId: string, date: string) => {
         lte: end,
       },
     },
-    orderBy: { createdAt: "asc" },
+    orderBy: { date: "asc" },
   });
 
   return todos.map((t) => ({
@@ -66,14 +66,18 @@ export async function addTodo(
   await prisma.todo.create({
     data: { text, date: new Date(dateAndMode.selectedDate), userId },
   });
-  updateTag(dateAndMode.isShowAll ? TODOS_TAGS.ALL : TODOS_TAGS.BY_DATE);
+  updateTag(
+    dateAndMode.isShowAll
+      ? `${TODOS_TAGS.ALL}-${userId}`
+      : `${TODOS_TAGS.BY_DATE}-${userId}-${dateAndMode.selectedDate}`,
+  );
 }
 
 // Toggle Todo done field
 export async function toggleTodo(
   userId: string,
   id: string,
-  isShowAll: boolean,
+  dateAndMode: DateAndMode,
 ) {
   const todo = await prisma.todo.findUnique({
     where: { id, userId },
@@ -85,7 +89,11 @@ export async function toggleTodo(
     where: { id },
     data: { done: !todo.done },
   });
-  updateTag(isShowAll ? TODOS_TAGS.ALL : TODOS_TAGS.BY_DATE);
+  updateTag(
+    dateAndMode.isShowAll
+      ? `${TODOS_TAGS.ALL}-${userId}`
+      : `${TODOS_TAGS.BY_DATE}-${userId}-${dateAndMode.selectedDate}`,
+  );
 }
 
 // change text and date
@@ -94,7 +102,7 @@ export async function updateTodo(
   id: string,
   text: string,
   isShowAll: boolean,
-  date?: string,
+  date: string,
 ) {
   const data: TodoData = { text };
 
@@ -106,19 +114,27 @@ export async function updateTodo(
     where: { id, userId },
     data,
   });
-  updateTag(isShowAll ? TODOS_TAGS.ALL : TODOS_TAGS.BY_DATE);
+  updateTag(
+    isShowAll
+      ? `${TODOS_TAGS.ALL}-${userId}`
+      : `${TODOS_TAGS.BY_DATE}-${userId}-${date}`,
+  );
 }
 
 export async function deleteTodoById(
   userId: string,
   id: string,
-  isShowAll: boolean,
+  dateAndMode: DateAndMode,
 ) {
   await prisma.todo.delete({
     where: { id, userId },
   });
 
-  updateTag(isShowAll ? TODOS_TAGS.ALL : TODOS_TAGS.BY_DATE);
+  updateTag(
+    dateAndMode.isShowAll
+      ? `${TODOS_TAGS.ALL}-${userId}`
+      : `${TODOS_TAGS.BY_DATE}-${userId}-${dateAndMode.selectedDate}`,
+  );
 }
 
 export async function deleteTodos(userId: string, date?: string) {
@@ -138,5 +154,9 @@ export async function deleteTodos(userId: string, date?: string) {
   await prisma.todo.deleteMany({
     where,
   });
-  updateTag(date ? TODOS_TAGS.BY_DATE : TODOS_TAGS.ALL);
+  updateTag(
+    date
+      ? `${TODOS_TAGS.BY_DATE}-${userId}-${date}`
+      : `${TODOS_TAGS.ALL}-${userId}`,
+  );
 }

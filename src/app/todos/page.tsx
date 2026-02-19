@@ -9,7 +9,7 @@ export default async function TodoPage() {
 
   return (
     <div className="flex justify-center">
-      <TodoClient />
+      <TodoClient userId={userId} />
     </div>
   );
 }

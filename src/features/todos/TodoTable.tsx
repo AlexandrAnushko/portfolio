@@ -11,6 +11,8 @@ type Props = {
   todos: Todo[];
   isShowAll: boolean;
   isPending: boolean;
+  pagination: { current: number; pageSize: number };
+  onPaginationChange: (page: number, pageSize: number) => void;
   handleToggle: (id: string) => void;
   handleDelete: (id: string) => void;
   setEditingTodo: (item: Todo | null) => void;
@@ -26,10 +28,13 @@ export const TodoTable = ({
   todos,
   isShowAll,
   isPending,
+  pagination,
+  onPaginationChange,
   handleToggle,
   handleDelete,
   setEditingTodo,
 }: Props) => {
+
   const columns: TableColumnsType<Todo> = [
     {
       key: "task",
@@ -48,7 +53,7 @@ export const TodoTable = ({
               opacity: item.done ? 0.6 : 1,
             }}
           >
-            {`${index + 1}) ${item.text}`}
+            {`${(pagination.current - 1) * pagination.pageSize + index + 1}) ${item.text}`}
           </div>
 
           <div className="flex items-center gap-2">
@@ -95,6 +100,11 @@ export const TodoTable = ({
       rowKey="id"
       className={styles["todo-table"]}
       classNames={classNames}
+      pagination={{
+        current: pagination.current,
+        pageSize: pagination.pageSize,
+        onChange: onPaginationChange,
+      }}
     />
   );
 };

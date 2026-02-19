@@ -18,13 +18,10 @@ import { InputPanel } from "./InputPanel";
 import { TodoTable } from "./TodoTable";
 import { EditModal } from "./EditModal";
 import { DeleteModal } from "@/shared/components/DeleteModal";
-import { useAuth } from "@/shared/hooks/useAuth";
 
 const initialDate = new Date().toISOString().slice(0, 10);
 
-export default function TodoClient() {
-  const { userId } = useAuth();
-
+export default function TodoClient({ userId }: { userId: string }) {
   const [todos, setTodos] = useState<Todo[]>([]);
   const [newTodoText, setNewTodoText] = useState("");
 
@@ -36,6 +33,7 @@ export default function TodoClient() {
   });
 
   const [isPending, startTransition] = useTransition();
+  const [pagination, setPagination] = useState({ current: 1, pageSize: 10 });
 
   const loadTodos = () => {
     if (!userId) return;
@@ -54,10 +52,18 @@ export default function TodoClient() {
 
   useEffect(() => {
     loadTodos();
+    setPagination((prev) => ({ ...prev, current: 1 }));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dateAndMode, userId]);
 
   if (!userId) return null;
+
+  const fetchTodos = async () => {
+    const data = dateAndMode.isShowAll
+      ? await getAllTodos(userId)
+      : await getTodosByDate(userId, dateAndMode.selectedDate);
+    setTodos(data);
+  };
 
   const handleAdd = () => {
     if (!newTodoText.trim()) return;
@@ -69,13 +75,18 @@ export default function TodoClient() {
       date: dateAndMode.selectedDate,
     };
 
-    setTodos((prev) => [...prev, optimisticTodo]);
+    setTodos((prev) => {
+      const newTodos = [...prev, optimisticTodo];
+      const lastPage = Math.ceil(newTodos.length / pagination.pageSize);
+      setPagination((p) => ({ ...p, current: lastPage }));
+      return newTodos;
+    });
     setNewTodoText("");
 
     startTransition(async () => {
       try {
         await addTodo(userId, newTodoText, dateAndMode);
-        loadTodos();
+        fetchTodos();
       } catch {
         setTodos((prev) => prev.filter((t) => t.id !== optimisticTodo.id));
       }
@@ -93,7 +104,7 @@ export default function TodoClient() {
         dateAndMode.isShowAll,
         editDate,
       );
-      loadTodos();
+      fetchTodos();
       setEditingTodo(null);
     });
   };
@@ -105,8 +116,8 @@ export default function TodoClient() {
     );
     startTransition(async () => {
       try {
-        await toggleTodo(userId, id, dateAndMode.isShowAll);
-        loadTodos();
+        await toggleTodo(userId, id, dateAndMode);
+        fetchTodos();
       } catch {
         setTodos(prevTodos);
       }
@@ -118,8 +129,8 @@ export default function TodoClient() {
     setTodos((prev) => prev.filter((t) => t.id !== id));
     startTransition(async () => {
       try {
-        await deleteTodoById(userId, id, dateAndMode.isShowAll);
-        loadTodos();
+        await deleteTodoById(userId, id, dateAndMode);
+        fetchTodos();
       } catch {
         setTodos(prevTodos);
       }
@@ -127,11 +138,14 @@ export default function TodoClient() {
   };
 
   const deleteAllTodos = async () => {
-    await deleteTodos(
-      userId,
-      dateAndMode.isShowAll ? undefined : dateAndMode.selectedDate,
-    );
-    loadTodos();
+    setTodos([]);
+    startTransition(async () => {
+      await deleteTodos(
+        userId,
+        dateAndMode.isShowAll ? undefined : dateAndMode.selectedDate,
+      );
+      fetchTodos();
+    });
   };
 
   const onSelect = (date: Dayjs) => {
@@ -161,6 +175,8 @@ export default function TodoClient() {
             todos={todos}
             isShowAll={dateAndMode.isShowAll}
             isPending={isPending}
+            pagination={pagination}
+            onPaginationChange={(page, pageSize) => setPagination({ current: page, pageSize })}
             handleToggle={handleToggle}
             handleDelete={handleDelete}
             setEditingTodo={setEditingTodo}
