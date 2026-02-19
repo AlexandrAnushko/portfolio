@@ -33,6 +33,7 @@ export default function TodoClient({ userId }: { userId: string }) {
   });
 
   const [isPending, startTransition] = useTransition();
+  const [pagination, setPagination] = useState({ current: 1, pageSize: 10 });
 
   const loadTodos = () => {
     if (!userId) return;
@@ -51,6 +52,7 @@ export default function TodoClient({ userId }: { userId: string }) {
 
   useEffect(() => {
     loadTodos();
+    setPagination((prev) => ({ ...prev, current: 1 }));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dateAndMode, userId]);
 
@@ -73,7 +75,12 @@ export default function TodoClient({ userId }: { userId: string }) {
       date: dateAndMode.selectedDate,
     };
 
-    setTodos((prev) => [...prev, optimisticTodo]);
+    setTodos((prev) => {
+      const newTodos = [...prev, optimisticTodo];
+      const lastPage = Math.ceil(newTodos.length / pagination.pageSize);
+      setPagination((p) => ({ ...p, current: lastPage }));
+      return newTodos;
+    });
     setNewTodoText("");
 
     startTransition(async () => {
@@ -168,6 +175,8 @@ export default function TodoClient({ userId }: { userId: string }) {
             todos={todos}
             isShowAll={dateAndMode.isShowAll}
             isPending={isPending}
+            pagination={pagination}
+            onPaginationChange={(page, pageSize) => setPagination({ current: page, pageSize })}
             handleToggle={handleToggle}
             handleDelete={handleDelete}
             setEditingTodo={setEditingTodo}

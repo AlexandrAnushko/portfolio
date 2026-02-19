@@ -1,6 +1,5 @@
 import { Button } from "@/shared/components/antd/Button";
 import { Checkbox, Table, TableColumnsType } from "antd";
-import { useState } from "react";
 import { Todo } from "./types";
 import { formatDate } from "@/shared/utils/formatDate";
 import { Pencil, Trash2 } from "lucide-react";
@@ -12,6 +11,8 @@ type Props = {
   todos: Todo[];
   isShowAll: boolean;
   isPending: boolean;
+  pagination: { current: number; pageSize: number };
+  onPaginationChange: (page: number, pageSize: number) => void;
   handleToggle: (id: string) => void;
   handleDelete: (id: string) => void;
   setEditingTodo: (item: Todo | null) => void;
@@ -27,11 +28,12 @@ export const TodoTable = ({
   todos,
   isShowAll,
   isPending,
+  pagination,
+  onPaginationChange,
   handleToggle,
   handleDelete,
   setEditingTodo,
 }: Props) => {
-  const [pagination, setPagination] = useState({ current: 1, pageSize: 10 });
 
   const columns: TableColumnsType<Todo> = [
     {
@@ -101,7 +103,7 @@ export const TodoTable = ({
       pagination={{
         current: pagination.current,
         pageSize: pagination.pageSize,
-        onChange: (page, pageSize) => setPagination({ current: page, pageSize }),
+        onChange: onPaginationChange,
       }}
     />
   );
