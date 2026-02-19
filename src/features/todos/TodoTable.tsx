@@ -1,5 +1,6 @@
 import { Button } from "@/shared/components/antd/Button";
 import { Checkbox, Table, TableColumnsType } from "antd";
+import { useState } from "react";
 import { Todo } from "./types";
 import { formatDate } from "@/shared/utils/formatDate";
 import { Pencil, Trash2 } from "lucide-react";
@@ -30,6 +31,8 @@ export const TodoTable = ({
   handleDelete,
   setEditingTodo,
 }: Props) => {
+  const [pagination, setPagination] = useState({ current: 1, pageSize: 10 });
+
   const columns: TableColumnsType<Todo> = [
     {
       key: "task",
@@ -48,7 +51,7 @@ export const TodoTable = ({
               opacity: item.done ? 0.6 : 1,
             }}
           >
-            {`${index + 1}) ${item.text}`}
+            {`${(pagination.current - 1) * pagination.pageSize + index + 1}) ${item.text}`}
           </div>
 
           <div className="flex items-center gap-2">
@@ -95,6 +98,11 @@ export const TodoTable = ({
       rowKey="id"
       className={styles["todo-table"]}
       classNames={classNames}
+      pagination={{
+        current: pagination.current,
+        pageSize: pagination.pageSize,
+        onChange: (page, pageSize) => setPagination({ current: page, pageSize }),
+      }}
     />
   );
 };

@@ -25,7 +25,7 @@ export const getAllTodos = async (userId: string) => {
 
   const todos = await prisma.todo.findMany({
     where: { userId },
-    orderBy: { createdAt: "asc" },
+    orderBy: { date: "asc" },
   });
 
   return todos.map((t) => ({
@@ -48,7 +48,7 @@ export const getTodosByDate = async (userId: string, date: string) => {
         lte: end,
       },
     },
-    orderBy: { createdAt: "asc" },
+    orderBy: { date: "asc" },
   });
 
   return todos.map((t) => ({

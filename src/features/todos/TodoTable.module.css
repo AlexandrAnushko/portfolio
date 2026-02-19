@@ -2,6 +2,16 @@
   fill: white !important;
 }
 
+.todo-table :global(.ant-pagination-item:hover),
+.todo-table :global(.ant-pagination-prev:hover .ant-pagination-item-link),
+.todo-table :global(.ant-pagination-next:hover .ant-pagination-item-link) {
+  background-color: var(--color-primary) !important;
+}
+
+.todo-table :global(.ant-pagination-item:hover a) {
+  color: white !important;
+}
+
 .todo-table :global(.ant-table) {
   min-height: 265px;
 }

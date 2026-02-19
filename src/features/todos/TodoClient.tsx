@@ -18,7 +18,6 @@ import { InputPanel } from "./InputPanel";
 import { TodoTable } from "./TodoTable";
 import { EditModal } from "./EditModal";
 import { DeleteModal } from "@/shared/components/DeleteModal";
-import { TODOS_TAGS } from "@/shared/constants/tags";
 
 const initialDate = new Date().toISOString().slice(0, 10);
 
@@ -43,11 +42,6 @@ export default function TodoClient({ userId }: { userId: string }) {
       if (dateAndMode.isShowAll) {
         data = await getAllTodos(userId);
       } else {
-        console.log(
-          "`${TODOS_TAGS.BY_DATE}-${userId}-${date}`",
-          `${TODOS_TAGS.BY_DATE}-${userId}-${dateAndMode.selectedDate}`,
-        );
-
         data = await getTodosByDate(userId, dateAndMode.selectedDate);
       }
 
