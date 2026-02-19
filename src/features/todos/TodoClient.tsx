@@ -18,13 +18,11 @@ import { InputPanel } from "./InputPanel";
 import { TodoTable } from "./TodoTable";
 import { EditModal } from "./EditModal";
 import { DeleteModal } from "@/shared/components/DeleteModal";
-import { useAuth } from "@/shared/hooks/useAuth";
+import { TODOS_TAGS } from "@/shared/constants/tags";
 
 const initialDate = new Date().toISOString().slice(0, 10);
 
-export default function TodoClient() {
-  const { userId } = useAuth();
-
+export default function TodoClient({ userId }: { userId: string }) {
   const [todos, setTodos] = useState<Todo[]>([]);
   const [newTodoText, setNewTodoText] = useState("");
 
@@ -45,6 +43,11 @@ export default function TodoClient() {
       if (dateAndMode.isShowAll) {
         data = await getAllTodos(userId);
       } else {
+        console.log(
+          "`${TODOS_TAGS.BY_DATE}-${userId}-${date}`",
+          `${TODOS_TAGS.BY_DATE}-${userId}-${dateAndMode.selectedDate}`,
+        );
+
         data = await getTodosByDate(userId, dateAndMode.selectedDate);
       }
 
@@ -58,6 +61,13 @@ export default function TodoClient() {
   }, [dateAndMode, userId]);
 
   if (!userId) return null;
+
+  const fetchTodos = async () => {
+    const data = dateAndMode.isShowAll
+      ? await getAllTodos(userId)
+      : await getTodosByDate(userId, dateAndMode.selectedDate);
+    setTodos(data);
+  };
 
   const handleAdd = () => {
     if (!newTodoText.trim()) return;
@@ -75,7 +85,7 @@ export default function TodoClient() {
     startTransition(async () => {
       try {
         await addTodo(userId, newTodoText, dateAndMode);
-        loadTodos();
+        fetchTodos();
       } catch {
         setTodos((prev) => prev.filter((t) => t.id !== optimisticTodo.id));
       }
@@ -93,7 +103,7 @@ export default function TodoClient() {
         dateAndMode.isShowAll,
         editDate,
       );
-      loadTodos();
+      fetchTodos();
       setEditingTodo(null);
     });
   };
@@ -105,8 +115,8 @@ export default function TodoClient() {
     );
     startTransition(async () => {
       try {
-        await toggleTodo(userId, id, dateAndMode.isShowAll);
-        loadTodos();
+        await toggleTodo(userId, id, dateAndMode);
+        fetchTodos();
       } catch {
         setTodos(prevTodos);
       }
@@ -118,8 +128,8 @@ export default function TodoClient() {
     setTodos((prev) => prev.filter((t) => t.id !== id));
     startTransition(async () => {
       try {
-        await deleteTodoById(userId, id, dateAndMode.isShowAll);
-        loadTodos();
+        await deleteTodoById(userId, id, dateAndMode);
+        fetchTodos();
       } catch {
         setTodos(prevTodos);
       }
@@ -127,11 +137,14 @@ export default function TodoClient() {
   };
 
   const deleteAllTodos = async () => {
-    await deleteTodos(
-      userId,
-      dateAndMode.isShowAll ? undefined : dateAndMode.selectedDate,
-    );
-    loadTodos();
+    setTodos([]);
+    startTransition(async () => {
+      await deleteTodos(
+        userId,
+        dateAndMode.isShowAll ? undefined : dateAndMode.selectedDate,
+      );
+      fetchTodos();
+    });
   };
 
   const onSelect = (date: Dayjs) => {
