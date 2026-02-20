@@ -60,7 +60,7 @@ export const HeaderNav = ({
 
         {/* Fullscreen overlay */}
         {open && (
-          <div className="fixed inset-0 bg-black/90 z-50 flex flex-col p-6 animate-fadeIn">
+          <div className="fixed inset-0 bg-black/99 z-50 flex flex-col p-6 animate-fadeIn">
             <div className="flex justify-end">
               <button
                 onClick={() => setOpen(false)}
@@ -71,6 +71,22 @@ export const HeaderNav = ({
             </div>
 
             <nav className="mt-10 flex flex-col gap-6 text-white text-2xl">
+              {!isAuthorized && (
+                <div className="flex gap-4 w-full">
+                  <Button
+                    text="Sign In"
+                    onClick={onSignInOpen}
+                    className="w-full"
+                  />
+                  <Button
+                    text="Sign Up"
+                    onClick={onSignUpOpen}
+                    mode="secondary"
+                    className="w-full"
+                  />
+                </div>
+              )}
+
               {links.map((l) => (
                 <Link
                   key={l.href}
@@ -82,12 +98,14 @@ export const HeaderNav = ({
                 </Link>
               ))}
 
-              <button
-                onClick={onLogout}
-                className="text-left hover:text-gray-300 transition"
-              >
-                Logout
-              </button>
+              {isAuthorized && (
+                <Button
+                  text="Logout"
+                  onClick={onLogout}
+                  mode="secondary"
+                  className="max-w-[50%]"
+                />
+              )}
             </nav>
           </div>
         )}
