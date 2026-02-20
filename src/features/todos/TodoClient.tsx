@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useState, useTransition } from "react";
+import { useEffect, useRef, useState, useTransition } from "react";
+import dayjs from "dayjs";
 import type { Dayjs } from "dayjs";
-
+import { toast } from "sonner";
 import {
   addTodo,
   deleteTodoById,
@@ -24,7 +25,6 @@ const initialDate = new Date().toISOString();
 export default function TodoClient({ userId }: { userId: string }) {
   const [todos, setTodos] = useState<Todo[]>([]);
   const [newTodoText, setNewTodoText] = useState("");
-
   const [editingTodo, setEditingTodo] = useState<Todo | null>(null);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [dateAndMode, setDateAndMode] = useState<DateAndMode>({
@@ -34,6 +34,8 @@ export default function TodoClient({ userId }: { userId: string }) {
 
   const [isPending, startTransition] = useTransition();
   const [pagination, setPagination] = useState({ current: 1, pageSize: 10 });
+
+  const isTodaySuccess = useRef(false);
 
   const loadTodos = () => {
     if (!userId) return;
@@ -55,6 +57,25 @@ export default function TodoClient({ userId }: { userId: string }) {
     setPagination((prev) => ({ ...prev, current: 1 }));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dateAndMode, userId]);
+
+  // effect checks if you done all today tasks
+  useEffect(() => {
+    if (
+      !dateAndMode.isShowAll &&
+      !!todos.length &&
+      dayjs().isSame(dateAndMode.selectedDate, "day") &&
+      !isTodaySuccess.current
+    ) {
+      if (todos.every((t) => t.done)) {
+        isTodaySuccess.current = true;
+        toast.success("Well done! You completed all the tasks for today!");
+      }
+    } else if (isTodaySuccess.current) {
+      if (!todos.every((t) => t.done)) {
+        isTodaySuccess.current = false;
+      }
+    }
+  }, [todos, dateAndMode]);
 
   if (!userId) return null;
 
