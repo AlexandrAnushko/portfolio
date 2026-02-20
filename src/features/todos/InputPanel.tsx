@@ -1,6 +1,6 @@
 import { Input } from "antd";
 import { Button } from "@/shared/components/Button";
-import { ChangeEvent } from "react";
+import { ChangeEvent, KeyboardEvent } from "react";
 
 const { TextArea } = Input;
 
@@ -25,6 +25,13 @@ export const InputPanel = ({
     setText(e.target.value);
   };
 
+  const onKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      handleAdd();
+    }
+  };
+
   return (
     <div className="flex gap-2 mb-4">
       <TextArea
@@ -32,7 +39,7 @@ export const InputPanel = ({
         placeholder="Add task..."
         value={text}
         onChange={onChange}
-        onPressEnter={handleAdd}
+        onKeyDown={onKeyDown}
       />
       <div className="flex flex-col max-w-[14%] gap-2">
         <Button onClick={handleAdd} text="Add" textTransform="normal-case" />

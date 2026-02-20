@@ -19,7 +19,7 @@ import { TodoTable } from "./TodoTable";
 import { EditModal } from "./EditModal";
 import { DeleteModal } from "@/shared/components/DeleteModal";
 
-const initialDate = new Date().toISOString().slice(0, 10);
+const initialDate = new Date().toISOString();
 
 export default function TodoClient({ userId }: { userId: string }) {
   const [todos, setTodos] = useState<Todo[]>([]);
@@ -85,7 +85,7 @@ export default function TodoClient({ userId }: { userId: string }) {
 
     startTransition(async () => {
       try {
-        await addTodo(userId, newTodoText, dateAndMode);
+        await addTodo(userId, newTodoText, dateAndMode.selectedDate);
         fetchTodos();
       } catch {
         setTodos((prev) => prev.filter((t) => t.id !== optimisticTodo.id));
@@ -97,13 +97,7 @@ export default function TodoClient({ userId }: { userId: string }) {
     if (!editingTodo) return;
 
     startTransition(async () => {
-      await updateTodo(
-        userId,
-        editingTodo.id,
-        editText,
-        dateAndMode.isShowAll,
-        editDate,
-      );
+      await updateTodo(userId, editingTodo.id, editText, editDate);
       fetchTodos();
       setEditingTodo(null);
     });
@@ -116,7 +110,7 @@ export default function TodoClient({ userId }: { userId: string }) {
     );
     startTransition(async () => {
       try {
-        await toggleTodo(userId, id, dateAndMode);
+        await toggleTodo(userId, id, dateAndMode.selectedDate);
         fetchTodos();
       } catch {
         setTodos(prevTodos);
@@ -129,7 +123,7 @@ export default function TodoClient({ userId }: { userId: string }) {
     setTodos((prev) => prev.filter((t) => t.id !== id));
     startTransition(async () => {
       try {
-        await deleteTodoById(userId, id, dateAndMode);
+        await deleteTodoById(userId, id, dateAndMode.selectedDate);
         fetchTodos();
       } catch {
         setTodos(prevTodos);
@@ -149,7 +143,7 @@ export default function TodoClient({ userId }: { userId: string }) {
   };
 
   const onSelect = (date: Dayjs) => {
-    const iso = date.format("YYYY-MM-DD");
+    const iso = date.toDate().toISOString();
     setDateAndMode({ selectedDate: iso, isShowAll: false });
   };
 
@@ -176,7 +170,9 @@ export default function TodoClient({ userId }: { userId: string }) {
             isShowAll={dateAndMode.isShowAll}
             isPending={isPending}
             pagination={pagination}
-            onPaginationChange={(page, pageSize) => setPagination({ current: page, pageSize })}
+            onPaginationChange={(page, pageSize) =>
+              setPagination({ current: page, pageSize })
+            }
             handleToggle={handleToggle}
             handleDelete={handleDelete}
             setEditingTodo={setEditingTodo}
