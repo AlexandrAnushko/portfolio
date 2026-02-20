@@ -7,9 +7,5 @@ export default async function TodoPage() {
   const userId = await getUserId();
   if (!userId) redirect(ROUTES.ROOT);
 
-  return (
-    <div className="flex justify-center">
-      <TodoClient userId={userId} />
-    </div>
-  );
+  return <TodoClient userId={userId} />;
 }

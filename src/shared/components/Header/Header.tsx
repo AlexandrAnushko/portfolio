@@ -4,13 +4,9 @@ import { useState } from "react";
 import Link from "next/link";
 import { Modal } from "../antd/Modal";
 import { AuthForm } from "@/features/auth/AuthForm";
-import {
-  authorizedHeaderLinks,
-  ROUTES,
-  unauthorizedHeaderLinks,
-} from "../../constants/routes";
-import { Button } from "../Button";
+import { ROUTES } from "../../constants/routes";
 import { useAuth } from "@/shared/hooks/useAuth";
+import { HeaderNav } from "./HeaderNav";
 
 export const Header = () => {
   const { isAuthorized, refresh } = useAuth();
@@ -41,28 +37,13 @@ export const Header = () => {
           A<span className="text-primary">.</span>
         </div>
       </Link>
-      <nav className="flex gap-12 items-center">
-        {(isAuthorized ? authorizedHeaderLinks : unauthorizedHeaderLinks).map(
-          (l) => (
-            <Link
-              key={l.href}
-              href={l.href}
-              className="text-base font-semibold text-grey-text hover:text-secondary transition-colors uppercase whitespace-nowrap"
-            >
-              {l.label}
-            </Link>
-          ),
-        )}
 
-        {isAuthorized ? (
-          <Button text="Logout" onClick={onLogout} mode="secondary" />
-        ) : (
-          <div className="flex gap-4">
-            <Button text="Sign In" onClick={onSignInOpen} />
-            <Button text="Sign Up" onClick={onSignUpOpen} mode="secondary" />
-          </div>
-        )}
-      </nav>
+      <HeaderNav
+        isAuthorized={isAuthorized}
+        onLogout={onLogout}
+        onSignInOpen={onSignInOpen}
+        onSignUpOpen={onSignUpOpen}
+      />
 
       {open && (
         <Modal

@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useState, useTransition } from "react";
+import { useEffect, useRef, useState, useTransition } from "react";
+import dayjs from "dayjs";
 import type { Dayjs } from "dayjs";
-
+import { toast } from "sonner";
 import {
   addTodo,
   deleteTodoById,
@@ -18,15 +19,16 @@ import { InputPanel } from "./InputPanel";
 import { TodoTable } from "./TodoTable";
 import { EditModal } from "./EditModal";
 import { DeleteModal } from "@/shared/components/DeleteModal";
+import { Modal } from "@/shared/components/antd/Modal";
 
-const initialDate = new Date().toISOString().slice(0, 10);
+const initialDate = new Date().toISOString();
 
 export default function TodoClient({ userId }: { userId: string }) {
   const [todos, setTodos] = useState<Todo[]>([]);
   const [newTodoText, setNewTodoText] = useState("");
-
   const [editingTodo, setEditingTodo] = useState<Todo | null>(null);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [showMobileCalendar, setShowMobileCalendar] = useState(false);
   const [dateAndMode, setDateAndMode] = useState<DateAndMode>({
     selectedDate: initialDate,
     isShowAll: false,
@@ -34,6 +36,8 @@ export default function TodoClient({ userId }: { userId: string }) {
 
   const [isPending, startTransition] = useTransition();
   const [pagination, setPagination] = useState({ current: 1, pageSize: 10 });
+
+  const isTodaySuccess = useRef(false);
 
   const loadTodos = () => {
     if (!userId) return;
@@ -55,6 +59,25 @@ export default function TodoClient({ userId }: { userId: string }) {
     setPagination((prev) => ({ ...prev, current: 1 }));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dateAndMode, userId]);
+
+  // effect checks if you done all today tasks
+  useEffect(() => {
+    if (
+      !dateAndMode.isShowAll &&
+      !!todos.length &&
+      dayjs().isSame(dateAndMode.selectedDate, "day") &&
+      !isTodaySuccess.current
+    ) {
+      if (todos.every((t) => t.done)) {
+        isTodaySuccess.current = true;
+        toast.success("Well done! You completed all the tasks for today!");
+      }
+    } else if (isTodaySuccess.current) {
+      if (!todos.every((t) => t.done)) {
+        isTodaySuccess.current = false;
+      }
+    }
+  }, [todos, dateAndMode]);
 
   if (!userId) return null;
 
@@ -85,7 +108,7 @@ export default function TodoClient({ userId }: { userId: string }) {
 
     startTransition(async () => {
       try {
-        await addTodo(userId, newTodoText, dateAndMode);
+        await addTodo(userId, newTodoText, dateAndMode.selectedDate);
         fetchTodos();
       } catch {
         setTodos((prev) => prev.filter((t) => t.id !== optimisticTodo.id));
@@ -97,13 +120,7 @@ export default function TodoClient({ userId }: { userId: string }) {
     if (!editingTodo) return;
 
     startTransition(async () => {
-      await updateTodo(
-        userId,
-        editingTodo.id,
-        editText,
-        dateAndMode.isShowAll,
-        editDate,
-      );
+      await updateTodo(userId, editingTodo.id, editText, editDate);
       fetchTodos();
       setEditingTodo(null);
     });
@@ -116,7 +133,7 @@ export default function TodoClient({ userId }: { userId: string }) {
     );
     startTransition(async () => {
       try {
-        await toggleTodo(userId, id, dateAndMode);
+        await toggleTodo(userId, id, dateAndMode.selectedDate);
         fetchTodos();
       } catch {
         setTodos(prevTodos);
@@ -129,7 +146,7 @@ export default function TodoClient({ userId }: { userId: string }) {
     setTodos((prev) => prev.filter((t) => t.id !== id));
     startTransition(async () => {
       try {
-        await deleteTodoById(userId, id, dateAndMode);
+        await deleteTodoById(userId, id, dateAndMode.selectedDate);
         fetchTodos();
       } catch {
         setTodos(prevTodos);
@@ -149,26 +166,39 @@ export default function TodoClient({ userId }: { userId: string }) {
   };
 
   const onSelect = (date: Dayjs) => {
-    const iso = date.format("YYYY-MM-DD");
+    const iso = date.toDate().toISOString();
     setDateAndMode({ selectedDate: iso, isShowAll: false });
+  };
+
+  const onSelectMobile = (date: Dayjs) => {
+    const iso = date.toDate().toISOString();
+    setDateAndMode({ selectedDate: iso, isShowAll: false });
+    setShowMobileCalendar(false);
   };
 
   const onShowAll = () => {
     setDateAndMode({ ...dateAndMode, isShowAll: true });
   };
+
+  const onShowAllMobile = () => {
+    setDateAndMode({ ...dateAndMode, isShowAll: true });
+    setShowMobileCalendar(false);
+  };
   return (
     <>
-      <div className="flex gap-10 p-4">
-        <div className="w-75">
+      <div className="flex flex-col lg:flex-row gap-6 sm:gap-8 md:gap-10 p-4 justify-center items-center lg:items-start w-full">
+        <div className="hidden xl:block w-75">
           <Calendar onSelect={onSelect} onShowAll={onShowAll} />
         </div>
 
-        <div className="flex flex-col max-w-200 min-w-200">
+        <div className="flex flex-col w-full max-w-200 xl:min-w-200">
           <InputPanel
             text={newTodoText}
             setText={setNewTodoText}
             handleAdd={handleAdd}
             handleShowDeleteModal={setShowDeleteModal}
+            dateAndMode={dateAndMode}
+            setShowCalendar={setShowMobileCalendar}
           />
 
           <TodoTable
@@ -176,7 +206,9 @@ export default function TodoClient({ userId }: { userId: string }) {
             isShowAll={dateAndMode.isShowAll}
             isPending={isPending}
             pagination={pagination}
-            onPaginationChange={(page, pageSize) => setPagination({ current: page, pageSize })}
+            onPaginationChange={(page, pageSize) =>
+              setPagination({ current: page, pageSize })
+            }
             handleToggle={handleToggle}
             handleDelete={handleDelete}
             setEditingTodo={setEditingTodo}
@@ -191,6 +223,14 @@ export default function TodoClient({ userId }: { userId: string }) {
           handleSaveEdit={handleSaveEdit}
           isShowAll={dateAndMode.isShowAll}
         />
+      )}
+      {showMobileCalendar && (
+        <Modal
+          open={showMobileCalendar}
+          onCancel={() => setShowMobileCalendar(false)}
+        >
+          <Calendar onSelect={onSelectMobile} onShowAll={onShowAllMobile} />
+        </Modal>
       )}
       <DeleteModal
         text={

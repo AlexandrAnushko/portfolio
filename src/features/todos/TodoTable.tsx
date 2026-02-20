@@ -6,6 +6,7 @@ import { Pencil, Trash2 } from "lucide-react";
 import { createStaticStyles } from "antd-style";
 import styles from "./TodoTable.module.css";
 import { TodoTableSkeleton } from "./skeletons/TodoTableSkeleton";
+import { useMediaQuery } from "@/shared/hooks/useMediaQuery";
 
 type Props = {
   todos: Todo[];
@@ -34,6 +35,7 @@ export const TodoTable = ({
   handleDelete,
   setEditingTodo,
 }: Props) => {
+  const isMd = useMediaQuery("(min-width: 768px)");
 
   const columns: TableColumnsType<Todo> = [
     {
@@ -54,6 +56,11 @@ export const TodoTable = ({
             }}
           >
             {`${(pagination.current - 1) * pagination.pageSize + index + 1}) ${item.text}`}
+            {isShowAll && (
+              <div className="text-xs text-blue-600 mt-0.5 md:hidden">
+                {formatDate(item.date)}
+              </div>
+            )}
           </div>
 
           <div className="flex items-center gap-2">
@@ -79,7 +86,7 @@ export const TodoTable = ({
         </div>
       ),
     },
-    ...(isShowAll
+    ...(isShowAll && isMd
       ? [
           {
             title: "Date",
