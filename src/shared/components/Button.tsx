@@ -6,7 +6,7 @@ type Props = {
   text?: string;
   mode?: ButtonMode;
   type?: "submit" | "reset" | "button" | undefined;
-  extra?: string;
+  className?: string;
   isLoading?: boolean;
   isDisabled?: boolean;
   textTransform?: "uppercase" | "lowercase" | "capitalize" | "normal-case";
@@ -18,7 +18,7 @@ export const Button = ({
   text,
   mode = "primary",
   type = "button",
-  extra = "",
+  className = "",
   isLoading,
   isDisabled,
   textTransform = "uppercase",
@@ -32,7 +32,7 @@ export const Button = ({
       className={clsx(
         `flex items-center justify-center rounded-md focus:ring-white text-white cursor-pointer py-2 px-4
         ${size === "large" ? "xl:py-3 xl:px-8" : "xl:py-2 xl:px-6"} 
-        active:scale-90 transition-all duration-300 ${extra} ${
+        active:scale-90 transition-all duration-300 ${className} ${
           mode === "primary"
             ? "bg-primary"
             : mode === "secondary"

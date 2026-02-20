@@ -51,7 +51,7 @@ export const EditModal = ({
         onClick={() => setShowCalendar(true)}
         text="Edit date"
         textTransform="normal-case"
-        extra="mt-2 max-w-[30%]"
+        className="mt-2 max-w-[30%]"
       />
       <Modal
         title="Edit task date"

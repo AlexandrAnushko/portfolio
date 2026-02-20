@@ -19,6 +19,7 @@ import { InputPanel } from "./InputPanel";
 import { TodoTable } from "./TodoTable";
 import { EditModal } from "./EditModal";
 import { DeleteModal } from "@/shared/components/DeleteModal";
+import { Modal } from "@/shared/components/antd/Modal";
 
 const initialDate = new Date().toISOString();
 
@@ -27,6 +28,7 @@ export default function TodoClient({ userId }: { userId: string }) {
   const [newTodoText, setNewTodoText] = useState("");
   const [editingTodo, setEditingTodo] = useState<Todo | null>(null);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [showMobileCalendar, setShowMobileCalendar] = useState(false);
   const [dateAndMode, setDateAndMode] = useState<DateAndMode>({
     selectedDate: initialDate,
     isShowAll: false,
@@ -168,22 +170,35 @@ export default function TodoClient({ userId }: { userId: string }) {
     setDateAndMode({ selectedDate: iso, isShowAll: false });
   };
 
+  const onSelectMobile = (date: Dayjs) => {
+    const iso = date.toDate().toISOString();
+    setDateAndMode({ selectedDate: iso, isShowAll: false });
+    setShowMobileCalendar(false);
+  };
+
   const onShowAll = () => {
     setDateAndMode({ ...dateAndMode, isShowAll: true });
   };
+
+  const onShowAllMobile = () => {
+    setDateAndMode({ ...dateAndMode, isShowAll: true });
+    setShowMobileCalendar(false);
+  };
   return (
     <>
-      <div className="flex gap-10 p-4">
-        <div className="w-75">
+      <div className="flex flex-col lg:flex-row gap-6 sm:gap-8 md:gap-10 p-4 justify-center items-center lg:items-start w-full">
+        <div className="hidden xl:block w-75">
           <Calendar onSelect={onSelect} onShowAll={onShowAll} />
         </div>
 
-        <div className="flex flex-col max-w-200 min-w-200">
+        <div className="flex flex-col w-full max-w-200 xl:min-w-200">
           <InputPanel
             text={newTodoText}
             setText={setNewTodoText}
             handleAdd={handleAdd}
             handleShowDeleteModal={setShowDeleteModal}
+            dateAndMode={dateAndMode}
+            setShowCalendar={setShowMobileCalendar}
           />
 
           <TodoTable
@@ -208,6 +223,14 @@ export default function TodoClient({ userId }: { userId: string }) {
           handleSaveEdit={handleSaveEdit}
           isShowAll={dateAndMode.isShowAll}
         />
+      )}
+      {showMobileCalendar && (
+        <Modal
+          open={showMobileCalendar}
+          onCancel={() => setShowMobileCalendar(false)}
+        >
+          <Calendar onSelect={onSelectMobile} onShowAll={onShowAllMobile} />
+        </Modal>
       )}
       <DeleteModal
         text={
