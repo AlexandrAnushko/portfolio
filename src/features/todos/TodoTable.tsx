@@ -45,6 +45,7 @@ export const TodoTable = ({
         <div className="flex items-center gap-3 w-full border rounded-xl p-2 bg-amber-100">
           <Checkbox
             checked={item.done}
+            disabled={isPending}
             onChange={() => handleToggle(item.id)}
           />
 
@@ -55,7 +56,9 @@ export const TodoTable = ({
               opacity: item.done ? 0.6 : 1,
             }}
           >
-            {`${(pagination.current - 1) * pagination.pageSize + index + 1}) ${item.text}`}
+            <div style={{ whiteSpace: "pre-wrap" }}>
+              {`${(pagination.current - 1) * pagination.pageSize + index + 1}) ${item.text}`}
+            </div>
             {isShowAll && (
               <div className="text-xs text-blue-600 mt-0.5 md:hidden">
                 {formatDate(item.date)}
@@ -68,6 +71,7 @@ export const TodoTable = ({
               onClick={() => {
                 setEditingTodo(item);
               }}
+              disabled={isPending}
               icon={<Pencil color="green" />}
               shape="round"
               className="min-w-10 min-h-10"
@@ -75,12 +79,13 @@ export const TodoTable = ({
               height=""
             />
             <Button
+              onClick={() => handleDelete(item.id)}
+              disabled={isPending}
               icon={<Trash2 color="white" />}
               shape="round"
               className="min-w-10 min-h-10"
               color="lightRed"
               height=""
-              onClick={() => handleDelete(item.id)}
             />
           </div>
         </div>

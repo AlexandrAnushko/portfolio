@@ -32,7 +32,8 @@ export const Button = ({
       className={clsx(
         `flex items-center justify-center rounded-md focus:ring-white text-white cursor-pointer py-2 px-4
         ${size === "large" ? "xl:py-3 xl:px-8" : "xl:py-2 xl:px-6"} 
-        active:scale-90 transition-all duration-300 ${className} ${
+        active:scale-90 transition-all duration-300 disabled:opacity-30 disabled:cursor-not-allowed disabled:scale-100
+        ${className} ${
           mode === "primary"
             ? "bg-primary"
             : mode === "secondary"

@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
 import {
@@ -14,6 +13,8 @@ type Props = {
   onLogout: () => Promise<void>;
   onSignInOpen: () => void;
   onSignUpOpen: () => void;
+  openMobile: boolean;
+  setOpenMobile: (open: boolean) => void;
 };
 
 export const HeaderNav = ({
@@ -21,8 +22,9 @@ export const HeaderNav = ({
   onLogout,
   onSignInOpen,
   onSignUpOpen,
+  openMobile,
+  setOpenMobile,
 }: Props) => {
-  const [open, setOpen] = useState(false);
   const links = isAuthorized ? authorizedHeaderLinks : unauthorizedHeaderLinks;
 
   return (
@@ -52,18 +54,18 @@ export const HeaderNav = ({
       {/* MOBILE */}
       <div className="sm:hidden">
         <button
-          onClick={() => setOpen(true)}
+          onClick={() => setOpenMobile(true)}
           className="p-2 rounded hover:bg-gray-700 transition"
         >
           <Menu className="text-white" />
         </button>
 
         {/* Fullscreen overlay */}
-        {open && (
+        {openMobile && (
           <div className="fixed inset-0 bg-black/99 z-50 flex flex-col p-6 animate-fadeIn">
             <div className="flex justify-end">
               <button
-                onClick={() => setOpen(false)}
+                onClick={() => setOpenMobile(false)}
                 className="p-2 rounded hover:bg-gray-700 transition"
               >
                 <X className="text-white" size={28} />
@@ -91,7 +93,7 @@ export const HeaderNav = ({
                 <Link
                   key={l.href}
                   href={l.href}
-                  onClick={() => setOpen(false)}
+                  onClick={() => setOpenMobile(false)}
                   className="hover:text-gray-300 transition"
                 >
                   {l.label}

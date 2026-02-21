@@ -1,9 +1,10 @@
-import { Modal } from "@/shared/components/antd/Modal";
 import { Input } from "antd";
+import { KeyboardEvent } from "react";
+import dayjs, { Dayjs } from "dayjs";
 import { Todo } from "./types";
 import { useState } from "react";
 import { Calendar } from "./Calendar";
-import dayjs, { Dayjs } from "dayjs";
+import { Modal } from "@/shared/components/antd/Modal";
 import { Button } from "@/shared/components/Button";
 
 const { TextArea } = Input;
@@ -34,6 +35,13 @@ export const EditModal = ({
     setShowCalendar(false);
   };
 
+  const onKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      handleSaveEdit(editText, editDate);
+    }
+  };
+
   return (
     <Modal
       title="Edit task"
@@ -45,7 +53,7 @@ export const EditModal = ({
         rows={3}
         value={editText}
         onChange={(e) => setEditText(e.target.value)}
-        onPressEnter={() => handleSaveEdit(editText, editDate)}
+        onKeyDown={onKeyDown}
       />
       <Button
         onClick={() => setShowCalendar(true)}

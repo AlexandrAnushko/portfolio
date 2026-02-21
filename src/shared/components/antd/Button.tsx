@@ -23,6 +23,7 @@ type Props = {
   shape?: "round" | "default" | "square" | "circle";
   className?: string;
   containerClassName?: string;
+  disabled?: boolean;
 };
 
 const useStyles = createStyles<{ height?: string; color: Color }>(
@@ -59,9 +60,13 @@ const colors: Record<Color, string> = {
   transparent: "transparent",
 };
 
-const stylesObject = (color: Color): ButtonProps["styles"] => ({
+const stylesObject = (
+  color: Color,
+  disabled?: boolean,
+): ButtonProps["styles"] => ({
   root: {
     backgroundColor: colors[color],
+    opacity: disabled ? 0.3 : 1,
   },
 });
 
@@ -76,6 +81,7 @@ export const Button = ({
   shape = "default",
   className,
   containerClassName = "",
+  disabled = false,
 }: Props) => {
   const { styles: classNames } = useStyles({ color, height });
   return (
@@ -85,10 +91,11 @@ export const Button = ({
         type={type}
         htmlType={htmlType}
         classNames={classNames}
-        styles={stylesObject(color)}
+        styles={stylesObject(color, disabled)}
         icon={icon}
         shape={shape}
         className={className}
+        disabled={disabled}
       >
         {text}
       </AntdButton>
