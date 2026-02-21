@@ -184,6 +184,7 @@ export default function TodoClient({ userId }: { userId: string }) {
     setDateAndMode({ ...dateAndMode, isShowAll: true });
     setShowMobileCalendar(false);
   };
+
   return (
     <>
       <div className="flex flex-col lg:flex-row gap-6 sm:gap-8 md:gap-10 p-4 justify-center items-center lg:items-start w-full">
@@ -199,6 +200,7 @@ export default function TodoClient({ userId }: { userId: string }) {
             handleShowDeleteModal={setShowDeleteModal}
             dateAndMode={dateAndMode}
             setShowCalendar={setShowMobileCalendar}
+            isPending={isPending}
           />
 
           <TodoTable

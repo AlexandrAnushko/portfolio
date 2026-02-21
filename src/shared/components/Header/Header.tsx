@@ -12,6 +12,7 @@ export const Header = () => {
   const { isAuthorized, refresh } = useAuth();
 
   const [open, setOpen] = useState(false);
+  const [openMobile, setOpenMobile] = useState(false);
   const [isSignIn, setIsSignIn] = useState(true);
 
   const onSignInOpen = () => {
@@ -43,6 +44,8 @@ export const Header = () => {
         onLogout={onLogout}
         onSignInOpen={onSignInOpen}
         onSignUpOpen={onSignUpOpen}
+        openMobile={openMobile}
+        setOpenMobile={setOpenMobile}
       />
 
       {open && (
@@ -59,7 +62,10 @@ export const Header = () => {
             submitText={isSignIn ? "Sign In" : "Sign Up"}
             apiUrl={isSignIn ? "/api/auth/login" : "/api/auth/register"}
             isLogin={isSignIn}
-            onClose={() => setOpen(false)}
+            onClose={() => {
+              setOpen(false);
+              setOpenMobile(false);
+            }}
           />
         </Modal>
       )}

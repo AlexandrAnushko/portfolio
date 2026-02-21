@@ -7,19 +7,21 @@ const { TextArea } = Input;
 
 type Props = {
   text: string;
+  isPending: boolean;
+  dateAndMode: DateAndMode;
   setText: (text: string) => void;
   handleAdd: () => void;
   handleShowDeleteModal: (show: boolean) => void;
-  dateAndMode: DateAndMode;
   setShowCalendar: (show: boolean) => void;
 };
 
 export const InputPanel = ({
   text,
+  isPending,
+  dateAndMode,
   setText,
   handleAdd,
   handleShowDeleteModal,
-  dateAndMode,
   setShowCalendar,
 }: Props) => {
   const handleDeleteAll = () => {
@@ -61,9 +63,15 @@ export const InputPanel = ({
           className="sm:hidden"
         />
         <div className="flex flex-row sm:flex-col gap-2">
-          <Button onClick={handleAdd} text="Add" textTransform="normal-case" />
+          <Button
+            onClick={handleAdd}
+            isDisabled={isPending}
+            text="Add"
+            textTransform="normal-case"
+          />
           <Button
             onClick={handleDeleteAll}
+            isDisabled={isPending}
             text="Delete All"
             mode="secondary"
             textTransform="normal-case"
