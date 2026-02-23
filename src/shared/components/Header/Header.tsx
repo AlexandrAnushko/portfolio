@@ -7,9 +7,11 @@ import { AuthForm } from "@/features/auth/AuthForm";
 import { ROUTES } from "../../constants/routes";
 import { useAuth } from "@/shared/hooks/useAuth";
 import { HeaderNav } from "./HeaderNav";
+import { useRouter } from "next/navigation";
 
 export const Header = () => {
   const { isAuthorized, refresh } = useAuth();
+  const router = useRouter();
 
   const [open, setOpen] = useState(false);
   const [openMobile, setOpenMobile] = useState(false);
@@ -28,7 +30,7 @@ export const Header = () => {
   const onLogout = async () => {
     await fetch("/api/auth/logout", { method: "POST" });
     await refresh();
-    window.location.href = "/";
+    router.replace("/");
   };
 
   return (
