@@ -2,19 +2,19 @@ export const ROUTES = {
   ROOT: "/",
   TODOS: "/todos",
   PROFILE: "/profile",
-  MY_PROJECTS: "/my-projects",
+  PROJECTS: "/projects",
 };
 
 export const RouteTitle = {
   [ROUTES.ROOT]: "Home",
   [ROUTES.TODOS]: "Tasks",
   [ROUTES.PROFILE]: "Profile",
-  [ROUTES.MY_PROJECTS]: "My Projects",
+  [ROUTES.PROJECTS]: "My Projects",
 };
 
 export const unauthorizedHeaderLinks = [
   { href: ROUTES.ROOT, label: RouteTitle[ROUTES.ROOT] },
-  { href: ROUTES.MY_PROJECTS, label: RouteTitle[ROUTES.MY_PROJECTS] },
+  { href: ROUTES.PROJECTS, label: RouteTitle[ROUTES.PROJECTS] },
 ];
 
 export const authorizedHeaderLinks = [
