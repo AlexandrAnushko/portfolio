@@ -1,0 +1,24 @@
+import { ProjectCard } from "@/features/projects/ProjectCard";
+import { PROJECTS } from "@/features/projects/projectsData";
+
+export default function MyProjects() {
+  return (
+    <main className="flex-1 w-full max-w-6xl mx-auto px-4 sm:px-6 py-12">
+      <div className="mb-10">
+        <h1 className="text-4xl sm:text-5xl font-bold text-neutral-900 dark:text-neutral-100 mb-3">
+          My Projects
+        </h1>
+        <p className="text-neutral-500 dark:text-neutral-400 text-base sm:text-lg">
+          A collection of things I&apos;ve built — click any card to learn more.
+        </p>
+      </div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {PROJECTS.map((project) => (
+          <ProjectCard key={project.id} project={project} />
+        ))}
+      </div>
+    </main>
+  );
+}
+

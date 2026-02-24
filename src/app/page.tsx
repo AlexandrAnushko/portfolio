@@ -31,7 +31,7 @@ export default function Home() {
             width={500}
             height={500}
             loading="eager"
-            className="w-full h-auto"
+            className="w-full h-auto lg:min-w-75 xl:min-w-100"
           />
         </div>
       </section>
