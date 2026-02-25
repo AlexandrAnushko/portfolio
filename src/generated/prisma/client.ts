@@ -45,6 +45,11 @@ export { Prisma }
  */
 export type User = Prisma.UserModel
 /**
+ * Model TodoFolder
+ * 
+ */
+export type TodoFolder = Prisma.TodoFolderModel
+/**
  * Model Todo
  * 
  */

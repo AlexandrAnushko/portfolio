@@ -385,6 +385,7 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 
 export const ModelName = {
   User: 'User',
+  TodoFolder: 'TodoFolder',
   Todo: 'Todo'
 } as const
 
@@ -401,7 +402,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "todo"
+    modelProps: "user" | "todoFolder" | "todo"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -476,6 +477,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.UserCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.UserCountAggregateOutputType> | number
+        }
+      }
+    }
+    TodoFolder: {
+      payload: Prisma.$TodoFolderPayload<ExtArgs>
+      fields: Prisma.TodoFolderFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.TodoFolderFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TodoFolderPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.TodoFolderFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TodoFolderPayload>
+        }
+        findFirst: {
+          args: Prisma.TodoFolderFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TodoFolderPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.TodoFolderFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TodoFolderPayload>
+        }
+        findMany: {
+          args: Prisma.TodoFolderFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TodoFolderPayload>[]
+        }
+        create: {
+          args: Prisma.TodoFolderCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TodoFolderPayload>
+        }
+        createMany: {
+          args: Prisma.TodoFolderCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.TodoFolderCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TodoFolderPayload>[]
+        }
+        delete: {
+          args: Prisma.TodoFolderDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TodoFolderPayload>
+        }
+        update: {
+          args: Prisma.TodoFolderUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TodoFolderPayload>
+        }
+        deleteMany: {
+          args: Prisma.TodoFolderDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.TodoFolderUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.TodoFolderUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TodoFolderPayload>[]
+        }
+        upsert: {
+          args: Prisma.TodoFolderUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TodoFolderPayload>
+        }
+        aggregate: {
+          args: Prisma.TodoFolderAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateTodoFolder>
+        }
+        groupBy: {
+          args: Prisma.TodoFolderGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.TodoFolderGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.TodoFolderCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.TodoFolderCountAggregateOutputType> | number
         }
       }
     }
@@ -602,13 +677,24 @@ export const UserScalarFieldEnum = {
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
 
 
+export const TodoFolderScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  createdAt: 'createdAt',
+  userId: 'userId'
+} as const
+
+export type TodoFolderScalarFieldEnum = (typeof TodoFolderScalarFieldEnum)[keyof typeof TodoFolderScalarFieldEnum]
+
+
 export const TodoScalarFieldEnum = {
   id: 'id',
   text: 'text',
   done: 'done',
   createdAt: 'createdAt',
   date: 'date',
-  userId: 'userId'
+  userId: 'userId',
+  folderId: 'folderId'
 } as const
 
 export type TodoScalarFieldEnum = (typeof TodoScalarFieldEnum)[keyof typeof TodoScalarFieldEnum]
@@ -780,6 +866,7 @@ export type PrismaClientOptions = ({
 }
 export type GlobalOmitConfig = {
   user?: Prisma.UserOmit
+  todoFolder?: Prisma.TodoFolderOmit
   todo?: Prisma.TodoOmit
 }
 

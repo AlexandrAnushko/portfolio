@@ -31,6 +31,7 @@ export type TodoMinAggregateOutputType = {
   createdAt: Date | null
   date: Date | null
   userId: string | null
+  folderId: string | null
 }
 
 export type TodoMaxAggregateOutputType = {
@@ -40,6 +41,7 @@ export type TodoMaxAggregateOutputType = {
   createdAt: Date | null
   date: Date | null
   userId: string | null
+  folderId: string | null
 }
 
 export type TodoCountAggregateOutputType = {
@@ -49,6 +51,7 @@ export type TodoCountAggregateOutputType = {
   createdAt: number
   date: number
   userId: number
+  folderId: number
   _all: number
 }
 
@@ -60,6 +63,7 @@ export type TodoMinAggregateInputType = {
   createdAt?: true
   date?: true
   userId?: true
+  folderId?: true
 }
 
 export type TodoMaxAggregateInputType = {
@@ -69,6 +73,7 @@ export type TodoMaxAggregateInputType = {
   createdAt?: true
   date?: true
   userId?: true
+  folderId?: true
 }
 
 export type TodoCountAggregateInputType = {
@@ -78,6 +83,7 @@ export type TodoCountAggregateInputType = {
   createdAt?: true
   date?: true
   userId?: true
+  folderId?: true
   _all?: true
 }
 
@@ -160,6 +166,7 @@ export type TodoGroupByOutputType = {
   createdAt: Date
   date: Date
   userId: string
+  folderId: string
   _count: TodoCountAggregateOutputType | null
   _min: TodoMinAggregateOutputType | null
   _max: TodoMaxAggregateOutputType | null
@@ -190,7 +197,9 @@ export type TodoWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"Todo"> | Date | string
   date?: Prisma.DateTimeFilter<"Todo"> | Date | string
   userId?: Prisma.StringFilter<"Todo"> | string
+  folderId?: Prisma.StringFilter<"Todo"> | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  folder?: Prisma.XOR<Prisma.TodoFolderScalarRelationFilter, Prisma.TodoFolderWhereInput>
 }
 
 export type TodoOrderByWithRelationInput = {
@@ -200,7 +209,9 @@ export type TodoOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder
   date?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  folderId?: Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
+  folder?: Prisma.TodoFolderOrderByWithRelationInput
 }
 
 export type TodoWhereUniqueInput = Prisma.AtLeast<{
@@ -213,7 +224,9 @@ export type TodoWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"Todo"> | Date | string
   date?: Prisma.DateTimeFilter<"Todo"> | Date | string
   userId?: Prisma.StringFilter<"Todo"> | string
+  folderId?: Prisma.StringFilter<"Todo"> | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  folder?: Prisma.XOR<Prisma.TodoFolderScalarRelationFilter, Prisma.TodoFolderWhereInput>
 }, "id">
 
 export type TodoOrderByWithAggregationInput = {
@@ -223,6 +236,7 @@ export type TodoOrderByWithAggregationInput = {
   createdAt?: Prisma.SortOrder
   date?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  folderId?: Prisma.SortOrder
   _count?: Prisma.TodoCountOrderByAggregateInput
   _max?: Prisma.TodoMaxOrderByAggregateInput
   _min?: Prisma.TodoMinOrderByAggregateInput
@@ -238,6 +252,7 @@ export type TodoScalarWhereWithAggregatesInput = {
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Todo"> | Date | string
   date?: Prisma.DateTimeWithAggregatesFilter<"Todo"> | Date | string
   userId?: Prisma.StringWithAggregatesFilter<"Todo"> | string
+  folderId?: Prisma.StringWithAggregatesFilter<"Todo"> | string
 }
 
 export type TodoCreateInput = {
@@ -247,6 +262,7 @@ export type TodoCreateInput = {
   createdAt?: Date | string
   date: Date | string
   user: Prisma.UserCreateNestedOneWithoutTodosInput
+  folder: Prisma.TodoFolderCreateNestedOneWithoutTodosInput
 }
 
 export type TodoUncheckedCreateInput = {
@@ -256,6 +272,7 @@ export type TodoUncheckedCreateInput = {
   createdAt?: Date | string
   date: Date | string
   userId: string
+  folderId: string
 }
 
 export type TodoUpdateInput = {
@@ -265,6 +282,7 @@ export type TodoUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutTodosNestedInput
+  folder?: Prisma.TodoFolderUpdateOneRequiredWithoutTodosNestedInput
 }
 
 export type TodoUncheckedUpdateInput = {
@@ -274,6 +292,7 @@ export type TodoUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
+  folderId?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type TodoCreateManyInput = {
@@ -283,6 +302,7 @@ export type TodoCreateManyInput = {
   createdAt?: Date | string
   date: Date | string
   userId: string
+  folderId: string
 }
 
 export type TodoUpdateManyMutationInput = {
@@ -300,6 +320,7 @@ export type TodoUncheckedUpdateManyInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
+  folderId?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type TodoListRelationFilter = {
@@ -319,6 +340,7 @@ export type TodoCountOrderByAggregateInput = {
   createdAt?: Prisma.SortOrder
   date?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  folderId?: Prisma.SortOrder
 }
 
 export type TodoMaxOrderByAggregateInput = {
@@ -328,6 +350,7 @@ export type TodoMaxOrderByAggregateInput = {
   createdAt?: Prisma.SortOrder
   date?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  folderId?: Prisma.SortOrder
 }
 
 export type TodoMinOrderByAggregateInput = {
@@ -337,6 +360,7 @@ export type TodoMinOrderByAggregateInput = {
   createdAt?: Prisma.SortOrder
   date?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  folderId?: Prisma.SortOrder
 }
 
 export type TodoCreateNestedManyWithoutUserInput = {
@@ -381,6 +405,48 @@ export type TodoUncheckedUpdateManyWithoutUserNestedInput = {
   deleteMany?: Prisma.TodoScalarWhereInput | Prisma.TodoScalarWhereInput[]
 }
 
+export type TodoCreateNestedManyWithoutFolderInput = {
+  create?: Prisma.XOR<Prisma.TodoCreateWithoutFolderInput, Prisma.TodoUncheckedCreateWithoutFolderInput> | Prisma.TodoCreateWithoutFolderInput[] | Prisma.TodoUncheckedCreateWithoutFolderInput[]
+  connectOrCreate?: Prisma.TodoCreateOrConnectWithoutFolderInput | Prisma.TodoCreateOrConnectWithoutFolderInput[]
+  createMany?: Prisma.TodoCreateManyFolderInputEnvelope
+  connect?: Prisma.TodoWhereUniqueInput | Prisma.TodoWhereUniqueInput[]
+}
+
+export type TodoUncheckedCreateNestedManyWithoutFolderInput = {
+  create?: Prisma.XOR<Prisma.TodoCreateWithoutFolderInput, Prisma.TodoUncheckedCreateWithoutFolderInput> | Prisma.TodoCreateWithoutFolderInput[] | Prisma.TodoUncheckedCreateWithoutFolderInput[]
+  connectOrCreate?: Prisma.TodoCreateOrConnectWithoutFolderInput | Prisma.TodoCreateOrConnectWithoutFolderInput[]
+  createMany?: Prisma.TodoCreateManyFolderInputEnvelope
+  connect?: Prisma.TodoWhereUniqueInput | Prisma.TodoWhereUniqueInput[]
+}
+
+export type TodoUpdateManyWithoutFolderNestedInput = {
+  create?: Prisma.XOR<Prisma.TodoCreateWithoutFolderInput, Prisma.TodoUncheckedCreateWithoutFolderInput> | Prisma.TodoCreateWithoutFolderInput[] | Prisma.TodoUncheckedCreateWithoutFolderInput[]
+  connectOrCreate?: Prisma.TodoCreateOrConnectWithoutFolderInput | Prisma.TodoCreateOrConnectWithoutFolderInput[]
+  upsert?: Prisma.TodoUpsertWithWhereUniqueWithoutFolderInput | Prisma.TodoUpsertWithWhereUniqueWithoutFolderInput[]
+  createMany?: Prisma.TodoCreateManyFolderInputEnvelope
+  set?: Prisma.TodoWhereUniqueInput | Prisma.TodoWhereUniqueInput[]
+  disconnect?: Prisma.TodoWhereUniqueInput | Prisma.TodoWhereUniqueInput[]
+  delete?: Prisma.TodoWhereUniqueInput | Prisma.TodoWhereUniqueInput[]
+  connect?: Prisma.TodoWhereUniqueInput | Prisma.TodoWhereUniqueInput[]
+  update?: Prisma.TodoUpdateWithWhereUniqueWithoutFolderInput | Prisma.TodoUpdateWithWhereUniqueWithoutFolderInput[]
+  updateMany?: Prisma.TodoUpdateManyWithWhereWithoutFolderInput | Prisma.TodoUpdateManyWithWhereWithoutFolderInput[]
+  deleteMany?: Prisma.TodoScalarWhereInput | Prisma.TodoScalarWhereInput[]
+}
+
+export type TodoUncheckedUpdateManyWithoutFolderNestedInput = {
+  create?: Prisma.XOR<Prisma.TodoCreateWithoutFolderInput, Prisma.TodoUncheckedCreateWithoutFolderInput> | Prisma.TodoCreateWithoutFolderInput[] | Prisma.TodoUncheckedCreateWithoutFolderInput[]
+  connectOrCreate?: Prisma.TodoCreateOrConnectWithoutFolderInput | Prisma.TodoCreateOrConnectWithoutFolderInput[]
+  upsert?: Prisma.TodoUpsertWithWhereUniqueWithoutFolderInput | Prisma.TodoUpsertWithWhereUniqueWithoutFolderInput[]
+  createMany?: Prisma.TodoCreateManyFolderInputEnvelope
+  set?: Prisma.TodoWhereUniqueInput | Prisma.TodoWhereUniqueInput[]
+  disconnect?: Prisma.TodoWhereUniqueInput | Prisma.TodoWhereUniqueInput[]
+  delete?: Prisma.TodoWhereUniqueInput | Prisma.TodoWhereUniqueInput[]
+  connect?: Prisma.TodoWhereUniqueInput | Prisma.TodoWhereUniqueInput[]
+  update?: Prisma.TodoUpdateWithWhereUniqueWithoutFolderInput | Prisma.TodoUpdateWithWhereUniqueWithoutFolderInput[]
+  updateMany?: Prisma.TodoUpdateManyWithWhereWithoutFolderInput | Prisma.TodoUpdateManyWithWhereWithoutFolderInput[]
+  deleteMany?: Prisma.TodoScalarWhereInput | Prisma.TodoScalarWhereInput[]
+}
+
 export type BoolFieldUpdateOperationsInput = {
   set?: boolean
 }
@@ -391,6 +457,7 @@ export type TodoCreateWithoutUserInput = {
   done?: boolean
   createdAt?: Date | string
   date: Date | string
+  folder: Prisma.TodoFolderCreateNestedOneWithoutTodosInput
 }
 
 export type TodoUncheckedCreateWithoutUserInput = {
@@ -399,6 +466,7 @@ export type TodoUncheckedCreateWithoutUserInput = {
   done?: boolean
   createdAt?: Date | string
   date: Date | string
+  folderId: string
 }
 
 export type TodoCreateOrConnectWithoutUserInput = {
@@ -437,6 +505,51 @@ export type TodoScalarWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"Todo"> | Date | string
   date?: Prisma.DateTimeFilter<"Todo"> | Date | string
   userId?: Prisma.StringFilter<"Todo"> | string
+  folderId?: Prisma.StringFilter<"Todo"> | string
+}
+
+export type TodoCreateWithoutFolderInput = {
+  id?: string
+  text: string
+  done?: boolean
+  createdAt?: Date | string
+  date: Date | string
+  user: Prisma.UserCreateNestedOneWithoutTodosInput
+}
+
+export type TodoUncheckedCreateWithoutFolderInput = {
+  id?: string
+  text: string
+  done?: boolean
+  createdAt?: Date | string
+  date: Date | string
+  userId: string
+}
+
+export type TodoCreateOrConnectWithoutFolderInput = {
+  where: Prisma.TodoWhereUniqueInput
+  create: Prisma.XOR<Prisma.TodoCreateWithoutFolderInput, Prisma.TodoUncheckedCreateWithoutFolderInput>
+}
+
+export type TodoCreateManyFolderInputEnvelope = {
+  data: Prisma.TodoCreateManyFolderInput | Prisma.TodoCreateManyFolderInput[]
+  skipDuplicates?: boolean
+}
+
+export type TodoUpsertWithWhereUniqueWithoutFolderInput = {
+  where: Prisma.TodoWhereUniqueInput
+  update: Prisma.XOR<Prisma.TodoUpdateWithoutFolderInput, Prisma.TodoUncheckedUpdateWithoutFolderInput>
+  create: Prisma.XOR<Prisma.TodoCreateWithoutFolderInput, Prisma.TodoUncheckedCreateWithoutFolderInput>
+}
+
+export type TodoUpdateWithWhereUniqueWithoutFolderInput = {
+  where: Prisma.TodoWhereUniqueInput
+  data: Prisma.XOR<Prisma.TodoUpdateWithoutFolderInput, Prisma.TodoUncheckedUpdateWithoutFolderInput>
+}
+
+export type TodoUpdateManyWithWhereWithoutFolderInput = {
+  where: Prisma.TodoScalarWhereInput
+  data: Prisma.XOR<Prisma.TodoUpdateManyMutationInput, Prisma.TodoUncheckedUpdateManyWithoutFolderInput>
 }
 
 export type TodoCreateManyUserInput = {
@@ -445,6 +558,7 @@ export type TodoCreateManyUserInput = {
   done?: boolean
   createdAt?: Date | string
   date: Date | string
+  folderId: string
 }
 
 export type TodoUpdateWithoutUserInput = {
@@ -453,6 +567,7 @@ export type TodoUpdateWithoutUserInput = {
   done?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  folder?: Prisma.TodoFolderUpdateOneRequiredWithoutTodosNestedInput
 }
 
 export type TodoUncheckedUpdateWithoutUserInput = {
@@ -461,6 +576,7 @@ export type TodoUncheckedUpdateWithoutUserInput = {
   done?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  folderId?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type TodoUncheckedUpdateManyWithoutUserInput = {
@@ -469,6 +585,43 @@ export type TodoUncheckedUpdateManyWithoutUserInput = {
   done?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  folderId?: Prisma.StringFieldUpdateOperationsInput | string
+}
+
+export type TodoCreateManyFolderInput = {
+  id?: string
+  text: string
+  done?: boolean
+  createdAt?: Date | string
+  date: Date | string
+  userId: string
+}
+
+export type TodoUpdateWithoutFolderInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  text?: Prisma.StringFieldUpdateOperationsInput | string
+  done?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  user?: Prisma.UserUpdateOneRequiredWithoutTodosNestedInput
+}
+
+export type TodoUncheckedUpdateWithoutFolderInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  text?: Prisma.StringFieldUpdateOperationsInput | string
+  done?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+}
+
+export type TodoUncheckedUpdateManyWithoutFolderInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  text?: Prisma.StringFieldUpdateOperationsInput | string
+  done?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 
@@ -480,7 +633,9 @@ export type TodoSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   createdAt?: boolean
   date?: boolean
   userId?: boolean
+  folderId?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  folder?: boolean | Prisma.TodoFolderDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["todo"]>
 
 export type TodoSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -490,7 +645,9 @@ export type TodoSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   createdAt?: boolean
   date?: boolean
   userId?: boolean
+  folderId?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  folder?: boolean | Prisma.TodoFolderDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["todo"]>
 
 export type TodoSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -500,7 +657,9 @@ export type TodoSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   createdAt?: boolean
   date?: boolean
   userId?: boolean
+  folderId?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  folder?: boolean | Prisma.TodoFolderDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["todo"]>
 
 export type TodoSelectScalar = {
@@ -510,23 +669,28 @@ export type TodoSelectScalar = {
   createdAt?: boolean
   date?: boolean
   userId?: boolean
+  folderId?: boolean
 }
 
-export type TodoOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "text" | "done" | "createdAt" | "date" | "userId", ExtArgs["result"]["todo"]>
+export type TodoOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "text" | "done" | "createdAt" | "date" | "userId" | "folderId", ExtArgs["result"]["todo"]>
 export type TodoInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  folder?: boolean | Prisma.TodoFolderDefaultArgs<ExtArgs>
 }
 export type TodoIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  folder?: boolean | Prisma.TodoFolderDefaultArgs<ExtArgs>
 }
 export type TodoIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  folder?: boolean | Prisma.TodoFolderDefaultArgs<ExtArgs>
 }
 
 export type $TodoPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Todo"
   objects: {
     user: Prisma.$UserPayload<ExtArgs>
+    folder: Prisma.$TodoFolderPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -535,6 +699,7 @@ export type $TodoPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     createdAt: Date
     date: Date
     userId: string
+    folderId: string
   }, ExtArgs["result"]["todo"]>
   composites: {}
 }
@@ -930,6 +1095,7 @@ readonly fields: TodoFieldRefs;
 export interface Prisma__TodoClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  folder<T extends Prisma.TodoFolderDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TodoFolderDefaultArgs<ExtArgs>>): Prisma.Prisma__TodoFolderClient<runtime.Types.Result.GetResult<Prisma.$TodoFolderPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -965,6 +1131,7 @@ export interface TodoFieldRefs {
   readonly createdAt: Prisma.FieldRef<"Todo", 'DateTime'>
   readonly date: Prisma.FieldRef<"Todo", 'DateTime'>
   readonly userId: Prisma.FieldRef<"Todo", 'String'>
+  readonly folderId: Prisma.FieldRef<"Todo", 'String'>
 }
     
 

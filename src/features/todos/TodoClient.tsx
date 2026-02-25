@@ -13,17 +13,28 @@ import {
   toggleTodo,
   updateTodo,
 } from "../../app/actions/todos";
-import { DateAndMode, Todo } from "@/features/todos/types";
+import { DateAndMode, Todo, TodoFolder } from "@/features/todos/types";
 import { Calendar } from "./Calendar";
 import { InputPanel } from "./InputPanel";
 import { TodoTable } from "./TodoTable";
 import { EditModal } from "./EditModal";
 import { DeleteModal } from "@/shared/components/DeleteModal";
 import { Modal } from "@/shared/components/antd/Modal";
+import { TabsFolders } from "./TabsFolders";
 
 const initialDate = new Date().toISOString();
 
-export default function TodoClient({ userId }: { userId: string }) {
+type Props = {
+  userId: string;
+  initialFolders: TodoFolder[];
+};
+
+export default function TodoClient({ userId, initialFolders }: Props) {
+  const [folders, setFolders] = useState<TodoFolder[]>(initialFolders);
+  const [activeFolderId, setActiveFolderId] = useState<string>(
+    initialFolders[0]?.id ?? "",
+  );
+
   const [todos, setTodos] = useState<Todo[]>([]);
   const [newTodoText, setNewTodoText] = useState("");
   const [editingTodo, setEditingTodo] = useState<Todo | null>(null);
@@ -40,14 +51,18 @@ export default function TodoClient({ userId }: { userId: string }) {
   const isTodaySuccess = useRef(false);
 
   const loadTodos = () => {
-    if (!userId) return;
+    if (!userId || !activeFolderId) return;
 
     startTransition(async () => {
       let data: Todo[] = [];
       if (dateAndMode.isShowAll) {
-        data = await getAllTodos(userId);
+        data = await getAllTodos(userId, activeFolderId);
       } else {
-        data = await getTodosByDate(userId, dateAndMode.selectedDate);
+        data = await getTodosByDate(
+          userId,
+          dateAndMode.selectedDate,
+          activeFolderId,
+        );
       }
 
       setTodos(data);
@@ -58,7 +73,7 @@ export default function TodoClient({ userId }: { userId: string }) {
     loadTodos();
     setPagination((prev) => ({ ...prev, current: 1 }));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dateAndMode, userId]);
+  }, [dateAndMode, userId, activeFolderId]);
 
   // effect checks if you done all today tasks
   useEffect(() => {
@@ -83,19 +98,20 @@ export default function TodoClient({ userId }: { userId: string }) {
 
   const fetchTodos = async () => {
     const data = dateAndMode.isShowAll
-      ? await getAllTodos(userId)
-      : await getTodosByDate(userId, dateAndMode.selectedDate);
+      ? await getAllTodos(userId, activeFolderId)
+      : await getTodosByDate(userId, dateAndMode.selectedDate, activeFolderId);
     setTodos(data);
   };
 
   const handleAdd = () => {
-    if (!newTodoText.trim()) return;
+    if (!newTodoText.trim() || !activeFolderId) return;
 
     const optimisticTodo: Todo = {
       id: crypto.randomUUID(),
       text: newTodoText,
       done: false,
       date: dateAndMode.selectedDate,
+      folderId: activeFolderId,
     };
 
     setTodos((prev) => {
@@ -108,7 +124,12 @@ export default function TodoClient({ userId }: { userId: string }) {
 
     startTransition(async () => {
       try {
-        await addTodo(userId, newTodoText, dateAndMode.selectedDate);
+        await addTodo(
+          userId,
+          newTodoText,
+          dateAndMode.selectedDate,
+          activeFolderId,
+        );
         fetchTodos();
       } catch {
         setTodos((prev) => prev.filter((t) => t.id !== optimisticTodo.id));
@@ -120,7 +141,13 @@ export default function TodoClient({ userId }: { userId: string }) {
     if (!editingTodo) return;
 
     startTransition(async () => {
-      await updateTodo(userId, editingTodo.id, editText, editDate);
+      await updateTodo(
+        userId,
+        editingTodo.id,
+        editText,
+        editDate,
+        activeFolderId,
+      );
       fetchTodos();
       setEditingTodo(null);
     });
@@ -133,7 +160,7 @@ export default function TodoClient({ userId }: { userId: string }) {
     );
     startTransition(async () => {
       try {
-        await toggleTodo(userId, id, dateAndMode.selectedDate);
+        await toggleTodo(userId, id, dateAndMode.selectedDate, activeFolderId);
         fetchTodos();
       } catch {
         setTodos(prevTodos);
@@ -146,7 +173,12 @@ export default function TodoClient({ userId }: { userId: string }) {
     setTodos((prev) => prev.filter((t) => t.id !== id));
     startTransition(async () => {
       try {
-        await deleteTodoById(userId, id, dateAndMode.selectedDate);
+        await deleteTodoById(
+          userId,
+          id,
+          dateAndMode.selectedDate,
+          activeFolderId,
+        );
         fetchTodos();
       } catch {
         setTodos(prevTodos);
@@ -159,6 +191,7 @@ export default function TodoClient({ userId }: { userId: string }) {
     startTransition(async () => {
       await deleteTodos(
         userId,
+        activeFolderId,
         dateAndMode.isShowAll ? undefined : dateAndMode.selectedDate,
       );
       fetchTodos();
@@ -186,35 +219,44 @@ export default function TodoClient({ userId }: { userId: string }) {
   };
 
   return (
-    <>
-      <div className="flex flex-col lg:flex-row gap-6 sm:gap-8 md:gap-10 p-4 justify-center items-center lg:items-start w-full">
-        <div className="hidden xl:block w-75">
-          <Calendar onSelect={onSelect} onShowAll={onShowAll} />
-        </div>
+    <div className="flex flex-col w-full items-center h-full pb-6">
+      <div className="flex flex-col items-center h-full w-full xl:w-[90%] 2xl:w-[80%] bg-gray-800 rounded-xl">
+        <TabsFolders
+          userId={userId}
+          folders={folders}
+          activeFolderId={activeFolderId}
+          onFolderChange={setActiveFolderId}
+          onFolderCreated={(folder) => setFolders((prev) => [...prev, folder])}
+        />
+        <div className="flex flex-col w-full lg:flex-row justify-center items-center lg:items-start gap-6 sm:gap-8 md:gap-10 p-4">
+          <div className="hidden xl:block w-75">
+            <Calendar onSelect={onSelect} onShowAll={onShowAll} />
+          </div>
 
-        <div className="flex flex-col w-full max-w-200 xl:min-w-200">
-          <InputPanel
-            text={newTodoText}
-            setText={setNewTodoText}
-            handleAdd={handleAdd}
-            handleShowDeleteModal={setShowDeleteModal}
-            dateAndMode={dateAndMode}
-            setShowCalendar={setShowMobileCalendar}
-            isPending={isPending}
-          />
+          <div className="flex flex-col w-full max-w-200 xl:min-w-200">
+            <InputPanel
+              text={newTodoText}
+              setText={setNewTodoText}
+              handleAdd={handleAdd}
+              handleShowDeleteModal={setShowDeleteModal}
+              dateAndMode={dateAndMode}
+              setShowCalendar={setShowMobileCalendar}
+              isPending={isPending}
+            />
 
-          <TodoTable
-            todos={todos}
-            isShowAll={dateAndMode.isShowAll}
-            isPending={isPending}
-            pagination={pagination}
-            onPaginationChange={(page, pageSize) =>
-              setPagination({ current: page, pageSize })
-            }
-            handleToggle={handleToggle}
-            handleDelete={handleDelete}
-            setEditingTodo={setEditingTodo}
-          />
+            <TodoTable
+              todos={todos}
+              isShowAll={dateAndMode.isShowAll}
+              isPending={isPending}
+              pagination={pagination}
+              onPaginationChange={(page, pageSize) =>
+                setPagination({ current: page, pageSize })
+              }
+              handleToggle={handleToggle}
+              handleDelete={handleDelete}
+              setEditingTodo={setEditingTodo}
+            />
+          </div>
         </div>
       </div>
 
@@ -244,6 +286,6 @@ export default function TodoClient({ userId }: { userId: string }) {
         action={deleteAllTodos}
         open={showDeleteModal}
       />
-    </>
+    </div>
   );
 }
