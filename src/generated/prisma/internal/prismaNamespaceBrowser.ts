@@ -52,6 +52,7 @@ export const AnyNull = runtime.AnyNull
 
 export const ModelName = {
   User: 'User',
+  TodoFolder: 'TodoFolder',
   Todo: 'Todo'
 } as const
 
@@ -81,13 +82,24 @@ export const UserScalarFieldEnum = {
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
 
 
+export const TodoFolderScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  createdAt: 'createdAt',
+  userId: 'userId'
+} as const
+
+export type TodoFolderScalarFieldEnum = (typeof TodoFolderScalarFieldEnum)[keyof typeof TodoFolderScalarFieldEnum]
+
+
 export const TodoScalarFieldEnum = {
   id: 'id',
   text: 'text',
   done: 'done',
   createdAt: 'createdAt',
   date: 'date',
-  userId: 'userId'
+  userId: 'userId',
+  folderId: 'folderId'
 } as const
 
 export type TodoScalarFieldEnum = (typeof TodoScalarFieldEnum)[keyof typeof TodoScalarFieldEnum]

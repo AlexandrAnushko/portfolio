@@ -11,10 +11,25 @@ datasource db {
 //  User
 // ------------------------------------------------------
 model User {
-  id        String    @id @default(cuid())
-  email     String    @unique
+  id        String       @id @default(cuid())
+  email     String       @unique
   password  String
-  createdAt DateTime  @default(now())
+  createdAt DateTime     @default(now())
+
+  todos       Todo[]
+  todoFolders TodoFolder[]
+}
+
+// ------------------------------------------------------
+//  TodoFolder
+// ------------------------------------------------------
+model TodoFolder {
+  id        String   @id @default(cuid())
+  name      String
+  createdAt DateTime @default(now())
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
 
   todos Todo[]
 }
@@ -23,12 +38,15 @@ model User {
 // Todo 
 // ------------------------------------------------------ 
 model Todo { 
-  id String @id @default(cuid())
-  text String 
-  done Boolean @default(false) 
+  id        String   @id @default(cuid())
+  text      String 
+  done      Boolean  @default(false) 
   createdAt DateTime @default(now()) 
-  date DateTime
+  date      DateTime
 
   userId String 
-  user User @relation(fields: [userId], references: [id]) 
+  user   User   @relation(fields: [userId], references: [id])
+
+  folderId String
+  folder   TodoFolder @relation(fields: [folderId], references: [id])
 }
