@@ -13,3 +13,10 @@ export type TodoFolder = {
   name: string;
   createdAt: string;
 };
+
+export type TodoFolderDB = {
+  name: string;
+  userId: string;
+  id: string;
+  createdAt: Date;
+};

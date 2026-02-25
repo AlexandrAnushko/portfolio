@@ -1,5 +1,6 @@
 "use server";
 
+import { TodoFolderDB } from "@/features/todos/types";
 import prisma from "@/lib/db";
 import { TODOS_TAGS } from "@/shared/constants/tags";
 import { cacheTag, updateTag } from "next/cache";
@@ -8,7 +9,7 @@ export const getFolders = async (userId: string) => {
   "use cache";
   cacheTag(`${TODOS_TAGS.FOLDERS}-${userId}`);
 
-  const folders = await prisma.todoFolder.findMany({
+  const folders: TodoFolderDB[] = await prisma.todoFolder.findMany({
     where: { userId },
     orderBy: { createdAt: "asc" },
   });
