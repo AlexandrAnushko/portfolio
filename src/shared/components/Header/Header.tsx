@@ -34,7 +34,7 @@ export const Header = () => {
   };
 
   return (
-    <header className="flex justify-between items-center p-8">
+    <header className="flex justify-between items-center px-4 py-2 sm:px-8 sm:py-6">
       <Link href={ROUTES.ROOT}>
         <div className="text-white text-3xl">
           A<span className="text-primary">.</span>
