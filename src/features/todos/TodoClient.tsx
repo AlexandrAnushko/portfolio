@@ -227,6 +227,11 @@ export default function TodoClient({ userId, initialFolders }: Props) {
           activeFolderId={activeFolderId}
           onFolderChange={setActiveFolderId}
           onFolderCreated={(folder) => setFolders((prev) => [...prev, folder])}
+          onFolderRenamed={(folder) =>
+            setFolders((prev) =>
+              prev.map((f) => (f.id === folder.id ? folder : f)),
+            )
+          }
         />
         <div className="flex flex-col w-full lg:flex-row justify-center items-center lg:items-start gap-6 sm:gap-8 md:gap-10 p-4">
           <div className="hidden xl:block w-75">
