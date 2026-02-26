@@ -33,6 +33,24 @@ export const createFolder = async (userId: string, name: string) => {
   return { ...folder, createdAt: folder.createdAt.toISOString() };
 };
 
+export const renameFolder = async (
+  userId: string,
+  folderId: string,
+  name: string,
+) => {
+  const trimmed = name.trim();
+  if (!trimmed) return null;
+
+  const folder = await prisma.todoFolder.update({
+    where: { id: folderId, userId },
+    data: { name: trimmed },
+  });
+
+  updateTag(`${TODOS_TAGS.FOLDERS}-${userId}`);
+
+  return { ...folder, createdAt: folder.createdAt.toISOString() };
+};
+
 export const deleteFolder = async (userId: string, folderId: string) => {
   // Prevent deleting the Main folder
   const folder = await prisma.todoFolder.findUnique({

@@ -1,9 +1,9 @@
 "use client";
 
 import { useRef, useState, useTransition } from "react";
-import { Tabs } from "@/shared/components/Tabs/Tabs";
+import { Tabs, ADD_TAB_ID } from "@/shared/components/Tabs/Tabs";
 import { TodoFolder } from "./types";
-import { createFolder } from "@/app/actions/folders";
+import { createFolder, renameFolder } from "@/app/actions/folders";
 
 type Props = {
   userId: string;
@@ -11,6 +11,7 @@ type Props = {
   activeFolderId: string;
   onFolderChange: (id: string) => void;
   onFolderCreated: (folder: TodoFolder) => void;
+  onFolderRenamed: (folder: TodoFolder) => void;
 };
 
 export const TabsFolders = ({
@@ -19,29 +20,42 @@ export const TabsFolders = ({
   activeFolderId,
   onFolderChange,
   onFolderCreated,
+  onFolderRenamed,
 }: Props) => {
-  const [isAdding, setIsAdding] = useState(false);
+  const [editingTabId, setEditingTabId] = useState<string | null>(null);
   const [newName, setNewName] = useState("");
   const [isPending, startTransition] = useTransition();
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const handleAddClick = () => {
-    setIsAdding(true);
-    setNewName("");
+  const openInput = (tabId: string, initialName = "") => {
+    setEditingTabId(tabId);
+    setNewName(initialName);
     setTimeout(() => inputRef.current?.focus(), 0);
+  };
+
+  const handleAddClick = () => openInput(ADD_TAB_ID);
+
+  const handleTabDoubleClick = (id: string, currentName: string) => {
+    openInput(id, currentName);
   };
 
   const handleConfirm = () => {
     const trimmed = newName.trim();
-    setIsAdding(false);
+    const tabId = editingTabId;
+    setEditingTabId(null);
     setNewName("");
-    if (!trimmed) return;
+    if (!trimmed || !tabId) return;
 
     startTransition(async () => {
-      const created = await createFolder(userId, trimmed);
-      if (created) {
-        onFolderCreated(created);
-        onFolderChange(created.id);
+      if (tabId === ADD_TAB_ID) {
+        const created = await createFolder(userId, trimmed);
+        if (created) {
+          onFolderCreated(created);
+          onFolderChange(created.id);
+        }
+      } else {
+        const renamed = await renameFolder(userId, tabId, trimmed);
+        if (renamed) onFolderRenamed(renamed);
       }
     });
   };
@@ -49,7 +63,7 @@ export const TabsFolders = ({
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") handleConfirm();
     if (e.key === "Escape") {
-      setIsAdding(false);
+      setEditingTabId(null);
       setNewName("");
     }
   };
@@ -60,21 +74,24 @@ export const TabsFolders = ({
         tabs={folders}
         activeId={activeFolderId}
         onTabClick={onFolderChange}
+        onTabDoubleClick={handleTabDoubleClick}
         onAddClick={handleAddClick}
+        editingTabId={editingTabId}
+        plusTabTitle="New folder"
+        EditingInput={
+          <input
+            ref={inputRef}
+            value={newName}
+            onChange={(e) => setNewName(e.target.value)}
+            onBlur={handleConfirm}
+            onKeyDown={handleKeyDown}
+            placeholder="Folder name…"
+            maxLength={30}
+            disabled={isPending}
+            className="h-8 max-w-17 sm:max-w-26 xl:max-w-35 rounded-md border border-gray-500 bg-gray-800 px-1 text-sm text-white placeholder-gray-500 outline-none focus:border-blue-500 disabled:opacity-50"
+          />
+        }
       />
-      {isAdding && (
-        <input
-          ref={inputRef}
-          value={newName}
-          onChange={(e) => setNewName(e.target.value)}
-          onBlur={handleConfirm}
-          onKeyDown={handleKeyDown}
-          placeholder="Folder name…"
-          maxLength={30}
-          disabled={isPending}
-          className="ml-2 mb-0.5 h-8 w-36 rounded-md border border-gray-500 bg-gray-800 px-2 text-sm text-white placeholder-gray-500 outline-none focus:border-blue-500 disabled:opacity-50"
-        />
-      )}
     </div>
   );
 };
