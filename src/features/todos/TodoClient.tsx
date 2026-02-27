@@ -232,6 +232,16 @@ export default function TodoClient({ userId, initialFolders }: Props) {
               prev.map((f) => (f.id === folder.id ? folder : f)),
             )
           }
+          onFolderDeleted={(folderId) =>
+            setFolders((prev) => {
+              const filtered = prev.filter((f) => f.id !== folderId);
+              // anyway Main folder protected from deleting
+              if (activeFolderId === folderId) {
+                setActiveFolderId(filtered[0]?.id ?? "");
+              }
+              return filtered;
+            })
+          }
         />
         <div className="flex flex-col w-full lg:flex-row justify-center items-center lg:items-start gap-6 sm:gap-8 md:gap-10 p-4">
           <div className="hidden xl:block w-75">

@@ -3,7 +3,11 @@
 import { useRef, useState, useTransition } from "react";
 import { Tabs, ADD_TAB_ID } from "@/shared/components/Tabs/Tabs";
 import { TodoFolder } from "./types";
-import { createFolder, renameFolder } from "@/app/actions/folders";
+import {
+  createFolder,
+  deleteFolder,
+  renameFolder,
+} from "@/app/actions/folders";
 
 type Props = {
   userId: string;
@@ -12,6 +16,7 @@ type Props = {
   onFolderChange: (id: string) => void;
   onFolderCreated: (folder: TodoFolder) => void;
   onFolderRenamed: (folder: TodoFolder) => void;
+  onFolderDeleted: (folderId: string) => void;
 };
 
 export const TabsFolders = ({
@@ -21,6 +26,7 @@ export const TabsFolders = ({
   onFolderChange,
   onFolderCreated,
   onFolderRenamed,
+  onFolderDeleted,
 }: Props) => {
   const [editingTabId, setEditingTabId] = useState<string | null>(null);
   const [newName, setNewName] = useState("");
@@ -60,6 +66,11 @@ export const TabsFolders = ({
     });
   };
 
+  const handleTabDelete = async (folderId: string) => {
+    await deleteFolder(userId, folderId);
+    onFolderDeleted(folderId);
+  };
+
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") handleConfirm();
     if (e.key === "Escape") {
@@ -75,9 +86,11 @@ export const TabsFolders = ({
         activeId={activeFolderId}
         onTabClick={onFolderChange}
         onTabDoubleClick={handleTabDoubleClick}
+        onTabDelete={handleTabDelete}
         onAddClick={handleAddClick}
         editingTabId={editingTabId}
         plusTabTitle="New folder"
+        deleteTabText="Delete folder"
         EditingInput={
           <input
             ref={inputRef}
