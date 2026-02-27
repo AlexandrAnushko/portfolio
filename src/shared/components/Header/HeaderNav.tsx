@@ -7,6 +7,7 @@ import {
   unauthorizedHeaderLinks,
 } from "@/shared/constants/routes";
 import { Button } from "../Button";
+import { usePathname } from "next/navigation";
 
 type Props = {
   isAuthorized: boolean | null;
@@ -25,6 +26,7 @@ export const HeaderNav = ({
   openMobile,
   setOpenMobile,
 }: Props) => {
+  const pathname = usePathname();
   const links = isAuthorized ? authorizedHeaderLinks : unauthorizedHeaderLinks;
 
   return (
@@ -35,7 +37,7 @@ export const HeaderNav = ({
           <Link
             key={l.href}
             href={l.href}
-            className="text-base font-semibold text-grey-text hover:text-secondary transition-colors uppercase whitespace-nowrap"
+            className={`text-base font-semibold ${pathname === l.href ? "text-primary" : "text-grey-text"} hover:text-secondary transition-colors uppercase whitespace-nowrap`}
           >
             {l.label}
           </Link>
@@ -94,7 +96,7 @@ export const HeaderNav = ({
                   key={l.href}
                   href={l.href}
                   onClick={() => setOpenMobile(false)}
-                  className="hover:text-gray-300 transition"
+                  className={`${pathname === l.href ? "text-primary" : ""} hover:text-gray-300 transition`}
                 >
                   {l.label}
                 </Link>

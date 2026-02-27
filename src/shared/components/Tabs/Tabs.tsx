@@ -12,7 +12,9 @@ type Props = {
   onTabClick: (id: string) => void;
   onTabDoubleClick: (id: string, currentName: string) => void;
   onAddClick: () => void;
+  onTabDelete?: (id: string) => Promise<void>;
   plusTabTitle?: string;
+  deleteTabText?: string;
 };
 
 export const Tabs = ({
@@ -22,8 +24,10 @@ export const Tabs = ({
   EditingInput,
   onTabClick,
   onTabDoubleClick,
+  onTabDelete,
   onAddClick,
   plusTabTitle = "New Tab",
+  deleteTabText,
 }: Props) => {
   return (
     <div className="flex items-end gap-0.5">
@@ -35,8 +39,10 @@ export const Tabs = ({
           active={tab.id === activeId}
           onClick={() => onTabClick(tab.id)}
           onDoubleClick={() => onTabDoubleClick(tab.id, tab.name)}
+          onDelete={onTabDelete ? () => onTabDelete(tab.id) : undefined}
           isEditing={tab.id === editingTabId}
           EditingInput={EditingInput}
+          deleteTabText={deleteTabText}
         />
       ))}
       <Tab
