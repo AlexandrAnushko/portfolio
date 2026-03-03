@@ -18,7 +18,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Portfolio App",
+  title: "Portfolio",
   description: "Portfolio created using Next JS 16",
 };
 
