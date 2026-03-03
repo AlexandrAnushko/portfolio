@@ -12,8 +12,13 @@
   color: white !important;
 }
 
+.todo-table {
+  overflow-x: auto;
+}
+
 .todo-table :global(.ant-table) {
   min-height: 265px;
+  table-layout: fixed;
 }
 
 .todo-table :global(.ant-table) {

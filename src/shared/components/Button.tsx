@@ -1,5 +1,6 @@
 import { clsx } from "clsx";
 import { ButtonMode } from "../types/global";
+import { ReactNode } from "react";
 
 type Props = {
   onClick?: () => void;
@@ -11,6 +12,7 @@ type Props = {
   isDisabled?: boolean;
   textTransform?: "uppercase" | "lowercase" | "capitalize" | "normal-case";
   size?: "small" | "large";
+  rightIcon?: ReactNode;
 };
 
 export const Button = ({
@@ -23,6 +25,7 @@ export const Button = ({
   isDisabled,
   textTransform = "uppercase",
   size = "large",
+  rightIcon,
 }: Props) => {
   return (
     <button
@@ -44,6 +47,8 @@ export const Button = ({
           "bg-linear-to-r from-blue-400 to-blue-500 animate-pulse": isLoading,
           "hover:bg-primary-accent": mode === "primary",
           "hover:bg-secondary-accent": mode === "secondary",
+          "border border-white": mode === "transparent",
+          "gap-2": rightIcon,
         },
       )}
     >
@@ -54,6 +59,7 @@ export const Button = ({
           {text}
         </span>
       )}
+      {rightIcon && rightIcon}
     </button>
   );
 };

@@ -1,4 +1,5 @@
 import { Link } from "@/shared/components/Link";
+import { ROUTES } from "@/shared/constants/routes";
 import Image from "next/image";
 
 export default function Home() {
@@ -19,19 +20,19 @@ export default function Home() {
             <span className="text-white">{` Let's talk`}</span>
           </p>
           <Link
-            text="Get Started"
-            href="#"
+            text="My Projects"
+            href={ROUTES.PROJECTS}
             className="w-full max-w-[50%] sm:max-w-50"
           />
         </div>
         <div className="w-[60%] sm:w-[45%] md:w-auto md:max-w-[50%] shrink-0">
           <Image
-            src="/hishmaliin.jpg"
+            src="/avatar.jpg"
             alt="author photo"
             width={500}
             height={500}
             loading="eager"
-            className="w-full h-auto lg:min-w-75 xl:min-w-100"
+            className="w-full h-auto lg:min-w-75 xl:min-w-100 rounded-xl"
           />
         </div>
       </section>

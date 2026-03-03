@@ -1,6 +1,12 @@
 "use client";
 
-import { createContext, useState, useEffect } from "react";
+import {
+  createContext,
+  useState,
+  useEffect,
+  useCallback,
+  startTransition,
+} from "react";
 
 type AuthContextType = {
   isAuthorized: boolean | null;
@@ -21,30 +27,30 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     userId: null,
   });
 
-  const refresh = async () => {
+  const refresh = useCallback(async () => {
     try {
       const res = await fetch("/api/auth/me", { cache: "no-store" });
       const data = await res.json();
 
-      Promise.resolve().then(() => {
+      startTransition(() => {
         setAuth({
           isAuthorized: data.isAuth,
           userId: data.userId,
         });
       });
     } catch {
-      Promise.resolve().then(() => {
+      startTransition(() => {
         setAuth({
           isAuthorized: null,
           userId: null,
         });
       });
     }
-  };
+  }, []);
 
   useEffect(() => {
     refresh();
-  }, []);
+  }, [refresh]);
 
   return (
     <AuthContext.Provider

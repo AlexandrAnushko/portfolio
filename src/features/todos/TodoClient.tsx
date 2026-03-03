@@ -130,7 +130,7 @@ export default function TodoClient({ userId, initialFolders }: Props) {
           dateAndMode.selectedDate,
           activeFolderId,
         );
-        fetchTodos();
+        await fetchTodos();
       } catch {
         setTodos((prev) => prev.filter((t) => t.id !== optimisticTodo.id));
       }
@@ -148,7 +148,7 @@ export default function TodoClient({ userId, initialFolders }: Props) {
         editDate,
         activeFolderId,
       );
-      fetchTodos();
+      await fetchTodos();
       setEditingTodo(null);
     });
   };
@@ -161,7 +161,7 @@ export default function TodoClient({ userId, initialFolders }: Props) {
     startTransition(async () => {
       try {
         await toggleTodo(userId, id, dateAndMode.selectedDate, activeFolderId);
-        fetchTodos();
+        await fetchTodos();
       } catch {
         setTodos(prevTodos);
       }
@@ -179,7 +179,7 @@ export default function TodoClient({ userId, initialFolders }: Props) {
           dateAndMode.selectedDate,
           activeFolderId,
         );
-        fetchTodos();
+        await fetchTodos();
       } catch {
         setTodos(prevTodos);
       }
@@ -194,7 +194,7 @@ export default function TodoClient({ userId, initialFolders }: Props) {
         activeFolderId,
         dateAndMode.isShowAll ? undefined : dateAndMode.selectedDate,
       );
-      fetchTodos();
+      await fetchTodos();
     });
   };
 
