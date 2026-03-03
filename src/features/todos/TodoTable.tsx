@@ -42,7 +42,7 @@ export const TodoTable = ({
       key: "task",
       title: "Task List",
       render: (item, _, index) => (
-        <div className="flex items-center gap-3 w-full border rounded-xl p-2 bg-amber-100">
+        <div className="flex items-center gap-3 w-full border rounded-xl p-2 bg-amber-100 min-w-0">
           <Checkbox
             checked={item.done}
             disabled={isPending}
@@ -50,13 +50,14 @@ export const TodoTable = ({
           />
 
           <div
+            className="min-w-0"
             style={{
               flex: 1,
               textDecoration: item.done ? "line-through" : "none",
               opacity: item.done ? 0.6 : 1,
             }}
           >
-            <div style={{ whiteSpace: "pre-wrap" }}>
+            <div style={{ whiteSpace: "pre-wrap", wordBreak: "break-word", overflowWrap: "anywhere" }}>
               {`${(pagination.current - 1) * pagination.pageSize + index + 1}) ${item.text}`}
             </div>
             {isShowAll && (
