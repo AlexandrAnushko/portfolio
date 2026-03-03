@@ -19,8 +19,8 @@ export default function MyProjects() {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {PROJECTS.map((project) => (
-          <ProjectCard key={project.id} project={project} />
+        {PROJECTS.map((project, index) => (
+          <ProjectCard key={project.id} project={project} isPriority={index < 3} />
         ))}
       </div>
     </main>

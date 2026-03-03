@@ -1,17 +1,28 @@
+"use client";
+
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { Loader2 } from "lucide-react";
 import { Project } from "./types";
 
 interface ProjectCardProps {
   project: Project;
+  isPriority?: boolean;
 }
 
-export const ProjectCard = ({ project }: ProjectCardProps) => {
+export const ProjectCard = ({
+  project,
+  isPriority = false,
+}: ProjectCardProps) => {
+  const [isNavigating, setIsNavigating] = useState(false);
+
   return (
     <Link
       href={`/projects/${project.id}`}
+      onClick={() => setIsNavigating(true)}
       className="
-        group flex flex-col rounded-2xl overflow-hidden
+        group relative flex flex-col rounded-2xl overflow-hidden
         bg-white dark:bg-neutral-900
         border border-neutral-200 dark:border-neutral-700
         shadow-md
@@ -21,6 +32,16 @@ export const ProjectCard = ({ project }: ProjectCardProps) => {
         cursor-pointer
       "
     >
+      {/* Loading overlay */}
+      {isNavigating && (
+        <div className="absolute inset-0 z-10 flex items-center justify-center bg-black/40 backdrop-blur-xs">
+          <div className="flex flex-col items-center gap-2">
+            <Loader2 className="h-8 w-8 text-primary animate-spin" />
+            <span className="text-sm font-medium text-white">Loading…</span>
+          </div>
+        </div>
+      )}
+
       {/* Image */}
       <div className="relative w-full h-48 overflow-hidden">
         <Image
@@ -29,6 +50,8 @@ export const ProjectCard = ({ project }: ProjectCardProps) => {
           fill
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           className="object-cover transition-transform duration-500 group-hover:scale-105"
+          loading={isPriority ? "eager" : "lazy"}
+          priority={isPriority}
         />
         <div className="absolute inset-0 bg-linear-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
       </div>
@@ -73,7 +96,11 @@ export const ProjectCard = ({ project }: ProjectCardProps) => {
             stroke="currentColor"
             strokeWidth={2.5}
           >
-            <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M9 5l7 7-7 7"
+            />
           </svg>
         </div>
       </div>
