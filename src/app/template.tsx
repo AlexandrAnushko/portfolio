@@ -1,26 +1,18 @@
 "use client";
 
-import { motion, AnimatePresence } from "framer-motion";
-import { usePathname } from "next/navigation";
+import dynamic from "next/dynamic";
+
+const MotionTemplate = dynamic(
+  () => import("../shared/components/templates/MotionTemplate"),
+  {
+    ssr: false,
+  },
+);
 
 export default function Template({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const pathname = usePathname();
-  return (
-    <AnimatePresence mode="wait">
-      <motion.div
-        key={pathname}
-        className="flex-1"
-        initial={{ opacity: 0, x: 0, y: 0 }}
-        animate={{ opacity: 1, x: 0, y: 0 }}
-        exit={{ opacity: 0, x: 0, y: 0 }}
-        transition={{ duration: 0.5 }}
-      >
-        {children}
-      </motion.div>
-    </AnimatePresence>
-  );
+  return <MotionTemplate>{children}</MotionTemplate>;
 }
