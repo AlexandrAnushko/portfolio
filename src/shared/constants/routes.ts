@@ -1,15 +1,16 @@
 export const ROUTES = {
   ROOT: "/",
   TODOS: "/todos",
-  PROFILE: "/profile",
+  // TO-DO: not yet implemented
+  // PROFILE: "/profile",
   PROJECTS: "/projects",
 };
 
 export const RouteTitle = {
   [ROUTES.ROOT]: "Home",
   [ROUTES.TODOS]: "Tasks",
-  [ROUTES.PROFILE]: "Profile",
-  [ROUTES.PROJECTS]: "My Projects",
+  // [ROUTES.PROFILE]: "Profile",
+  [ROUTES.PROJECTS]: "Projects",
 };
 
 export const unauthorizedHeaderLinks = [
@@ -19,11 +20,11 @@ export const unauthorizedHeaderLinks = [
 
 export const authorizedHeaderLinks = [
   ...unauthorizedHeaderLinks,
-  { href: ROUTES.PROFILE, label: RouteTitle[ROUTES.PROFILE] },
+  // { href: ROUTES.PROFILE, label: RouteTitle[ROUTES.PROFILE] },
   { href: ROUTES.TODOS, label: RouteTitle[ROUTES.TODOS] },
 ];
 
 export const burgerMenuLinks = [
-  { href: ROUTES.PROFILE, label: RouteTitle[ROUTES.PROFILE] },
+  // { href: ROUTES.PROFILE, label: RouteTitle[ROUTES.PROFILE] },
   { href: ROUTES.TODOS, label: RouteTitle[ROUTES.TODOS] },
 ];

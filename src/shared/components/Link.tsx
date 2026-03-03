@@ -7,6 +7,7 @@ interface LinkProps {
   href: string;
   mode?: ButtonMode;
   className?: string;
+  textTransform?: "uppercase" | "lowercase" | "capitalize" | "normal-case";
 }
 
 export const Link = ({
@@ -14,12 +15,13 @@ export const Link = ({
   href,
   mode = "primary",
   className,
+  textTransform = "uppercase",
 }: LinkProps) => {
   return (
     <NextLink
       href={href}
       className={clsx(
-        `${className} rounded-md focus:ring-white text-white text-center text-nowrap text-sm xl:text-base uppercase font-semibold cursor-pointer py-2 px-4 xl:py-3 xl:px-8 
+        `${className} ${textTransform} rounded-md focus:ring-white text-white text-center text-nowrap text-sm xl:text-base font-semibold cursor-pointer py-2 px-4 xl:py-3 xl:px-8 
               active:scale-90 transition-all duration-300 ${
                 mode === "primary"
                   ? "bg-primary"
