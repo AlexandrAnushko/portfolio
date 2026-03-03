@@ -8,7 +8,7 @@ export default function MyProjects() {
       <div className="flex flex-col sm:flex-row items-start justify-between mb-10">
         <div className="mb-4 sm:mb-0">
           <h1 className="text-4xl sm:text-5xl font-bold text-neutral-900 dark:text-neutral-100 mb-3">
-            My Projects
+            Some of my Projects
           </h1>
           <p className="text-neutral-500 dark:text-neutral-400 text-base sm:text-lg">
             A collection of things I&apos;ve built — click any card to learn
@@ -20,7 +20,11 @@ export default function MyProjects() {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {PROJECTS.map((project, index) => (
-          <ProjectCard key={project.id} project={project} isPriority={index < 3} />
+          <ProjectCard
+            key={project.id}
+            project={project}
+            isPriority={index < 3}
+          />
         ))}
       </div>
     </main>
