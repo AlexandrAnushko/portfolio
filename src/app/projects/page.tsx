@@ -7,10 +7,10 @@ export default function MyProjects() {
     <main className="flex-1 w-full max-w-6xl mx-auto px-4 sm:px-6 py-12">
       <div className="flex flex-col sm:flex-row items-start justify-between mb-10">
         <div className="mb-4 sm:mb-0">
-          <h1 className="text-4xl sm:text-5xl font-bold text-neutral-900 dark:text-neutral-100 mb-3">
+          <h1 className="text-4xl sm:text-5xl font-bold text-neutral-900 mb-3">
             Some of my Projects
           </h1>
-          <p className="text-neutral-500 dark:text-neutral-400 text-base sm:text-lg">
+          <p className="text-neutral-500 text-base sm:text-lg">
             A collection of things I&apos;ve built — click any card to learn
             more.
           </p>
@@ -23,7 +23,7 @@ export default function MyProjects() {
           <ProjectCard
             key={project.id}
             project={project}
-            isPriority={index < 3}
+            isPriority={index < 6}
           />
         ))}
       </div>

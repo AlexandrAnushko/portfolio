@@ -35,7 +35,7 @@ export const Input = <T extends object>({
       {...register(name)}
       data-slot="input"
       className={cn(
-        "border border-gray-200 rounded text-black placeholder:text-white w-full min-w-0 bg-transparent px-3 py-2 text-base transition-[color,box-shadow] outline-none disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm",
+        "border border-gray-200 rounded text-black placeholder:text-gray-500 w-full min-w-0 bg-transparent px-3 py-2 text-base transition-[color,box-shadow] outline-none disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm",
         error && "border-red-500 focus:border-red-500",
         disabled && "opacity-50 cursor-not-allowed",
         className,
