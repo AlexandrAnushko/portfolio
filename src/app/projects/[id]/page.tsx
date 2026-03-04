@@ -28,7 +28,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
       {/* Back link */}
       <Link
         href="/projects"
-        className="inline-flex items-center gap-1.5 text-sm text-neutral-500 hover:text-blue-600 transition-colors duration-200 mb-8 group"
+        className="inline-flex items-center gap-1.5 text-sm text-neutral-400 hover:text-blue-400 transition-colors duration-200 mb-8 group"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -69,8 +69,8 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
           <span
             key={tag}
             className="px-3 py-1 text-sm font-medium rounded-full
-              bg-blue-50 text-blue-700
-              border border-blue-100"
+              bg-blue-950text-blue-300
+              border border-blue-800"
           >
             {tag}
           </span>
@@ -78,11 +78,11 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
       </div>
 
       {/* Description */}
-      <div className="bg-white rounded-2xl border border-neutral-200 shadow-sm p-6 sm:p-8 mb-8">
-        <h2 className="text-xl font-semibold text-neutral-900 mb-4">
+      <div className="bg-neutral-900 rounded-2xl border border-neutral-700 shadow-sm p-6 sm:p-8 mb-8">
+        <h2 className="text-xl font-semibold text-neutral-100 mb-4">
           About this project
         </h2>
-        <p className="text-neutral-600 leading-relaxed text-base">
+        <p className="text-neutral-400 leading-relaxed text-base">
           {project.fullDescription}
         </p>
       </div>
@@ -123,8 +123,8 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-medium
-                bg-neutral-900 hover:bg-neutral-700 active:bg-neutral-800
-                text-white shadow-sm
+                bg-neutral-100 hover:bg-neutral-300 active:bg-neutral-200
+                text-neutral-900 shadow-sm
                 transition-all duration-200 active:scale-95"
             >
               <svg
