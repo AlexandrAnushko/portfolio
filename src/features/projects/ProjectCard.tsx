@@ -23,11 +23,11 @@ export const ProjectCard = ({
       onClick={() => setIsNavigating(true)}
       className="
         group relative flex flex-col rounded-2xl overflow-hidden
-        bg-white dark:bg-neutral-900
-        border border-neutral-200 dark:border-neutral-700
+      bg-white
+        border border-neutral-200
         shadow-md
         transition-all duration-300 ease-out
-        hover:shadow-xl hover:-translate-y-1 hover:border-blue-400 dark:hover:border-blue-500
+        hover:shadow-xl hover:-translate-y-1 hover:border-blue-400
         active:scale-[0.97] active:shadow-sm active:translate-y-0
         cursor-pointer
       "
@@ -58,10 +58,10 @@ export const ProjectCard = ({
 
       {/* Content */}
       <div className="flex flex-col flex-1 p-5 gap-3">
-        <h2 className="text-lg font-semibold text-neutral-900 dark:text-neutral-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-200 leading-snug">
+        <h2 className="text-lg font-semibold text-neutral-900 group-hover:text-blue-600 transition-colors duration-200 leading-snug">
           {project.title}
         </h2>
-        <p className="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed line-clamp-3 flex-1">
+        <p className="text-sm text-neutral-600 leading-relaxed line-clamp-3 flex-1">
           {project.description}
         </p>
 
@@ -72,21 +72,20 @@ export const ProjectCard = ({
               key={tag}
               className="px-2.5 py-0.5 text-xs font-medium rounded-full
                 bg-blue-50 text-blue-700
-                dark:bg-blue-950 dark:text-blue-300
-                border border-blue-100 dark:border-blue-800"
+                border border-blue-100"
             >
               {tag}
             </span>
           ))}
           {project.tags.length > 4 && (
-            <span className="px-2.5 py-0.5 text-xs font-medium rounded-full bg-neutral-100 text-neutral-500 dark:bg-neutral-800 dark:text-neutral-400 border border-neutral-200 dark:border-neutral-700">
+            <span className="px-2.5 py-0.5 text-xs font-medium rounded-full bg-neutral-100 text-neutral-500 border border-neutral-200">
               +{project.tags.length - 4}
             </span>
           )}
         </div>
 
         {/* View project arrow */}
-        <div className="flex items-center gap-1 text-xs font-medium text-blue-600 dark:text-blue-400 mt-1 opacity-0 group-hover:opacity-100 translate-x-0 group-hover:translate-x-1 transition-all duration-200">
+        <div className="flex items-center gap-1 text-xs font-medium text-blue-600 mt-1 opacity-0 group-hover:opacity-100 translate-x-0 group-hover:translate-x-1 transition-all duration-200">
           View project
           <svg
             xmlns="http://www.w3.org/2000/svg"
