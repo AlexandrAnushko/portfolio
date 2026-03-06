@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { signOut } from "next-auth/react";
 import { Modal } from "../antd/Modal";
 import { AuthForm } from "@/features/auth/AuthForm";
 import { ROUTES } from "../../constants/routes";
@@ -29,6 +30,7 @@ export const Header = () => {
 
   const onLogout = async () => {
     await fetch("/api/auth/logout", { method: "POST" });
+    await signOut({ redirect: false });
     await refresh();
     router.replace("/");
   };
