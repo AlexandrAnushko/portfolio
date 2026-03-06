@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { Suspense } from "react";
-import { AntdRegistry } from "@ant-design/nextjs-registry";
 import { Header } from "@/shared/components/Header/Header";
 import { ClientProviders } from "@/lib/providers/ClientProviders";
 import "react-loading-skeleton/dist/skeleton.css";
@@ -33,12 +32,10 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col h-full overflow-y-auto overflow-x-clip`}
       >
         <Suspense>
-          <AntdRegistry>
-            <ClientProviders>
-              <Header />
-              {children}
-            </ClientProviders>
-          </AntdRegistry>
+          <ClientProviders>
+            <Header />
+            {children}
+          </ClientProviders>
         </Suspense>
       </body>
     </html>

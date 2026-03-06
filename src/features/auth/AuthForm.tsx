@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 import { ROUTES } from "@/shared/constants/routes";
 import { useAuth } from "@/shared/hooks/useAuth";
 import { Button } from "@/shared/components/Button";
+import { GoogleAuthButton } from "./GoogleAuthButton";
 
 interface AuthFormProps {
   submitText: string;
@@ -85,6 +86,14 @@ export function AuthForm({
 
         <Button text={submitText} type="submit" size="small" />
       </form>
+
+      <div className="flex items-center my-4">
+        <div className="flex-1 h-px bg-gray-300" />
+        <span className="px-3 text-gray-400 text-sm">or</span>
+        <div className="flex-1 h-px bg-gray-300" />
+      </div>
+
+      <GoogleAuthButton />
     </div>
   );
 }
