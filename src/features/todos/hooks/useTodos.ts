@@ -65,7 +65,6 @@ export const useTodos = ({
     startTransition(async () => {
       try {
         const created = await addTodo(
-          userId,
           text,
           dateAndMode.selectedDate,
           activeFolderId,
@@ -107,7 +106,6 @@ export const useTodos = ({
     startTransition(async () => {
       try {
         await updateTodo(
-          userId,
           editingTodo.id,
           editText,
           editDate,
@@ -127,7 +125,7 @@ export const useTodos = ({
     );
     startTransition(async () => {
       try {
-        await toggleTodo(userId, id, dateAndMode.selectedDate, activeFolderId);
+        await toggleTodo(id, dateAndMode.selectedDate, activeFolderId);
       } catch {
         setTodos(prevTodos);
         toast.error("Failed to toggle todo. Please try again.");
@@ -141,7 +139,6 @@ export const useTodos = ({
     startTransition(async () => {
       try {
         await deleteTodoById(
-          userId,
           id,
           dateAndMode.selectedDate,
           activeFolderId,
@@ -159,7 +156,6 @@ export const useTodos = ({
     startTransition(async () => {
       try {
         await deleteTodos(
-          userId,
           activeFolderId,
           dateAndMode.isShowAll ? undefined : dateAndMode.selectedDate,
         );

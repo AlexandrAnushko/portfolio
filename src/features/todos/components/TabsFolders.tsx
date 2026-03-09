@@ -10,7 +10,6 @@ import {
 } from "@/app/actions/folders";
 
 type Props = {
-  userId: string;
   folders: TodoFolder[];
   activeFolderId: string;
   onFolderChange: (id: string) => void;
@@ -20,7 +19,6 @@ type Props = {
 };
 
 export const TabsFolders = ({
-  userId,
   folders,
   activeFolderId,
   onFolderChange,
@@ -57,20 +55,20 @@ export const TabsFolders = ({
 
     startTransition(async () => {
       if (tabId === ADD_TAB_ID) {
-        const created = await createFolder(userId, trimmed);
+        const created = await createFolder(trimmed);
         if (created) {
           onFolderCreated(created);
           onFolderChange(created.id);
         }
       } else {
-        const renamed = await renameFolder(userId, tabId, trimmed);
+        const renamed = await renameFolder(tabId, trimmed);
         if (renamed) onFolderRenamed(renamed);
       }
     });
   };
 
   const handleTabDelete = async (folderId: string) => {
-    await deleteFolder(userId, folderId);
+    await deleteFolder(folderId);
     onFolderDeleted(folderId);
   };
 

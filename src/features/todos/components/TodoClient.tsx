@@ -73,7 +73,6 @@ export default function TodoClient({ userId, initialFolders }: Props) {
     <div className="flex flex-col w-full items-center h-full pb-6">
       <div className="flex flex-col items-center h-full w-full xl:w-[90%] 2xl:w-[80%] bg-gray-800 rounded-xl">
         <TabsFolders
-          userId={userId}
           folders={folders}
           activeFolderId={activeFolderId}
           onFolderChange={setActiveFolderId}

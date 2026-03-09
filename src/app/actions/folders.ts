@@ -4,6 +4,7 @@ import { TodoFolderDB } from "@/features/todos/types/types";
 import prisma from "@/lib/db";
 import { TODOS_TAGS } from "@/shared/constants/tags";
 import { cacheTag, updateTag } from "next/cache";
+import { getUserId } from "@/app/actions/getUserId";
 
 export const getFolders = async (userId: string) => {
   "use cache";
@@ -20,7 +21,10 @@ export const getFolders = async (userId: string) => {
   }));
 };
 
-export const createFolder = async (userId: string, name: string) => {
+export const createFolder = async (name: string) => {
+  const userId = await getUserId();
+  if (!userId) throw new Error("Unauthorized");
+
   const trimmed = name.trim();
   if (!trimmed) return null;
 
@@ -34,10 +38,12 @@ export const createFolder = async (userId: string, name: string) => {
 };
 
 export const renameFolder = async (
-  userId: string,
   folderId: string,
   name: string,
 ) => {
+  const userId = await getUserId();
+  if (!userId) throw new Error("Unauthorized");
+
   const trimmed = name.trim();
   if (!trimmed) return null;
 
@@ -51,7 +57,10 @@ export const renameFolder = async (
   return { ...folder, createdAt: folder.createdAt.toISOString() };
 };
 
-export const deleteFolder = async (userId: string, folderId: string) => {
+export const deleteFolder = async (folderId: string) => {
+  const userId = await getUserId();
+  if (!userId) throw new Error("Unauthorized");
+
   // Prevent deleting the Main folder
   const folder = await prisma.todoFolder.findUnique({
     where: { id: folderId, userId },
