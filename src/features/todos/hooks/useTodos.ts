@@ -46,8 +46,9 @@ export const useTodos = ({
   const handleAdd = (text: string) => {
     if (!text.trim() || !activeFolderId) return;
 
+    const optimisticId = crypto.randomUUID();
     const optimisticTodo: Todo = {
-      id: crypto.randomUUID(),
+      id: optimisticId,
       text,
       done: false,
       date: dateAndMode.selectedDate,
@@ -63,10 +64,19 @@ export const useTodos = ({
 
     startTransition(async () => {
       try {
-        await addTodo(userId, text, dateAndMode.selectedDate, activeFolderId);
-        await fetchTodos();
+        const created = await addTodo(
+          userId,
+          text,
+          dateAndMode.selectedDate,
+          activeFolderId,
+        );
+        if (created) {
+          setTodos((prev) =>
+            prev.map((t) => (t.id === optimisticId ? created : t)),
+          );
+        }
       } catch {
-        setTodos((prev) => prev.filter((t) => t.id !== optimisticTodo.id));
+        setTodos((prev) => prev.filter((t) => t.id !== optimisticId));
         toast.error("Failed to add todo. Please try again.");
       }
     });
@@ -74,6 +84,25 @@ export const useTodos = ({
 
   const handleSaveEdit = (editText: string, editDate: string) => {
     if (!editingTodo) return;
+
+    const prevTodos = [...todos];
+    setTodos((prev) =>
+      prev
+        .map((t) =>
+          t.id === editingTodo.id
+            ? { ...t, text: editText, date: editDate }
+            : t,
+        )
+        .filter((t) => {
+          if (!dateAndMode.isShowAll && t.id === editingTodo.id) {
+            return (
+              t.date.slice(0, 10) === dateAndMode.selectedDate.slice(0, 10)
+            );
+          }
+          return true;
+        }),
+    );
+    setEditingTodo(null);
 
     startTransition(async () => {
       try {
@@ -84,9 +113,8 @@ export const useTodos = ({
           editDate,
           activeFolderId,
         );
-        await fetchTodos();
-        setEditingTodo(null);
       } catch {
+        setTodos(prevTodos);
         toast.error("Failed to update todo. Please try again.");
       }
     });
@@ -100,7 +128,6 @@ export const useTodos = ({
     startTransition(async () => {
       try {
         await toggleTodo(userId, id, dateAndMode.selectedDate, activeFolderId);
-        await fetchTodos();
       } catch {
         setTodos(prevTodos);
         toast.error("Failed to toggle todo. Please try again.");
@@ -119,7 +146,6 @@ export const useTodos = ({
           dateAndMode.selectedDate,
           activeFolderId,
         );
-        await fetchTodos();
       } catch {
         setTodos(prevTodos);
         toast.error("Failed to delete todo. Please try again.");
@@ -137,7 +163,6 @@ export const useTodos = ({
           activeFolderId,
           dateAndMode.isShowAll ? undefined : dateAndMode.selectedDate,
         );
-        await fetchTodos();
       } catch {
         setTodos(prevTodos);
         toast.error("Failed to delete todos. Please try again.");

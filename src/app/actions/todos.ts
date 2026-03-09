@@ -69,13 +69,15 @@ export async function addTodo(
   date: string,
   folderId: string,
 ) {
-  if (!text.trim()) return;
-  await prisma.todo.create({
+  if (!text.trim()) return null;
+  const todo = await prisma.todo.create({
     data: { text, date: new Date(date), userId, folderId },
   });
 
   updateTag(`${TODOS_TAGS.ALL}-${userId}-${folderId}`);
   updateTag(`${TODOS_TAGS.BY_DATE}-${userId}-${date.slice(0, 10)}-${folderId}`);
+
+  return { ...todo, date: todo.date.toISOString() };
 }
 
 // Toggle Todo done field
