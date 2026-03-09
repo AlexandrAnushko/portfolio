@@ -4,6 +4,7 @@ import prisma from "@/lib/db";
 import { getStartAndEndOfDate } from "@/shared/utils/getStartAndEndOfDate";
 import { TODOS_TAGS } from "@/shared/constants/tags";
 import { cacheTag, updateTag } from "next/cache";
+import { getUserId } from "@/app/actions/getUserId";
 
 type TodoData = {
   text: string;
@@ -64,37 +65,35 @@ export const getTodosByDate = async (
 };
 
 export async function addTodo(
-  userId: string,
   text: string,
   date: string,
   folderId: string,
 ) {
-  if (!text.trim()) return;
-  await prisma.todo.create({
+  const userId = await getUserId();
+  if (!userId) throw new Error("Unauthorized");
+  if (!text.trim()) return null;
+  const todo = await prisma.todo.create({
     data: { text, date: new Date(date), userId, folderId },
   });
 
   updateTag(`${TODOS_TAGS.ALL}-${userId}-${folderId}`);
   updateTag(`${TODOS_TAGS.BY_DATE}-${userId}-${date.slice(0, 10)}-${folderId}`);
+
+  return { ...todo, date: todo.date.toISOString() };
 }
 
 // Toggle Todo done field
 export async function toggleTodo(
-  userId: string,
   id: string,
   date: string,
   folderId: string,
 ) {
-  const todo = await prisma.todo.findUnique({
-    where: { id, userId },
-  });
+  const userId = await getUserId();
+  if (!userId) throw new Error("Unauthorized");
 
-  if (!todo) return;
-
-  await prisma.todo.update({
-    where: { id },
-    data: { done: !todo.done },
-  });
+  await prisma.$executeRaw`
+  UPDATE "Todo" SET done = NOT done WHERE id = ${id} AND "userId" = ${userId}
+`;
 
   updateTag(`${TODOS_TAGS.ALL}-${userId}-${folderId}`);
   updateTag(`${TODOS_TAGS.BY_DATE}-${userId}-${date.slice(0, 10)}-${folderId}`);
@@ -102,12 +101,14 @@ export async function toggleTodo(
 
 // change text and date
 export async function updateTodo(
-  userId: string,
   id: string,
   text: string,
   date: string,
   folderId: string,
 ) {
+  const userId = await getUserId();
+  if (!userId) throw new Error("Unauthorized");
+
   const data: TodoData = { text, date: new Date(date) };
 
   await prisma.todo.update({
@@ -120,11 +121,13 @@ export async function updateTodo(
 }
 
 export async function deleteTodoById(
-  userId: string,
   id: string,
   date: string,
   folderId: string,
 ) {
+  const userId = await getUserId();
+  if (!userId) throw new Error("Unauthorized");
+
   await prisma.todo.delete({
     where: { id, userId },
   });
@@ -134,10 +137,12 @@ export async function deleteTodoById(
 }
 
 export async function deleteTodos(
-  userId: string,
   folderId: string,
   date?: string,
 ) {
+  const userId = await getUserId();
+  if (!userId) throw new Error("Unauthorized");
+
   const where: DeleteWhere = {
     userId,
     folderId,

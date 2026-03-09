@@ -1,7 +1,7 @@
 import { Input } from "antd";
 import { Button } from "@/shared/components/Button";
 import { ChangeEvent, KeyboardEvent } from "react";
-import { DateAndMode } from "./types";
+import { DateAndMode } from "../types/types";
 
 const { TextArea } = Input;
 

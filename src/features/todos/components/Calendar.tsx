@@ -1,6 +1,6 @@
-import { Button } from "@/shared/components/antd/Button";
 import { Calendar as AntdCalendar } from "antd";
 import type { Dayjs } from "dayjs";
+import { Button } from "@/shared/components/antd/Button";
 
 type Props = {
   onSelect: (date: Dayjs) => void;

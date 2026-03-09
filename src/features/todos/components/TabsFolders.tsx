@@ -1,8 +1,8 @@
 "use client";
 
-import { useRef, useState, useTransition } from "react";
+import { useEffect, useRef, useState, useTransition } from "react";
 import { Tabs, ADD_TAB_ID } from "@/shared/components/Tabs/Tabs";
-import { TodoFolder } from "./types";
+import { TodoFolder } from "../types/types";
 import {
   createFolder,
   deleteFolder,
@@ -10,7 +10,6 @@ import {
 } from "@/app/actions/folders";
 
 type Props = {
-  userId: string;
   folders: TodoFolder[];
   activeFolderId: string;
   onFolderChange: (id: string) => void;
@@ -20,7 +19,6 @@ type Props = {
 };
 
 export const TabsFolders = ({
-  userId,
   folders,
   activeFolderId,
   onFolderChange,
@@ -33,10 +31,13 @@ export const TabsFolders = ({
   const [isPending, startTransition] = useTransition();
   const inputRef = useRef<HTMLInputElement>(null);
 
+  useEffect(() => {
+    if (editingTabId) inputRef.current?.focus();
+  }, [editingTabId]);
+
   const openInput = (tabId: string, initialName = "") => {
     setEditingTabId(tabId);
     setNewName(initialName);
-    setTimeout(() => inputRef.current?.focus(), 0);
   };
 
   const handleAddClick = () => openInput(ADD_TAB_ID);
@@ -54,20 +55,20 @@ export const TabsFolders = ({
 
     startTransition(async () => {
       if (tabId === ADD_TAB_ID) {
-        const created = await createFolder(userId, trimmed);
+        const created = await createFolder(trimmed);
         if (created) {
           onFolderCreated(created);
           onFolderChange(created.id);
         }
       } else {
-        const renamed = await renameFolder(userId, tabId, trimmed);
+        const renamed = await renameFolder(tabId, trimmed);
         if (renamed) onFolderRenamed(renamed);
       }
     });
   };
 
   const handleTabDelete = async (folderId: string) => {
-    await deleteFolder(userId, folderId);
+    await deleteFolder(folderId);
     onFolderDeleted(folderId);
   };
 

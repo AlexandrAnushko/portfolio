@@ -1,7 +1,7 @@
 import { Input } from "antd";
 import { KeyboardEvent } from "react";
 import dayjs, { Dayjs } from "dayjs";
-import { Todo } from "./types";
+import { Todo } from "../types/types";
 import { useState } from "react";
 import { Calendar } from "./Calendar";
 import { Modal } from "@/shared/components/antd/Modal";
@@ -11,7 +11,6 @@ const { TextArea } = Input;
 
 type Props = {
   editingTodo: Todo;
-  isShowAll: boolean;
   handleSaveEdit: (text: string, date: string) => void;
   setEditingTodo: (item: Todo | null) => void;
 };
@@ -26,7 +25,7 @@ export const EditModal = ({
   const [editDate, setEditDate] = useState(editingTodo.date);
 
   const onSelect = (date: Dayjs) => {
-    const iso = date.format("YYYY-MM-DD");
+    const iso = date.toDate().toISOString();
     setEditDate(iso);
   };
 

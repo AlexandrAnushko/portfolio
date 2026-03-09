@@ -1,7 +1,7 @@
 import { getUserId } from "@/app/actions/getUserId";
 import { redirect } from "next/navigation";
 import { ROUTES } from "@/shared/constants/routes";
-import TodoClient from "../../features/todos/TodoClient";
+import TodoClient from "@/features/todos/components/TodoClient";
 import { getFolders } from "@/app/actions/folders";
 
 export default async function TodoPage() {
