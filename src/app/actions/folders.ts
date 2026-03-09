@@ -1,6 +1,6 @@
 "use server";
 
-import { TodoFolderDB } from "@/features/todos/types";
+import { TodoFolderDB } from "@/features/todos/types/types";
 import prisma from "@/lib/db";
 import { TODOS_TAGS } from "@/shared/constants/tags";
 import { cacheTag, updateTag } from "next/cache";

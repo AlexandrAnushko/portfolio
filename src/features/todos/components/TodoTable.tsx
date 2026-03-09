@@ -1,11 +1,11 @@
 import { Button } from "@/shared/components/antd/Button";
 import { Checkbox, Table, TableColumnsType } from "antd";
-import { Todo } from "./types";
+import { Todo } from "../types/types";
 import { formatDate } from "@/shared/utils/formatDate";
 import { Pencil, Trash2 } from "lucide-react";
 import { createStaticStyles } from "antd-style";
 import styles from "./TodoTable.module.css";
-import { TodoTableSkeleton } from "./skeletons/TodoTableSkeleton";
+import { TodoTableSkeleton } from "../skeletons/TodoTableSkeleton";
 import { useMediaQuery } from "@/shared/hooks/useMediaQuery";
 
 type Props = {
@@ -57,7 +57,13 @@ export const TodoTable = ({
               opacity: item.done ? 0.6 : 1,
             }}
           >
-            <div style={{ whiteSpace: "pre-wrap", wordBreak: "break-word", overflowWrap: "anywhere" }}>
+            <div
+              style={{
+                whiteSpace: "pre-wrap",
+                wordBreak: "break-word",
+                overflowWrap: "anywhere",
+              }}
+            >
               {`${(pagination.current - 1) * pagination.pageSize + index + 1}) ${item.text}`}
             </div>
             {isShowAll && (

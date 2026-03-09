@@ -2,7 +2,7 @@
 
 import { useRef, useState, useTransition } from "react";
 import { Tabs, ADD_TAB_ID } from "@/shared/components/Tabs/Tabs";
-import { TodoFolder } from "./types";
+import { TodoFolder } from "../types/types";
 import {
   createFolder,
   deleteFolder,
