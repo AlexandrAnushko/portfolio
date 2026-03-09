@@ -63,12 +63,12 @@ export const deleteFolder = async (userId: string, folderId: string) => {
     where: { userId, name: "Main" },
   });
 
-  if (mainFolder) {
-    await prisma.todo.updateMany({
-      where: { folderId, userId },
-      data: { folderId: mainFolder.id },
-    });
-  }
+  if (!mainFolder) throw new Error("Main folder not found");
+
+  await prisma.todo.updateMany({
+    where: { folderId, userId },
+    data: { folderId: mainFolder.id },
+  });
 
   await prisma.todoFolder.delete({ where: { id: folderId, userId } });
 

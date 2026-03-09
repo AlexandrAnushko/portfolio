@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, useTransition } from "react";
+import { useEffect, useRef, useState, useTransition } from "react";
 import { Tabs, ADD_TAB_ID } from "@/shared/components/Tabs/Tabs";
 import { TodoFolder } from "../types/types";
 import {
@@ -33,10 +33,13 @@ export const TabsFolders = ({
   const [isPending, startTransition] = useTransition();
   const inputRef = useRef<HTMLInputElement>(null);
 
+  useEffect(() => {
+    if (editingTabId) inputRef.current?.focus();
+  }, [editingTabId]);
+
   const openInput = (tabId: string, initialName = "") => {
     setEditingTabId(tabId);
     setNewName(initialName);
-    setTimeout(() => inputRef.current?.focus(), 0);
   };
 
   const handleAddClick = () => openInput(ADD_TAB_ID);

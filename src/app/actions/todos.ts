@@ -85,16 +85,9 @@ export async function toggleTodo(
   date: string,
   folderId: string,
 ) {
-  const todo = await prisma.todo.findUnique({
-    where: { id, userId },
-  });
-
-  if (!todo) return;
-
-  await prisma.todo.update({
-    where: { id },
-    data: { done: !todo.done },
-  });
+  await prisma.$executeRaw`
+  UPDATE "Todo" SET done = NOT done WHERE id = ${id} AND "userId" = ${userId}
+`;
 
   updateTag(`${TODOS_TAGS.ALL}-${userId}-${folderId}`);
   updateTag(`${TODOS_TAGS.BY_DATE}-${userId}-${date.slice(0, 10)}-${folderId}`);
