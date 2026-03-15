@@ -30,6 +30,7 @@ export const ProjectCard = ({
         active:scale-[0.97] active:shadow-sm active:translate-y-0
         cursor-pointer
       "
+      data-testid="project-card-link"
     >
       {/* Loading overlay */}
       {isNavigating && (
