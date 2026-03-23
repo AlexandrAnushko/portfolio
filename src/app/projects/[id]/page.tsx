@@ -69,7 +69,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
           <span
             key={tag}
             className="px-3 py-1 text-sm font-medium rounded-full
-              bg-blue-950text-blue-300
+              bg-blue-950 text-blue-300
               border border-blue-800"
           >
             {tag}

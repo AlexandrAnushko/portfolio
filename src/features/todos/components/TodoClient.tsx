@@ -70,7 +70,10 @@ export default function TodoClient({ userId, initialFolders }: Props) {
   };
 
   return (
-    <div className="flex flex-col w-full items-center h-full pb-6">
+    <main
+      id="todos-page"
+      className="flex flex-col w-full items-center h-full pt-32 pb-20"
+    >
       <div className="flex flex-col items-center h-full w-full xl:w-[90%] 2xl:w-[80%] bg-gray-800 rounded-xl">
         <TabsFolders
           folders={folders}
@@ -149,6 +152,6 @@ export default function TodoClient({ userId, initialFolders }: Props) {
         action={deleteAllTodos}
         open={showDeleteModal}
       />
-    </div>
+    </main>
   );
 }

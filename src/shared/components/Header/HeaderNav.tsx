@@ -1,13 +1,14 @@
 "use client";
 
-import Link from "next/link";
+import { createPortal } from "react-dom";
+import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
 import {
   authorizedHeaderLinks,
   unauthorizedHeaderLinks,
 } from "@/shared/constants/routes";
 import { Button } from "../Button";
-import { usePathname } from "next/navigation";
+import { Link } from "../Link";
 
 type Props = {
   isAuthorized: boolean | null;
@@ -34,11 +35,7 @@ export const HeaderNav = ({
       {/* DESKTOP */}
       <nav className="hidden sm:flex sm:gap-8 md:gap-12 items-center">
         {links.map((l) => (
-          <Link
-            key={l.href}
-            href={l.href}
-            className={`text-base font-semibold ${pathname === l.href ? "text-primary" : "text-grey-text"} hover:text-secondary transition-colors uppercase whitespace-nowrap`}
-          >
+          <Link key={l.href} href={l.href} isActive={pathname === l.href}>
             {l.label}
           </Link>
         ))}
@@ -63,56 +60,58 @@ export const HeaderNav = ({
         </button>
 
         {/* Fullscreen overlay */}
-        {openMobile && (
-          <div className="fixed inset-0 bg-black/99 z-50 flex flex-col p-6 animate-fadeIn">
-            <div className="flex justify-end">
-              <button
-                onClick={() => setOpenMobile(false)}
-                className="p-2 rounded hover:bg-gray-700 transition"
-              >
-                <X className="text-white" size={28} />
-              </button>
-            </div>
-
-            <nav className="mt-10 flex flex-col gap-6 text-white text-2xl">
-              {!isAuthorized && (
-                <div className="flex gap-4 w-full">
-                  <Button
-                    text="Sign In"
-                    onClick={onSignInOpen}
-                    className="w-full"
-                  />
-                  <Button
-                    text="Sign Up"
-                    onClick={onSignUpOpen}
-                    mode="secondary"
-                    className="w-full"
-                  />
-                </div>
-              )}
-
-              {links.map((l) => (
-                <Link
-                  key={l.href}
-                  href={l.href}
+        {openMobile &&
+          createPortal(
+            <div className="sm:hidden fixed inset-0 bg-black/99 z-51 flex flex-col p-6 animate-fadeIn">
+              <div className="flex justify-end">
+                <button
                   onClick={() => setOpenMobile(false)}
-                  className={`${pathname === l.href ? "text-primary" : ""} hover:text-gray-300 transition`}
+                  className="p-2 rounded hover:bg-gray-700 transition"
                 >
-                  {l.label}
-                </Link>
-              ))}
+                  <X className="text-white" size={28} />
+                </button>
+              </div>
 
-              {isAuthorized && (
-                <Button
-                  text="Logout"
-                  onClick={onLogout}
-                  mode="secondary"
-                  className="max-w-[50%]"
-                />
-              )}
-            </nav>
-          </div>
-        )}
+              <nav className="mt-10 flex flex-col items-center gap-6 text-white text-2xl">
+                {!isAuthorized && (
+                  <div className="flex gap-4 w-full">
+                    <Button
+                      text="Sign In"
+                      onClick={onSignInOpen}
+                      className="w-full"
+                    />
+                    <Button
+                      text="Sign Up"
+                      onClick={onSignUpOpen}
+                      mode="secondary"
+                      className="w-full"
+                    />
+                  </div>
+                )}
+
+                {links.map((l) => (
+                  <Link
+                    key={l.href}
+                    href={l.href}
+                    onClick={() => setOpenMobile(false)}
+                    isActive={pathname === l.href}
+                  >
+                    {l.label}
+                  </Link>
+                ))}
+
+                {isAuthorized && (
+                  <Button
+                    text="Logout"
+                    onClick={onLogout}
+                    mode="secondary"
+                    className="w-40"
+                  />
+                )}
+              </nav>
+            </div>,
+            document.body,
+          )}
       </div>
     </div>
   );

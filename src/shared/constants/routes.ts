@@ -4,6 +4,8 @@ export const ROUTES = {
   // TO-DO: not yet implemented
   // PROFILE: "/profile",
   PROJECTS: "/projects",
+  SKILLS: "/skills",
+  CONTACT: "/contact",
 };
 
 export const RouteTitle = {
@@ -11,11 +13,15 @@ export const RouteTitle = {
   [ROUTES.TODOS]: "Tasks",
   // [ROUTES.PROFILE]: "Profile",
   [ROUTES.PROJECTS]: "Projects",
+  [ROUTES.SKILLS]: "Skills",
+  [ROUTES.CONTACT]: "Contact",
 };
 
 export const unauthorizedHeaderLinks = [
   { href: ROUTES.ROOT, label: RouteTitle[ROUTES.ROOT] },
   { href: ROUTES.PROJECTS, label: RouteTitle[ROUTES.PROJECTS] },
+  { href: ROUTES.SKILLS, label: RouteTitle[ROUTES.SKILLS] },
+  { href: ROUTES.CONTACT, label: RouteTitle[ROUTES.CONTACT] },
 ];
 
 export const authorizedHeaderLinks = [

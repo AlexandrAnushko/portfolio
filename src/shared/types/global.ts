@@ -1,2 +1,7 @@
 // global types
-export type ButtonMode = "primary" | "secondary" | "transparent";
+export type ButtonMode =
+  | "primary"
+  | "secondary"
+  | "outline"
+  | "transparent"
+  | "text";

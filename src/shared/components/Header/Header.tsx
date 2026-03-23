@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
+import { Link } from "../Link";
 import { signOut } from "next-auth/react";
 import { Modal } from "../antd/Modal";
 import { AuthForm } from "@/features/auth/AuthForm";
@@ -36,22 +36,20 @@ export const Header = () => {
   };
 
   return (
-    <header className="flex justify-between items-center px-4 py-2 sm:px-8 sm:py-6">
-      <Link href={ROUTES.ROOT}>
-        <div className="text-white text-3xl">
-          A<span className="text-primary">.</span>
-        </div>
-      </Link>
-
-      <HeaderNav
-        isAuthorized={isAuthorized}
-        onLogout={onLogout}
-        onSignInOpen={onSignInOpen}
-        onSignUpOpen={onSignUpOpen}
-        openMobile={openMobile}
-        setOpenMobile={setOpenMobile}
-      />
-
+    <header className="fixed top-0 left-0 right-0 z-50 bg-asphalt/90 backdrop-blur-sm border-b border-white/10">
+      <div className="max-w-7xl 2xl:max-w-500 mx-auto px-8 py-4 flex items-center justify-between">
+        <Link href={ROUTES.ROOT}>
+          <div className="text-2xl font-bold text-primary">A.</div>
+        </Link>
+        <HeaderNav
+          isAuthorized={isAuthorized}
+          onLogout={onLogout}
+          onSignInOpen={onSignInOpen}
+          onSignUpOpen={onSignUpOpen}
+          openMobile={openMobile}
+          setOpenMobile={setOpenMobile}
+        />
+      </div>
       {open && (
         <Modal
           title={isSignIn ? "Sign In" : "Sign Up"}

@@ -5,11 +5,12 @@
 @theme {
   --background: #07111b;
   --foreground: #ffffff;
-  --color-primary: #14b673;
-  --color-secondary: #de512a;
+  --color-primary: #5eead4;
+  --color-secondary: #e95a3d;
   --color-grey-text: #a7b1ba;
-  --color-primary-accent: #44fcb0;
-  --color-secondary-accent: #fc9578;
+  --color-primary-hover: #4dd5bf;
+  --color-secondary-hover: #d94c2e;
+  --color-asphalt: #0f1419;
 }
 
 /* Hide scrollbar */
