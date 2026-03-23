@@ -4,7 +4,10 @@ import { DownloadCVButton } from "@/features/projects/DownloadCVButton";
 
 export default function MyProjects() {
   return (
-    <main className="flex-1 w-full max-w-6xl mx-auto px-4 sm:px-6 py-12">
+    <main
+      id="projects-page"
+      className="flex-1 w-full max-w-6xl mx-auto px-4 sm:px-6 pt-32 pb-20"
+    >
       <div className="flex flex-col sm:flex-row items-start justify-between mb-10">
         <div className="mb-4 sm:mb-0">
           <h1 className="text-4xl sm:text-5xl font-bold text-neutral-100 mb-3">

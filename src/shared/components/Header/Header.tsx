@@ -37,7 +37,7 @@ export const Header = () => {
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-asphalt/90 backdrop-blur-sm border-b border-white/10">
-      <div className="max-w-8xl mx-auto px-8 py-4 flex items-center justify-between">
+      <div className="max-w-7xl 2xl:max-w-500 mx-auto px-8 py-4 flex items-center justify-between">
         <Link href={ROUTES.ROOT}>
           <div className="text-2xl font-bold text-primary">A.</div>
         </Link>

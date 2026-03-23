@@ -8,7 +8,7 @@ export default async function Contact() {
   const userId = await getUserId();
   if (!userId) redirect(ROUTES.ROOT);
   return (
-    <div className="flex flex-col items-center justify-center flex-1 pt-4">
+    <div className="flex flex-col items-center justify-center flex-1 pt-32 pb-20">
       <h1 className="text-5xl mb-4">Contact me:</h1>
       <ul className="flex flex-col gap-y-2">
         <li className="flex items-center gap-x-2 group">

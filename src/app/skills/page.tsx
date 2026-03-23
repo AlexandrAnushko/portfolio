@@ -6,7 +6,7 @@ export default async function Skills() {
   const userId = await getUserId();
   if (!userId) redirect(ROUTES.ROOT);
   return (
-    <div className="flex items-center justify-center flex-1">
+    <div className="flex items-center justify-center flex-1 pt-32 pb-20">
       <h1 className="text-5xl">Skills</h1>
     </div>
   );
