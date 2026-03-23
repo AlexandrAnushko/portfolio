@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { Link } from "../Link";
 import { Menu, X } from "lucide-react";
 import {
   authorizedHeaderLinks,
@@ -34,11 +34,7 @@ export const HeaderNav = ({
       {/* DESKTOP */}
       <nav className="hidden sm:flex sm:gap-8 md:gap-12 items-center">
         {links.map((l) => (
-          <Link
-            key={l.href}
-            href={l.href}
-            className={`text-base font-semibold ${pathname === l.href ? "text-primary" : "text-grey-text"} hover:text-secondary transition-colors uppercase whitespace-nowrap`}
-          >
+          <Link key={l.href} href={l.href} isActive={pathname === l.href}>
             {l.label}
           </Link>
         ))}
@@ -64,7 +60,7 @@ export const HeaderNav = ({
 
         {/* Fullscreen overlay */}
         {openMobile && (
-          <div className="fixed inset-0 bg-black/99 z-50 flex flex-col p-6 animate-fadeIn">
+          <div className="fixed inset-0 bg-black/99 z-51 flex flex-col p-6 animate-fadeIn">
             <div className="flex justify-end">
               <button
                 onClick={() => setOpenMobile(false)}
@@ -96,7 +92,7 @@ export const HeaderNav = ({
                   key={l.href}
                   href={l.href}
                   onClick={() => setOpenMobile(false)}
-                  className={`${pathname === l.href ? "text-primary" : ""} hover:text-gray-300 transition`}
+                  isActive={pathname === l.href}
                 >
                   {l.label}
                 </Link>

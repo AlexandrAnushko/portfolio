@@ -33,23 +33,21 @@ export const Button = ({
       disabled={isDisabled || isLoading}
       type={type}
       className={clsx(
-        `flex items-center justify-center rounded-md focus:ring-white text-white cursor-pointer py-2 px-4
-        ${size === "large" ? "xl:py-3 xl:px-8" : "xl:py-2 xl:px-6"} 
-        active:scale-90 transition-all duration-300 disabled:opacity-30 disabled:cursor-not-allowed disabled:scale-100
-        ${className} ${
-          mode === "primary"
-            ? "bg-primary"
-            : mode === "secondary"
-              ? "bg-secondary"
-              : "bg-transparent"
-        }`,
         {
           "bg-linear-to-r from-blue-400 to-blue-500 animate-pulse": isLoading,
-          "hover:bg-primary-accent": mode === "primary",
-          "hover:bg-secondary-accent": mode === "secondary",
-          "border border-white": mode === "transparent",
+          "bg-primary hover:bg-primary-hover text-asphalt": mode === "primary",
+          "bg-secondary hover:bg-secondary-hover text-white":
+            mode === "secondary",
+          "border-2 border-primary bg-transparent text-primary hover:text-asphalt hover:bg-primary":
+            mode === "outline",
+          "bg-transparent border border-primary text-primary":
+            mode === "transparent",
           "gap-2": rightIcon,
         },
+        `flex items-center justify-center rounded-lg focus:ring-white cursor-pointer py-2 px-4 hover:opacity-80
+        ${size === "large" ? "xl:py-3 xl:px-8" : "xl:py-2 xl:px-6"} 
+        active:scale-90 transition-all duration-300 disabled:opacity-30 disabled:cursor-not-allowed disabled:scale-100
+        ${className}`,
       )}
     >
       {text && (

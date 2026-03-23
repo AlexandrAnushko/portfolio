@@ -29,7 +29,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="h-full">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col h-full overflow-y-auto overflow-x-clip`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col h-full overflow-y-auto overflow-x-clip pt-24`}
       >
         <Suspense>
           <ClientProviders>

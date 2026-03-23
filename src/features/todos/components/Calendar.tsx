@@ -1,6 +1,6 @@
 import { Calendar as AntdCalendar } from "antd";
 import type { Dayjs } from "dayjs";
-import { Button } from "@/shared/components/antd/Button";
+import { Button } from "@/shared/components/Button";
 
 type Props = {
   onSelect: (date: Dayjs) => void;
@@ -16,7 +16,8 @@ export const Calendar = ({ onSelect, onShowAll, value }: Props) => {
         <Button
           onClick={onShowAll}
           text="Show tasks for all time"
-          color="transparent"
+          mode="outline"
+          textTransform="normal-case"
         />
       )}
     </div>
