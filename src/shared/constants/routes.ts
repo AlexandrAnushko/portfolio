@@ -5,7 +5,7 @@ export const ROUTES = {
   // PROFILE: "/profile",
   PROJECTS: "/projects",
   SKILLS: "/skills",
-  CONTACT: "/contact",
+  CONTACT: "#contact",
 };
 
 export const RouteTitle = {

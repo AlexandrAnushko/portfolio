@@ -1,6 +1,6 @@
 export const About = () => {
   return (
-    <section className="py-20 bg-[#1a2028]">
+    <section className="py-20 bg-dark-grey">
       <div className="max-w-7xl mx-auto px-8">
         <h2 className="text-primary text-center mb-8 tracking-wide">
           ABOUT THIS APP
@@ -10,7 +10,7 @@ export const About = () => {
           development. In addition to a brief overview of my projects, you can
           also register in the system and access the internal task planning
           page. This feature includes task management via the calendar, as well
-          as the ability to group tasks into different categories.
+          as the ability to group tasks into different folders.
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">

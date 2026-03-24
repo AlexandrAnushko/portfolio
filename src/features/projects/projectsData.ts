@@ -2,18 +2,6 @@ import { Project } from "./types";
 
 export const PROJECTS: Project[] = [
   {
-    id: "portfolio-app",
-    title: "Portfolio App",
-    description:
-      "A full-stack portfolio built with Next.js 16, Prisma ORM, and Tailwind CSS featuring information about myself and task management.",
-    fullDescription:
-      "This portfolio application showcases my work as a developer. It includes JWT-based authentication, a fully functional task manager with calendar view and the ability to group tasks into folders, and a projects showcase. Built using Next.js 16 App Router with the new feature - Cache Components, and also with Prisma ORM, PostgreSQL, Tailwind CSS and Ant Design components.",
-    image: "/projects/portfolioApp.png",
-    tags: ["Next.js", "Prisma", "TypeScript", "Tailwind CSS", "PostgreSQL"],
-    githubUrl: "https://github.com/AlexandrAnushko/portfolio",
-    liveUrl: "https://portfolio-swart-psi-14.vercel.app",
-  },
-  {
     id: "email-marketing-platform",
     title: "Email marketing Platform",
     description:
@@ -41,6 +29,16 @@ export const PROJECTS: Project[] = [
     tags: ["React Native", "TypeScript", "Socket.io", "Redux", "Geocoding API"],
   },
   {
+    id: "telephony-web-app",
+    title: "Telephony Web App",
+    description:
+      "A Telephone line management system with call schema customization, analytics, and an admin panel.",
+    fullDescription:
+      "With this application, companies could set up different functions for incoming and outgoing calls. Built dynamic tree-based call flow diagrams with unlimited branching, editing, and deletion. Also developed dashboards and analytics.",
+    image: "/projects/telephonyWebApp.webp",
+    tags: ["React", "Reactflow", "RTK Query", "TypeScript", "Chart.js", "MUI"],
+  },
+  {
     id: "laboratory-management-system",
     title: "Laboratory Management System",
     description:
@@ -61,13 +59,15 @@ export const PROJECTS: Project[] = [
     tags: ["React", "Redux Toolkit", "TypeScript", "Styled Components"],
   },
   {
-    id: "telephony-web-app",
-    title: "Telephony Web App",
+    id: "portfolio-app",
+    title: "Portfolio App",
     description:
-      "A Telephone line management system with call schema customization, analytics, and an admin panel.",
+      "A full-stack portfolio built with Next.js 16, Prisma ORM, and Tailwind CSS featuring information about myself and task management.",
     fullDescription:
-      "With this application, companies could set up different functions for incoming and outgoing calls. Built dynamic tree-based call flow diagrams with unlimited branching, editing, and deletion. Also developed dashboards and analytics.",
-    image: "/projects/telephonyWebApp.webp",
-    tags: ["React", "Reactflow", "RTK Query", "TypeScript", "Chart.js", "MUI"],
+      "This portfolio application showcases my work as a developer. It includes JWT-based authentication, a fully functional task manager with calendar view and the ability to group tasks into folders, and a projects showcase. Built using Next.js 16 App Router with the new feature - Cache Components, and also with Prisma ORM, PostgreSQL, Tailwind CSS and Ant Design components.",
+    image: "/projects/portfolioApp.png",
+    tags: ["Next.js", "Prisma", "TypeScript", "Tailwind CSS", "PostgreSQL"],
+    githubUrl: "https://github.com/AlexandrAnushko/portfolio",
+    liveUrl: "https://portfolio-swart-psi-14.vercel.app",
   },
 ];
