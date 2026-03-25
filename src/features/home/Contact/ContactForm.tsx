@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import { contactFormSchema, ContactFormValues } from "./contactSchema";
 import { sendContactMessage } from "@/app/actions/contact";
 import { Button } from "@/shared/components/Button";
+import { FormInput } from "@/shared/components/FormInput";
 
 export const ContactForm = () => {
   const {
@@ -32,53 +33,46 @@ export const ContactForm = () => {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div>
+        <div className="relative">
           <label htmlFor="name" className="block text-sm mb-2 text-gray-300">
             Name
           </label>
-          <input
-            type="text"
-            id="name"
-            {...register("name")}
-            className="w-full bg-dark-grey border border-primary/20 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary transition-colors"
-            placeholder="Your name"
-          />
+          <FormInput name="name" placeholder="Your name" register={register} />
           {errors.name && (
-            <p className="text-red-400 text-sm mt-1">{errors.name.message}</p>
+            <p className="absolute -bottom-[1.5em] right-0 text-red-400 text-sm">
+              {errors.name.message}
+            </p>
           )}
         </div>
-        <div>
+        <div className="relative">
           <label htmlFor="email" className="block text-sm mb-2 text-gray-300">
             Email
           </label>
-          <input
-            type="email"
-            id="email"
-            {...register("email")}
-            className="w-full bg-dark-grey border border-primary/20 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary transition-colors"
+          <FormInput
+            name="email"
             placeholder="your@email.com"
+            type="email"
+            register={register}
           />
           {errors.email && (
-            <p className="text-red-400 text-sm mt-1">{errors.email.message}</p>
+            <p className="absolute -bottom-[1.5em] right-0 text-red-400 text-sm mt-1">
+              {errors.email.message}
+            </p>
           )}
         </div>
       </div>
-      <div>
+      <div className="relative">
         <label htmlFor="subject" className="block text-sm mb-2 text-gray-300">
           Subject
         </label>
-        <input
-          type="text"
-          id="subject"
-          {...register("subject")}
-          className="w-full bg-dark-grey border border-primary/20 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary transition-colors"
-          placeholder="Subject"
-        />
+        <FormInput name="subject" placeholder="Subject" register={register} />
         {errors.subject && (
-          <p className="text-red-400 text-sm mt-1">{errors.subject.message}</p>
+          <p className="absolute -bottom-[1.5em] right-0 text-red-400 text-sm mt-1">
+            {errors.subject.message}
+          </p>
         )}
       </div>
-      <div>
+      <div className="relative">
         <label htmlFor="message" className="block text-sm mb-2 text-gray-300">
           Message
         </label>
@@ -88,15 +82,17 @@ export const ContactForm = () => {
           {...register("message")}
           className="w-full bg-dark-grey border border-primary/20 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary transition-colors resize-none"
           placeholder="Tell me anything..."
-        ></textarea>
+        />
         {errors.message && (
-          <p className="text-red-400 text-sm mt-1">{errors.message.message}</p>
+          <p className="absolute -bottom-[1.25em] right-0 text-red-400 text-sm mt-1">
+            {errors.message.message}
+          </p>
         )}
       </div>
       <Button
         type="submit"
         isDisabled={isSubmitting}
-        text={isSubmitting ? "SENDING..." : "SEND MESSAGE"}
+        text={isSubmitting ? "Sending..." : "Send Message"}
         className="w-full"
       />
     </form>
