@@ -1,9 +1,6 @@
-import { Input } from "antd";
 import { Button } from "@/shared/components/Button";
 import { ChangeEvent, KeyboardEvent } from "react";
 import { DateAndMode } from "../types/types";
-
-const { TextArea } = Input;
 
 type Props = {
   text: string;
@@ -14,8 +11,7 @@ type Props = {
   handleShowDeleteModal: (show: boolean) => void;
   setShowCalendar: (show: boolean) => void;
 };
-
-export const InputPanel = ({
+export const TaskInput = ({
   text,
   isPending,
   dateAndMode,
@@ -41,17 +37,20 @@ export const InputPanel = ({
       handleAdd();
     }
   };
-
   return (
-    <div className="flex flex-col sm:flex-row gap-2 mb-4">
-      <TextArea
-        rows={3}
+    <div className="flex flex-col gap-4">
+      <textarea
         placeholder="Add task..."
+        rows={3}
         value={text}
         onChange={onChange}
         onKeyDown={onKeyDown}
+        className="w-full bg-dark-bg-hover border border-white/10 rounded-xl py-3.5 pl-4 pr-12 text-white placeholder-gray-500 focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/50 transition-all"
       />
-      <div className="flex flex-row justify-between sm:flex-col w-full sm:max-w-[18%] lg:max-w-[14%]">
+      <div className="flex flex-row justify-between items-center">
+        <h3 className="hidden xl:block text-xl font-bold text-white tracking-wide">
+          TASK LIST
+        </h3>
         <Button
           onClick={showCalendar}
           text={
@@ -60,9 +59,9 @@ export const InputPanel = ({
               : dateAndMode.selectedDate.slice(0, 10)
           }
           textTransform="normal-case"
-          className="sm:hidden"
+          className="xl:hidden"
         />
-        <div className="flex flex-row sm:flex-col gap-2">
+        <div className="flex flex-row gap-2 self-end">
           <Button
             onClick={handleAdd}
             isDisabled={isPending}
@@ -73,7 +72,7 @@ export const InputPanel = ({
             onClick={handleDeleteAll}
             isDisabled={isPending}
             text="Delete All"
-            mode="secondary"
+            mode="danger"
             textTransform="normal-case"
           />
         </div>

@@ -27,7 +27,7 @@ export const useTodos = ({
   const [todos, setTodos] = useState<Todo[]>([]);
   const [editingTodo, setEditingTodo] = useState<Todo | null>(null);
   const [isPending, startTransition] = useTransition();
-  const [pagination, setPagination] = useState({ current: 1, pageSize: 10 });
+  const [pagination, setPagination] = useState({ current: 1, pageSize: 5 });
 
   const fetchTodos = async () => {
     const data = dateAndMode.isShowAll
@@ -105,12 +105,7 @@ export const useTodos = ({
 
     startTransition(async () => {
       try {
-        await updateTodo(
-          editingTodo.id,
-          editText,
-          editDate,
-          activeFolderId,
-        );
+        await updateTodo(editingTodo.id, editText, editDate, activeFolderId);
       } catch {
         setTodos(prevTodos);
         toast.error("Failed to update todo. Please try again.");
@@ -138,11 +133,7 @@ export const useTodos = ({
     setTodos((prev) => prev.filter((t) => t.id !== id));
     startTransition(async () => {
       try {
-        await deleteTodoById(
-          id,
-          dateAndMode.selectedDate,
-          activeFolderId,
-        );
+        await deleteTodoById(id, dateAndMode.selectedDate, activeFolderId);
       } catch {
         setTodos(prevTodos);
         toast.error("Failed to delete todo. Please try again.");

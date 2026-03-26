@@ -23,14 +23,14 @@ export function Projects() {
               key={project.id}
               className="group bg-dark-grey rounded-xl overflow-hidden border border-transparent hover:border-primary/50 transition-all duration-300"
             >
-              <div className="relative overflow-hidden h-48">
+              <div className="relative overflow-hidden h-55 sm:h-84 md:h-54">
                 <Image
                   src={project.image}
                   alt={project.title}
-                  width={382}
-                  height={192}
+                  fill
                   loading="eager"
-                  className="w-auto h-auto object-cover group-hover:scale-110 transition-transform duration-300"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  className="object-cover group-hover:scale-110 transition-transform duration-300"
                 />
                 <div className="absolute inset-0 bg-linear-to-t from-dark-grey to-transparent opacity-60"></div>
               </div>

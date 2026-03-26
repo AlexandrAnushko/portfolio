@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { DateAndMode, Todo } from "../types/types";
-import dayjs from "dayjs";
+import { isSameDay } from "date-fns";
 import { toast } from "sonner";
 
 type UseTodaySuccessParams = {
@@ -21,7 +21,7 @@ export const useTodaySuccess = ({
     if (
       !dateAndMode.isShowAll &&
       !!todos.length &&
-      dayjs().isSame(dateAndMode.selectedDate, "day") &&
+      isSameDay(new Date(), new Date(dateAndMode.selectedDate)) &&
       !isTodaySuccess.current
     ) {
       if (todos.every((t) => t.done)) {

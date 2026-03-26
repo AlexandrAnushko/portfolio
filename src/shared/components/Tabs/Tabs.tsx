@@ -30,7 +30,7 @@ export const Tabs = ({
   deleteTabText,
 }: Props) => {
   return (
-    <div className="flex items-end gap-0.5">
+    <div className="flex flex-wrap items-center gap-2 mb-4 border-b border-white/10 pb-4">
       {tabs.map((tab) => (
         <Tab
           key={tab.id}

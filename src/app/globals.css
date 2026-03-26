@@ -12,6 +12,8 @@
   --color-secondary-hover: #d94c2e;
   --color-asphalt: #0f1419;
   --color-dark-grey: #1a2028;
+  --color-dark-bg: #151a21;
+  --color-dark-bg-hover: #1a222a;
 }
 
 /* Hide scrollbar */

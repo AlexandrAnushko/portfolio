@@ -1,6 +1,6 @@
 import { Input } from "antd";
 import { KeyboardEvent } from "react";
-import dayjs, { Dayjs } from "dayjs";
+import { parseISO } from "date-fns";
 import { Todo } from "../types/types";
 import { useState } from "react";
 import { Calendar } from "./Calendar";
@@ -24,8 +24,8 @@ export const EditModal = ({
   const [editText, setEditText] = useState(editingTodo.text);
   const [editDate, setEditDate] = useState(editingTodo.date);
 
-  const onSelect = (date: Dayjs) => {
-    const iso = date.toDate().toISOString();
+  const onSelect = (date: Date) => {
+    const iso = date.toISOString();
     setEditDate(iso);
   };
 
@@ -66,7 +66,7 @@ export const EditModal = ({
         onOk={() => setShowCalendar(false)}
         onCancel={onCancel}
       >
-        <Calendar onSelect={onSelect} value={dayjs(editDate)} />
+        <Calendar onSelect={onSelect} value={parseISO(editDate)} />
       </Modal>
     </Modal>
   );
