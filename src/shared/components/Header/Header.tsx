@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Link } from "../Link";
 import { signOut } from "next-auth/react";
-import { Modal } from "../antd/Modal";
+import { Modal } from "../Modal";
 import { AuthForm } from "@/features/auth/AuthForm";
 import { ROUTES } from "../../constants/routes";
 import { useAuth } from "@/shared/hooks/useAuth";
@@ -36,24 +36,25 @@ export const Header = () => {
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-asphalt/90 backdrop-blur-sm border-b border-white/10">
-      <div className="max-w-7xl 2xl:max-w-500 mx-auto px-8 py-4 flex items-center justify-between">
-        <Link href={ROUTES.ROOT}>
-          <div className="text-2xl font-bold text-primary">A.</div>
-        </Link>
-        <HeaderNav
-          isAuthorized={isAuthorized}
-          onLogout={onLogout}
-          onSignInOpen={onSignInOpen}
-          onSignUpOpen={onSignUpOpen}
-          openMobile={openMobile}
-          setOpenMobile={setOpenMobile}
-        />
-      </div>
+    <>
+      <header className="fixed top-0 left-0 right-0 z-50 bg-asphalt/90 backdrop-blur-sm border-b border-white/10">
+        <div className="max-w-7xl 2xl:max-w-500 mx-auto px-8 py-4 flex items-center justify-between">
+          <Link href={ROUTES.ROOT}>
+            <div className="text-2xl font-bold text-primary">A.</div>
+          </Link>
+          <HeaderNav
+            isAuthorized={isAuthorized}
+            onLogout={onLogout}
+            onSignInOpen={onSignInOpen}
+            onSignUpOpen={onSignUpOpen}
+            openMobile={openMobile}
+            setOpenMobile={setOpenMobile}
+          />
+        </div>
+      </header>
       {open && (
         <Modal
           title={isSignIn ? "Sign In" : "Sign Up"}
-          centered
           open={open}
           onCancel={() => setOpen(false)}
         >
@@ -71,6 +72,6 @@ export const Header = () => {
           />
         </Modal>
       )}
-    </header>
+    </>
   );
 };

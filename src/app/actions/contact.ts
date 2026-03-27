@@ -4,7 +4,7 @@ import prisma from "@/lib/db";
 import {
   contactFormSchema,
   ContactFormValues,
-} from "@/features/home/contactSchema";
+} from "@/features/home/Contact/contactSchema";
 
 export const sendContactMessage = async (data: ContactFormValues) => {
   const parsed = contactFormSchema.safeParse(data);

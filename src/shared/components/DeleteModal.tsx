@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
-import { Modal } from "@/shared/components/antd/Modal";
+import { Modal } from "@/shared/components/Modal";
+import { Button } from "./Button";
 
 type Props = {
   text: string;
@@ -21,13 +22,24 @@ export const DeleteModal = ({ text, open, setOpen, action }: Props) => {
     setOpen(false);
   };
   return (
-    <Modal
-      open={open}
-      onOk={handleOk}
-      confirmLoading={confirmLoading}
-      onCancel={handleCancel}
-    >
+    <Modal open={open} onCancel={handleCancel}>
       <h2 className="text-white text-lg pr-2">{text}</h2>
+      <div className="flex justify-end gap-2">
+        <Button
+          type="submit"
+          onClick={handleOk}
+          text="Ok"
+          size="small"
+          isLoading={confirmLoading}
+        />
+
+        <Button
+          onClick={handleCancel}
+          text="Cancel"
+          mode="secondary"
+          size="small"
+        />
+      </div>
     </Modal>
   );
 };

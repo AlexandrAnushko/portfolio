@@ -1,21 +1,5 @@
 import { render, screen, fireEvent } from "@testing-library/react";
-import { InputPanel } from "@/features/todos/components/InputPanel";
-
-// Mock antd Input/TextArea
-jest.mock("antd", () => ({
-  Input: {
-    TextArea: (props: any) => (
-      <textarea
-        data-testid="todo-textarea"
-        value={props.value}
-        onChange={props.onChange}
-        onKeyDown={props.onKeyDown}
-        placeholder={props.placeholder}
-        rows={props.rows}
-      />
-    ),
-  },
-}));
+import { TaskInput } from "@/features/todos/components/TaskInput";
 
 jest.mock("@/shared/components/Button", () => ({
   Button: ({ onClick, text, isDisabled }: any) => (
@@ -39,53 +23,53 @@ beforeEach(() => {
   jest.clearAllMocks();
 });
 
-describe("InputPanel", () => {
+describe("TaskInput", () => {
   it("renders textarea with placeholder", () => {
-    render(<InputPanel {...defaultProps} />);
+    render(<TaskInput {...defaultProps} />);
     expect(screen.getByPlaceholderText("Add task...")).toBeInTheDocument();
   });
 
   it("calls setText on input change", () => {
-    render(<InputPanel {...defaultProps} />);
-    const textarea = screen.getByTestId("todo-textarea");
+    render(<TaskInput {...defaultProps} />);
+    const textarea = screen.getByPlaceholderText("Add task...");
     fireEvent.change(textarea, { target: { value: "Hello" } });
     expect(defaultProps.setText).toHaveBeenCalled();
   });
 
   it("calls handleAdd on Enter key (without Shift)", () => {
-    render(<InputPanel {...defaultProps} />);
-    const textarea = screen.getByTestId("todo-textarea");
+    render(<TaskInput {...defaultProps} />);
+    const textarea = screen.getByPlaceholderText("Add task...");
     fireEvent.keyDown(textarea, { key: "Enter", shiftKey: false });
     expect(defaultProps.handleAdd).toHaveBeenCalled();
   });
 
   it("does not call handleAdd on Shift+Enter", () => {
-    render(<InputPanel {...defaultProps} />);
-    const textarea = screen.getByTestId("todo-textarea");
+    render(<TaskInput {...defaultProps} />);
+    const textarea = screen.getByPlaceholderText("Add task...");
     fireEvent.keyDown(textarea, { key: "Enter", shiftKey: true });
     expect(defaultProps.handleAdd).not.toHaveBeenCalled();
   });
 
   it("calls handleAdd on Add button click", () => {
-    render(<InputPanel {...defaultProps} />);
+    render(<TaskInput {...defaultProps} />);
     fireEvent.click(screen.getByText("Add"));
     expect(defaultProps.handleAdd).toHaveBeenCalled();
   });
 
   it("calls handleShowDeleteModal on Delete All click", () => {
-    render(<InputPanel {...defaultProps} />);
+    render(<TaskInput {...defaultProps} />);
     fireEvent.click(screen.getByText("Delete All"));
     expect(defaultProps.handleShowDeleteModal).toHaveBeenCalledWith(true);
   });
 
   it("shows date in calendar button on mobile", () => {
-    render(<InputPanel {...defaultProps} />);
+    render(<TaskInput {...defaultProps} />);
     expect(screen.getByText("2026-03-10")).toBeInTheDocument();
   });
 
   it('shows "All tasks" when isShowAll mode', () => {
     render(
-      <InputPanel
+      <TaskInput
         {...defaultProps}
         dateAndMode={{
           selectedDate: "2026-03-10T00:00:00.000Z",
@@ -97,7 +81,7 @@ describe("InputPanel", () => {
   });
 
   it("disables Add button when isPending", () => {
-    render(<InputPanel {...defaultProps} isPending={true} />);
+    render(<TaskInput {...defaultProps} isPending={true} />);
     expect(screen.getByText("Add")).toBeDisabled();
   });
 });

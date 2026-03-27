@@ -1,13 +1,13 @@
 import { renderHook } from "@testing-library/react";
 import { useTodaySuccess } from "@/features/todos/hooks/useTodaySuccess";
 import { toast } from "sonner";
-import dayjs from "dayjs";
+import { subDays } from "date-fns";
 
 jest.mock("sonner", () => ({
   toast: { success: jest.fn(), error: jest.fn() },
 }));
 
-const todayISO = dayjs().toISOString();
+const todayISO = new Date().toISOString();
 
 beforeEach(() => {
   jest.clearAllMocks();
@@ -60,7 +60,7 @@ describe("useTodaySuccess", () => {
   });
 
   it("does not show toast for a different day", () => {
-    const yesterday = dayjs().subtract(1, "day").toISOString();
+    const yesterday = subDays(new Date(), 1).toISOString();
     const todos = [
       { id: "1", text: "A", done: true, date: yesterday, folderId: "f1" },
     ];

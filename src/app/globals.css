@@ -1,4 +1,4 @@
-@layer theme, base, antd, components, utilities;
+@layer theme, base, components, utilities;
 
 @import "tailwindcss";
 
@@ -12,6 +12,8 @@
   --color-secondary-hover: #d94c2e;
   --color-asphalt: #0f1419;
   --color-dark-grey: #1a2028;
+  --color-dark-bg: #151a21;
+  --color-dark-bg-hover: #1a222a;
 }
 
 /* Hide scrollbar */
@@ -24,6 +26,15 @@ html {
 /* Hide for Chrome, Safari, and Edge */
 html::-webkit-scrollbar {
   display: none;
+}
+
+/* Custom dark scrollbar */
+@layer base {
+  .custom-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: #2a2a2a transparent;
+    overflow-y: auto;
+  }
 }
 
 body {

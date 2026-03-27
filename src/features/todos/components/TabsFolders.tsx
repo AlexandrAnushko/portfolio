@@ -81,31 +81,29 @@ export const TabsFolders = ({
   };
 
   return (
-    <div className="flex w-full items-end justify-start px-4 pt-2 rounded-t-xl bg-gray-700 overflow-x-auto">
-      <Tabs
-        tabs={folders}
-        activeId={activeFolderId}
-        onTabClick={onFolderChange}
-        onTabDoubleClick={handleTabDoubleClick}
-        onTabDelete={handleTabDelete}
-        onAddClick={handleAddClick}
-        editingTabId={editingTabId}
-        plusTabTitle="New folder"
-        deleteTabText="Delete folder"
-        EditingInput={
-          <input
-            ref={inputRef}
-            value={newName}
-            onChange={(e) => setNewName(e.target.value)}
-            onBlur={handleConfirm}
-            onKeyDown={handleKeyDown}
-            placeholder="Folder name…"
-            maxLength={30}
-            disabled={isPending}
-            className="h-8 max-w-17 sm:max-w-26 xl:max-w-35 rounded-md border border-gray-500 bg-gray-800 px-1 text-sm text-white placeholder-gray-500 outline-none focus:border-blue-500 disabled:opacity-50"
-          />
-        }
-      />
-    </div>
+    <Tabs
+      tabs={folders}
+      activeId={activeFolderId}
+      onTabClick={onFolderChange}
+      onTabDoubleClick={handleTabDoubleClick}
+      onTabDelete={handleTabDelete}
+      onAddClick={handleAddClick}
+      editingTabId={editingTabId}
+      plusTabTitle="New folder"
+      deleteTabText="Delete folder"
+      EditingInput={
+        <input
+          ref={inputRef}
+          value={newName}
+          onChange={(e) => setNewName(e.target.value)}
+          onBlur={handleConfirm}
+          onKeyDown={handleKeyDown}
+          placeholder="Folder name…"
+          maxLength={30}
+          disabled={isPending}
+          className="w-full bg-dark-grey border border-primary/20 rounded-lg p-2 text-white focus:outline-none focus:border-primary transition-colors"
+        />
+      }
+    />
   );
 };
