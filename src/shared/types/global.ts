@@ -6,4 +6,5 @@ export type ButtonMode =
   | "dark"
   | "danger"
   | "transparent"
+  | "hover-text"
   | "text";

@@ -25,10 +25,12 @@ export const Calendar = ({ onSelect, value }: Props) => {
   });
 
   const startDay = currentMonth.getDay();
-  const prefixBlanks = Array.from({ length: startDay === 0 ? 6 : startDay - 1 });
+  const prefixBlanks = Array.from({
+    length: startDay === 0 ? 6 : startDay - 1,
+  });
 
   return (
-    <div className="bg-dark-bg-hover rounded-xl p-4 border border-white/5">
+    <div className="bg-dark-bg-hover rounded-xl p-4 border border-white/10">
       <div className="flex justify-between items-center mb-4">
         <button
           onClick={() => setCurrentMonth(subMonths(currentMonth, 1))}

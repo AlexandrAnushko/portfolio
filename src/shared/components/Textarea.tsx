@@ -14,7 +14,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, Props>(
         rows={rows}
         placeholder={placeholder}
         className={cn(
-          `custom-scrollbar w-full bg-dark-grey border border-primary/20 rounded-lg px-4 py-3 text-white 
+          `custom-scrollbar w-full bg-dark-grey border border-primary/30 rounded-lg px-4 py-3 text-white 
             focus:outline-none focus:border-primary focus:ring-primary/50 transition-colors resize-none ${className}`,
         )}
         {...rest}
