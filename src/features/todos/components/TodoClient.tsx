@@ -8,7 +8,7 @@ import { TaskList } from "./TaskList";
 import { Pagination } from "./Pagination";
 import { EditModal } from "./EditModal";
 import { DeleteModal } from "@/shared/components/DeleteModal";
-import { Modal } from "@/shared/components/antd/Modal";
+import { Modal } from "@/shared/components/Modal";
 import { Button } from "@/shared/components/Button";
 import { TabsFolders } from "./TabsFolders";
 import { useDateMode } from "../hooks/useDateMode";

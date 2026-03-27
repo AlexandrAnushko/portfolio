@@ -1,6 +1,7 @@
 import { Button } from "@/shared/components/Button";
 import { ChangeEvent, KeyboardEvent } from "react";
 import { DateAndMode } from "../types/types";
+import { Textarea } from "@/shared/components/Textarea";
 
 type Props = {
   text: string;
@@ -39,13 +40,12 @@ export const TaskInput = ({
   };
   return (
     <div className="flex flex-col gap-4">
-      <textarea
+      <Textarea
         placeholder="Add task..."
         rows={3}
         value={text}
         onChange={onChange}
         onKeyDown={onKeyDown}
-        className="w-full bg-dark-bg-hover border border-white/10 rounded-xl py-3.5 pl-4 pr-12 text-white placeholder-gray-500 focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/50 transition-all"
       />
       <div className="flex flex-row justify-between items-center">
         <h3 className="hidden xl:block text-xl font-bold text-white tracking-wide">

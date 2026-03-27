@@ -7,6 +7,7 @@ import { contactFormSchema, ContactFormValues } from "./contactSchema";
 import { sendContactMessage } from "@/app/actions/contact";
 import { Button } from "@/shared/components/Button";
 import { FormInput } from "@/shared/components/FormInput";
+import { Textarea } from "@/shared/components/Textarea";
 
 export const ContactForm = () => {
   const {
@@ -76,12 +77,11 @@ export const ContactForm = () => {
         <label htmlFor="message" className="block text-sm mb-2 text-gray-300">
           Message
         </label>
-        <textarea
+        <Textarea
           id="message"
+          placeholder="Tell me anything..."
           rows={6}
           {...register("message")}
-          className="w-full bg-dark-grey border border-primary/20 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary transition-colors resize-none"
-          placeholder="Tell me anything..."
         />
         {errors.message && (
           <p className="absolute -bottom-[1.25em] right-0 text-red-400 text-sm mt-1">

@@ -1,4 +1,4 @@
-@layer theme, base, antd, components, utilities;
+@layer theme, base, components, utilities;
 
 @import "tailwindcss";
 
@@ -26,6 +26,15 @@ html {
 /* Hide for Chrome, Safari, and Edge */
 html::-webkit-scrollbar {
   display: none;
+}
+
+/* Custom dark scrollbar */
+@layer base {
+  .custom-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: #2a2a2a transparent;
+    overflow-y: auto;
+  }
 }
 
 body {
