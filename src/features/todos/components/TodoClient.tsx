@@ -98,7 +98,7 @@ export default function TodoClient({ userId, initialFolders }: Props) {
       <div className="flex flex-col lg:flex-row gap-8">
         {/* Left Sidebar */}
         <div className="hidden xl:flex w-full lg:w-80 shrink-0 flex-col gap-6">
-          <div className="bg-dark-bg border border-white/5 rounded-2xl p-6">
+          <div className="bg-dark-bg border border-white/10 rounded-2xl p-6">
             <Calendar
               onSelect={onSelect}
               value={new Date(dateAndMode.selectedDate)}
@@ -117,7 +117,7 @@ export default function TodoClient({ userId, initialFolders }: Props) {
         </div>
 
         {/* Right Content */}
-        <div className="flex-1 flex flex-col gap-6 bg-dark-bg border border-white/5 rounded-2xl p-6 shadow-xl">
+        <div className="flex-1 flex flex-col gap-6 bg-dark-bg border border-white/10 rounded-2xl p-6 shadow-xl">
           <TaskInput
             text={newTodoText}
             setText={setNewTodoText}

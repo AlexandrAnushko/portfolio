@@ -39,6 +39,7 @@ export const Link = ({
           "hover:text-white": mode === "text" && !isActive,
           "text-primary hover:opacity-80": mode === "text" && isActive,
           "py-2 px-4 xl:py-4 xl:px-8": mode !== "text",
+          "bg-primary-hover/3 hover:bg-primary-hover/30": mode === "hover-text",
         },
         `${textTransform} rounded-lg focus:ring-white text-center text-nowrap text-sm xl:text-base font-semibold cursor-pointer 
           active:scale-90 transition-all duration-300 whitespace-nowrap ${className}`,

@@ -39,11 +39,11 @@ export const Button = ({
           "bg-linear-to-r from-blue-400 to-blue-500 animate-pulse": isLoading,
           "bg-primary hover:bg-primary-hover text-asphalt shadow-primary/20":
             mode === "primary",
-          "bg-secondary hover:bg-secondary-hover text-white":
+          "bg-secondary hover:bg-secondary-hover text-white shadow-secondary/20":
             mode === "secondary",
           "border-2 border-primary bg-transparent text-primary hover:text-asphalt hover:bg-primary":
             mode === "outline",
-          "border border-white/5 bg-dark-bg hover:bg-dark-bg-hover text-gray-300 shadow-sm":
+          "border border-white/10 bg-dark-bg hover:bg-dark-bg-hover text-gray-300 shadow-sm":
             mode === "dark",
           "bg-secondary/10 hover:bg-secondary/20 text-secondary border border-secondary/20":
             mode === "danger",

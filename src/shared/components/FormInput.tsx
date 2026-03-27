@@ -19,7 +19,7 @@ export const FormInput = <T extends FieldValues>({
       type={type}
       id={name}
       {...register(name)}
-      className="w-full bg-dark-grey border border-primary/20 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary transition-colors"
+      className="w-full bg-dark-grey border border-primary/30 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary transition-colors"
       placeholder={placeholder}
     />
   );

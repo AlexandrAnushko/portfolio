@@ -62,7 +62,7 @@ export const HeaderNav = ({
         {/* Fullscreen overlay */}
         {openMobile &&
           createPortal(
-            <div className="sm:hidden fixed inset-0 bg-black/99 z-51 flex flex-col p-6 animate-fadeIn">
+            <div className="sm:hidden fixed inset-0 bg-black/95 backdrop-blur-md z-51 flex flex-col p-6 animate-fadeIn">
               <div className="flex justify-end">
                 <button
                   onClick={() => setOpenMobile(false)}
@@ -73,8 +73,21 @@ export const HeaderNav = ({
               </div>
 
               <nav className="mt-10 flex flex-col items-center gap-6 text-white text-2xl">
+                {links.map((l) => (
+                  <Link
+                    key={l.href}
+                    href={l.href}
+                    onClick={() => setOpenMobile(false)}
+                    isActive={pathname === l.href}
+                    mode="hover-text"
+                    className="w-32.5 shadow-lg shadow-primary/10"
+                  >
+                    {l.label}
+                  </Link>
+                ))}
+
                 {!isAuthorized && (
-                  <div className="flex gap-4 w-full">
+                  <div className="flex flex-col w-32.5 gap-4 mt-2">
                     <Button
                       text="Sign In"
                       onClick={onSignInOpen}
@@ -89,23 +102,12 @@ export const HeaderNav = ({
                   </div>
                 )}
 
-                {links.map((l) => (
-                  <Link
-                    key={l.href}
-                    href={l.href}
-                    onClick={() => setOpenMobile(false)}
-                    isActive={pathname === l.href}
-                  >
-                    {l.label}
-                  </Link>
-                ))}
-
                 {isAuthorized && (
                   <Button
                     text="Logout"
                     onClick={onLogout}
                     mode="secondary"
-                    className="w-40"
+                    className="w-32.5"
                   />
                 )}
               </nav>
