@@ -1,11 +1,13 @@
 import { render, screen, fireEvent } from "@testing-library/react";
-import { TaskList } from "@/features/todos/components/TaskList";
+import { TaskList } from "@/features/todos/components/tasks/TaskList";
 import type { Todo } from "@/features/todos/types/types";
 
 jest.mock("lucide-react", () => ({
   Trash2: () => <span data-testid="trash-icon">delete</span>,
   Edit3: () => <span data-testid="edit-icon">edit</span>,
   Check: () => <span data-testid="check-icon">check</span>,
+  ChevronLeft: () => <span data-testid="chevron-left">left</span>,
+  ChevronRight: () => <span data-testid="chevron-right">right</span>,
 }));
 
 jest.mock("@/shared/utils/formatDate", () => ({
@@ -37,6 +39,7 @@ const defaultProps = {
   handleToggle: jest.fn(),
   handleDelete: jest.fn(),
   setEditingTodo: jest.fn(),
+  setPagination: jest.fn(),
 };
 
 beforeEach(() => {
