@@ -1,6 +1,6 @@
 import { Button } from "@/shared/components/Button";
 import { ChangeEvent, KeyboardEvent } from "react";
-import { DateAndMode } from "../types/types";
+import { DateAndMode } from "../../types/types";
 import { Textarea } from "@/shared/components/Textarea";
 
 type Props = {

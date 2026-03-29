@@ -1,5 +1,5 @@
 import { render, screen, fireEvent } from "@testing-library/react";
-import { TaskInput } from "@/features/todos/components/TaskInput";
+import { TaskInput } from "@/features/todos/components/tasks/TaskInput";
 
 jest.mock("@/shared/components/Button", () => ({
   Button: ({ onClick, text, isDisabled }: any) => (

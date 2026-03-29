@@ -3,9 +3,8 @@
 import { useState } from "react";
 import { TodoFolder } from "@/features/todos/types/types";
 import { Calendar } from "./Calendar";
-import { TaskInput } from "./TaskInput";
-import { TaskList } from "./TaskList";
-import { Pagination } from "./Pagination";
+import { TaskInput } from "./tasks/TaskInput";
+import { TaskList } from "./tasks/TaskList";
 import { EditModal } from "./EditModal";
 import { DeleteModal } from "@/shared/components/DeleteModal";
 import { Modal } from "@/shared/components/Modal";
@@ -135,12 +134,7 @@ export default function TodoClient({ userId, initialFolders }: Props) {
             handleToggle={handleToggle}
             handleDelete={handleDelete}
             setEditingTodo={setEditingTodo}
-          />
-          <Pagination
-            total={todos.length}
-            current={pagination.current}
-            pageSize={pagination.pageSize}
-            onChange={(page) => setPagination({ ...pagination, current: page })}
+            setPagination={setPagination}
           />
         </div>
       </div>
