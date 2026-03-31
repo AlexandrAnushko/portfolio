@@ -4,6 +4,7 @@ import { createPortal } from "react-dom";
 import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
 import {
+  adminHeaderLinks,
   authorizedHeaderLinks,
   unauthorizedHeaderLinks,
 } from "@/shared/constants/routes";
@@ -12,6 +13,7 @@ import { Link } from "../Link";
 
 type Props = {
   isAuthorized: boolean | null;
+  role: string | null;
   onLogout: () => Promise<void>;
   onSignInOpen: () => void;
   onSignUpOpen: () => void;
@@ -21,6 +23,7 @@ type Props = {
 
 export const HeaderNav = ({
   isAuthorized,
+  role,
   onLogout,
   onSignInOpen,
   onSignUpOpen,
@@ -28,7 +31,12 @@ export const HeaderNav = ({
   setOpenMobile,
 }: Props) => {
   const pathname = usePathname();
-  const links = isAuthorized ? authorizedHeaderLinks : unauthorizedHeaderLinks;
+  const isAdmin = role === "ADMIN";
+  const links = isAdmin
+    ? adminHeaderLinks
+    : isAuthorized
+      ? authorizedHeaderLinks
+      : unauthorizedHeaderLinks;
 
   return (
     <div className="relative">

@@ -11,7 +11,7 @@ import { HeaderNav } from "./HeaderNav";
 import { useRouter } from "next/navigation";
 
 export const Header = () => {
-  const { isAuthorized, refresh } = useAuth();
+  const { isAuthorized, role, refresh } = useAuth();
   const router = useRouter();
 
   const [open, setOpen] = useState(false);
@@ -44,6 +44,7 @@ export const Header = () => {
           </Link>
           <HeaderNav
             isAuthorized={isAuthorized}
+            role={role}
             onLogout={onLogout}
             onSignInOpen={onSignInOpen}
             onSignUpOpen={onSignUpOpen}

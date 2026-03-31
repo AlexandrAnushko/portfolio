@@ -33,6 +33,7 @@ export const authOptions: AuthOptions = {
         });
         if (dbUser) {
           token.userId = dbUser.id;
+          token.role = dbUser.role;
         }
       }
       return token;
@@ -40,6 +41,9 @@ export const authOptions: AuthOptions = {
     async session({ session, token }) {
       if (token.userId) {
         session.userId = token.userId as string;
+      }
+      if (token.role) {
+        session.role = token.role as string;
       }
       return session;
     },
