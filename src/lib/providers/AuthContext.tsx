@@ -11,12 +11,14 @@ import {
 type AuthContextType = {
   isAuthorized: boolean | null;
   userId: string | null;
+  role: string | null;
   refresh: () => Promise<void>;
 };
 
 type Auth = {
   isAuthorized: boolean | null;
   userId: string | null;
+  role: string | null;
 };
 
 export const AuthContext = createContext<AuthContextType | null>(null);
@@ -25,6 +27,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [auth, setAuth] = useState<Auth>({
     isAuthorized: null,
     userId: null,
+    role: null,
   });
 
   const refresh = useCallback(async () => {
@@ -36,6 +39,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         setAuth({
           isAuthorized: data.isAuth,
           userId: data.userId,
+          role: data.role,
         });
       });
     } catch {
@@ -43,6 +47,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         setAuth({
           isAuthorized: null,
           userId: null,
+          role: null,
         });
       });
     }
@@ -54,7 +59,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   return (
     <AuthContext.Provider
-      value={{ isAuthorized: auth.isAuthorized, userId: auth.userId, refresh }}
+      value={{ isAuthorized: auth.isAuthorized, userId: auth.userId, role: auth.role, refresh }}
     >
       {children}
     </AuthContext.Provider>

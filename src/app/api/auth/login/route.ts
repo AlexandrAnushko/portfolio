@@ -16,7 +16,7 @@ export async function POST(req: Request) {
     return new Response("Invalid credentials", { status: 401 });
   }
 
-  const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET!, {
+  const token = jwt.sign({ userId: user.id, role: user.role }, process.env.JWT_SECRET!, {
     expiresIn: "7d",
   });
 

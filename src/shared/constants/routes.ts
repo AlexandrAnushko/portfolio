@@ -6,6 +6,7 @@ export const ROUTES = {
   PROJECTS: "/projects",
   SKILLS: "/skills",
   CONTACT: "#contact",
+  ADMIN: "/admin",
 };
 
 export const RouteTitle = {
@@ -15,6 +16,7 @@ export const RouteTitle = {
   [ROUTES.PROJECTS]: "Projects",
   [ROUTES.SKILLS]: "Skills",
   [ROUTES.CONTACT]: "Contact",
+  [ROUTES.ADMIN]: "Admin",
 };
 
 export const unauthorizedHeaderLinks = [
@@ -28,6 +30,11 @@ export const authorizedHeaderLinks = [
   ...unauthorizedHeaderLinks,
   // { href: ROUTES.PROFILE, label: RouteTitle[ROUTES.PROFILE] },
   { href: ROUTES.TODOS, label: RouteTitle[ROUTES.TODOS] },
+];
+
+export const adminHeaderLinks = [
+  ...authorizedHeaderLinks,
+  { href: ROUTES.ADMIN, label: RouteTitle[ROUTES.ADMIN] },
 ];
 
 export const burgerMenuLinks = [
