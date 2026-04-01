@@ -28,7 +28,7 @@ export const EditModal = ({
   };
 
   const onCalendarCancel = () => {
-    setEditDate(editingTodo?.date);
+    setEditDate(editingTodo.date);
     setShowCalendar(false);
   };
 
