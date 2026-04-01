@@ -57,7 +57,7 @@ Before any Next.js work, find and read the relevant doc in `node_modules/next/di
 - **Icons**: Lucide React
 - **Toasts**: Sonner
 - **Utilities**: `clsx` + `tailwind-merge` (via `cn()`), `date-fns`
-- **Skeletons**: react-loading-skeleton
+- **Skeletons**: use `@/shared/components/skeletons`
 
 ## ⚙️ Dev Commands
 
