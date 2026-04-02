@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { format } from "date-fns";
 import { TodoFolder } from "@/features/todos/types/types";
 import { Calendar } from "./Calendar";
 import { TaskInput } from "./tasks/TaskInput";
@@ -59,7 +60,7 @@ export default function TodoClient({ userId, initialFolders }: Props) {
   };
 
   const onSelect = (date: Date) => {
-    const iso = date.toISOString();
+    const iso = format(date, "yyyy-MM-dd'T'HH:mm:ss.SSS");
     setDateAndMode({ selectedDate: iso, isShowAll: false });
     if (showMobileCalendar) setShowMobileCalendar(false);
   };
@@ -103,7 +104,7 @@ export default function TodoClient({ userId, initialFolders }: Props) {
               value={new Date(dateAndMode.selectedDate)}
             />
           </div>
-          {onShowAll && (
+          {!dateAndMode.isShowAll && (
             <Button
               onClick={onShowAll}
               text="Show tasks for all time"
@@ -155,7 +156,7 @@ export default function TodoClient({ userId, initialFolders }: Props) {
             onSelect={onSelect}
             value={new Date(dateAndMode.selectedDate)}
           />
-          {onShowAll && (
+          {!dateAndMode.isShowAll && (
             <Button
               onClick={onShowAll}
               text="Show tasks for all time"

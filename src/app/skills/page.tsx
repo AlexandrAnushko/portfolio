@@ -1,13 +1,8 @@
-import { redirect } from "next/navigation";
-import { getUserId } from "../actions/getUserId";
-import { ROUTES } from "@/shared/constants/routes";
 import { SKILL_CATEGORIES } from "@/features/skills/skillsData";
 import { SkillCategory } from "@/features/skills/SkillCategory";
+import PageLayout from "@/shared/components/layouts/PageLayout";
 
-export default async function Skills() {
-  const userId = await getUserId();
-  if (!userId) redirect(ROUTES.ROOT);
-
+export default function Skills() {
   const totalSkills = SKILL_CATEGORIES.reduce(
     (acc, cat) => acc + cat.skills.length,
     0,
@@ -20,10 +15,7 @@ export default async function Skills() {
   );
 
   return (
-    <main
-      id="skills-page"
-      className="flex-1 w-full max-w-6xl mx-auto px-4 sm:px-6 pt-32 pb-20"
-    >
+    <PageLayout id="skills-page">
       <div className="mb-10">
         <h1 className="text-4xl sm:text-5xl font-bold text-neutral-100 mb-3">
           Technical Skills
@@ -60,6 +52,6 @@ export default async function Skills() {
           <SkillCategory key={category.title} category={category} />
         ))}
       </div>
-    </main>
+    </PageLayout>
   );
 }

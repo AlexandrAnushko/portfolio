@@ -82,7 +82,7 @@ Before any Next.js work, find and read the relevant doc in `node_modules/next/di
 - Use `cn()` from `@/shared/utils/cn` for conditional class merging
 - Reusable components live in `src/shared/components/`
 - Feature-specific components live in `src/features/<feature>/`
-- Forms: define Zod schema → `useForm()` with `zodResolver` → typed `<Input<T>>` components
+- Forms: define Zod schema → `useForm()` with `zodResolver` → typed `<FormInput<T>>` components
 
 Rules:
 

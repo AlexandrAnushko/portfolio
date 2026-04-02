@@ -1,5 +1,5 @@
 import { KeyboardEvent } from "react";
-import { parseISO } from "date-fns";
+import { format, parseISO } from "date-fns";
 import { Todo } from "../types/types";
 import { useState } from "react";
 import { Calendar } from "./Calendar";
@@ -23,7 +23,7 @@ export const EditModal = ({
   const [editDate, setEditDate] = useState(editingTodo.date);
 
   const onSelect = (date: Date) => {
-    const iso = date.toISOString();
+    const iso = format(date, "yyyy-MM-dd'T'HH:mm:ss.SSS");
     setEditDate(iso);
   };
 

@@ -3,13 +3,13 @@
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
-import { Input } from "@/shared/components/Input";
 import { authFormSchema, AuthFormValues } from "./authSchema";
 import { useRouter } from "next/navigation";
 import { ROUTES } from "@/shared/constants/routes";
 import { useAuth } from "@/shared/hooks/useAuth";
 import { Button } from "@/shared/components/Button";
 import { GoogleAuthButton } from "./GoogleAuthButton";
+import { FormInput } from "@/shared/components/FormInput";
 
 interface AuthFormProps {
   submitText: string;
@@ -59,33 +59,24 @@ export function AuthForm({
   };
 
   return (
-    <div className="max-w-75 my-10 mx-auto">
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="flex flex-col items-center"
-      >
-        <Input
-          name="email"
-          placeholder="Email"
-          type="email"
-          register={register}
-          error={errors.email?.message}
-          className="bg-white"
-          classNameContainer="w-full mb-3"
-        />
+    <form onSubmit={handleSubmit(onSubmit)} className="max-w-75 my-10 mx-auto">
+      <FormInput
+        name="email"
+        placeholder="Email"
+        register={register}
+        errorMessage={errors.email?.message}
+        containerClassname="mb-6"
+      />
+      <FormInput
+        name="password"
+        type="password"
+        placeholder="Password"
+        register={register}
+        errorMessage={errors.password?.message}
+        containerClassname="mb-6"
+      />
 
-        <Input
-          name="password"
-          type="password"
-          placeholder="Пароль"
-          register={register}
-          error={errors.password?.message}
-          className="bg-white"
-          classNameContainer="w-full mb-3"
-        />
-
-        <Button text={submitText} type="submit" size="small" />
-      </form>
+      <Button text={submitText} type="submit" size="small" className="w-full" />
 
       <div className="flex items-center my-4">
         <div className="flex-1 h-px bg-gray-300" />
@@ -94,6 +85,6 @@ export function AuthForm({
       </div>
 
       <GoogleAuthButton />
-    </div>
+    </form>
   );
 }
