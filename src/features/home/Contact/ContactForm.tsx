@@ -34,61 +34,37 @@ export const ContactForm = () => {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="relative">
-          <label htmlFor="name" className="block text-sm mb-2 text-gray-300">
-            Name
-          </label>
-          <FormInput name="name" placeholder="Your name" register={register} />
-          {errors.name && (
-            <p className="absolute -bottom-[1.5em] right-0 text-red-400 text-sm">
-              {errors.name.message}
-            </p>
-          )}
-        </div>
-        <div className="relative">
-          <label htmlFor="email" className="block text-sm mb-2 text-gray-300">
-            Email
-          </label>
-          <FormInput
-            name="email"
-            placeholder="your@email.com"
-            type="email"
-            register={register}
-          />
-          {errors.email && (
-            <p className="absolute -bottom-[1.5em] right-0 text-red-400 text-sm mt-1">
-              {errors.email.message}
-            </p>
-          )}
-        </div>
-      </div>
-      <div className="relative">
-        <label htmlFor="subject" className="block text-sm mb-2 text-gray-300">
-          Subject
-        </label>
-        <FormInput name="subject" placeholder="Subject" register={register} />
-        {errors.subject && (
-          <p className="absolute -bottom-[1.5em] right-0 text-red-400 text-sm mt-1">
-            {errors.subject.message}
-          </p>
-        )}
-      </div>
-      <div className="relative">
-        <label htmlFor="message" className="block text-sm mb-2 text-gray-300">
-          Message
-        </label>
-        <Textarea
-          id="message"
-          placeholder="Tell me anything..."
-          rows={6}
-          {...register("message")}
+        <FormInput
+          name="name"
+          label="Name"
+          placeholder="Your name"
+          register={register}
+          errorMessage={errors.name?.message}
         />
-        {errors.message && (
-          <p className="absolute -bottom-[1.25em] right-0 text-red-400 text-sm mt-1">
-            {errors.message.message}
-          </p>
-        )}
+        <FormInput
+          name="email"
+          label="Email"
+          placeholder="your@email.com"
+          type="email"
+          register={register}
+          errorMessage={errors.email?.message}
+        />
       </div>
+      <FormInput
+        name="subject"
+        label="Subject"
+        placeholder="Subject"
+        register={register}
+        errorMessage={errors.subject?.message}
+      />
+      <Textarea
+        id="message"
+        label="Message"
+        placeholder="Tell me anything..."
+        rows={6}
+        errorMessage={errors.message?.message}
+        {...register("message")}
+      />
       <Button
         type="submit"
         isDisabled={isSubmitting}

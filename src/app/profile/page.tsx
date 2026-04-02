@@ -1,13 +1,9 @@
-import { redirect } from "next/navigation";
-import { getUserId } from "../actions/getUserId";
-import { ROUTES } from "@/shared/constants/routes";
+import PageLayout from "@/shared/components/layouts/PageLayout";
 
-export default async function Profile() {
-  const userId = await getUserId();
-  if (!userId) redirect(ROUTES.ROOT);
+export default function Profile() {
   return (
-    <div className="flex items-center justify-center flex-1">
+    <PageLayout id="profile-page" isProtected={true}>
       <h1 className="text-5xl">Profile</h1>
-    </div>
+    </PageLayout>
   );
 }
