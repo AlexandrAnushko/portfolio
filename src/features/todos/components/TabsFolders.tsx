@@ -55,21 +55,21 @@ export const TabsFolders = ({
 
     startTransition(async () => {
       if (tabId === ADD_TAB_ID) {
-        const created = await createFolder(trimmed);
-        if (created) {
-          onFolderCreated(created);
-          onFolderChange(created.id);
+        const result = await createFolder(trimmed);
+        if (result.success) {
+          onFolderCreated(result.data);
+          onFolderChange(result.data.id);
         }
       } else {
-        const renamed = await renameFolder(tabId, trimmed);
-        if (renamed) onFolderRenamed(renamed);
+        const result = await renameFolder(tabId, trimmed);
+        if (result.success) onFolderRenamed(result.data);
       }
     });
   };
 
   const handleTabDelete = async (folderId: string) => {
-    await deleteFolder(folderId);
-    onFolderDeleted(folderId);
+    const result = await deleteFolder(folderId);
+    if (result.success) onFolderDeleted(folderId);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
