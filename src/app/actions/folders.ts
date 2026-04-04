@@ -1,10 +1,15 @@
 "use server";
 
-import { TodoFolderDB } from "@/features/todos/types/types";
+import { TodoFolder, TodoFolderDB } from "@/features/todos/types/types";
 import prisma from "@/lib/db";
 import { TODOS_TAGS } from "@/shared/constants/tags";
 import { cacheTag, updateTag } from "next/cache";
-import { getUserId } from "@/app/actions/getUserId";
+import { ActionResult, withAuth } from "./actionUtils";
+import {
+  folderIdSchema,
+  folderNameSchema,
+  renameFolderSchema,
+} from "@/features/todos/todoSchema";
 
 export const getFolders = async (userId: string) => {
   "use cache";
@@ -21,65 +26,69 @@ export const getFolders = async (userId: string) => {
   }));
 };
 
-export const createFolder = async (name: string) => {
-  const userId = await getUserId();
-  if (!userId) throw new Error("Unauthorized");
+export const createFolder = async (
+  name: string,
+): Promise<ActionResult<TodoFolder>> => {
+  const parsed = folderNameSchema.safeParse({ name });
+  if (!parsed.success) return { success: false, error: "Invalid folder name" };
 
-  const trimmed = name.trim();
-  if (!trimmed) return null;
+  return withAuth(async (userId) => {
+    const folder = await prisma.todoFolder.create({
+      data: { name: parsed.data.name, userId },
+    });
 
-  const folder = await prisma.todoFolder.create({
-    data: { name: trimmed, userId },
+    updateTag(`${TODOS_TAGS.FOLDERS}-${userId}`);
+
+    return { ...folder, createdAt: folder.createdAt.toISOString() };
   });
-
-  updateTag(`${TODOS_TAGS.FOLDERS}-${userId}`);
-
-  return { ...folder, createdAt: folder.createdAt.toISOString() };
 };
 
 export const renameFolder = async (
   folderId: string,
   name: string,
-) => {
-  const userId = await getUserId();
-  if (!userId) throw new Error("Unauthorized");
+): Promise<ActionResult<TodoFolder>> => {
+  const parsed = renameFolderSchema.safeParse({ folderId, name });
+  if (!parsed.success) return { success: false, error: "Invalid input" };
 
-  const trimmed = name.trim();
-  if (!trimmed) return null;
+  return withAuth(async (userId) => {
+    const folder = await prisma.todoFolder.update({
+      where: { id: parsed.data.folderId, userId },
+      data: { name: parsed.data.name },
+    });
 
-  const folder = await prisma.todoFolder.update({
-    where: { id: folderId, userId },
-    data: { name: trimmed },
+    updateTag(`${TODOS_TAGS.FOLDERS}-${userId}`);
+
+    return { ...folder, createdAt: folder.createdAt.toISOString() };
   });
-
-  updateTag(`${TODOS_TAGS.FOLDERS}-${userId}`);
-
-  return { ...folder, createdAt: folder.createdAt.toISOString() };
 };
 
-export const deleteFolder = async (folderId: string) => {
-  const userId = await getUserId();
-  if (!userId) throw new Error("Unauthorized");
+export const deleteFolder = async (folderId: string): Promise<ActionResult> => {
+  const parsed = folderIdSchema.safeParse({ folderId });
+  if (!parsed.success) return { success: false, error: "Invalid folder id" };
 
-  // Prevent deleting the Main folder
-  const folder = await prisma.todoFolder.findUnique({
-    where: { id: folderId, userId },
+  return withAuth(async (userId) => {
+    const folder = await prisma.todoFolder.findUnique({
+      where: { id: parsed.data.folderId, userId },
+    });
+    if (!folder || folder.name === "Main")
+      throw new Error("Cannot delete this folder");
+
+    const mainFolder = await prisma.todoFolder.findFirst({
+      where: { userId, name: "Main" },
+    });
+    if (!mainFolder) throw new Error("Main folder not found");
+
+    await prisma.todo.updateMany({
+      where: { folderId: parsed.data.folderId, userId },
+      data: { folderId: mainFolder.id },
+    });
+
+    await prisma.todoFolder.delete({
+      where: { id: parsed.data.folderId, userId },
+    });
+
+    updateTag(`${TODOS_TAGS.FOLDERS}-${userId}`);
+
+    return undefined;
   });
-  if (!folder || folder.name === "Main") return;
-
-  // Move all todos in this folder to the Main folder
-  const mainFolder = await prisma.todoFolder.findFirst({
-    where: { userId, name: "Main" },
-  });
-
-  if (!mainFolder) throw new Error("Main folder not found");
-
-  await prisma.todo.updateMany({
-    where: { folderId, userId },
-    data: { folderId: mainFolder.id },
-  });
-
-  await prisma.todoFolder.delete({ where: { id: folderId, userId } });
-
-  updateTag(`${TODOS_TAGS.FOLDERS}-${userId}`);
 };
