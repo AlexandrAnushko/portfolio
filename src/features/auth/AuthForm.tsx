@@ -10,6 +10,7 @@ import { useAuth } from "@/shared/hooks/useAuth";
 import { Button } from "@/shared/components/Button";
 import { GoogleAuthButton } from "./GoogleAuthButton";
 import { FormInput } from "@/shared/components/FormInput";
+import { useState } from "react";
 
 interface AuthFormProps {
   submitText: string;
@@ -28,6 +29,7 @@ export function AuthForm({
 }: AuthFormProps) {
   const { refresh } = useAuth();
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
 
   const {
     register,
@@ -42,6 +44,7 @@ export function AuthForm({
     email,
     password,
   }) => {
+    setIsLoading(true);
     const result = await fetch(apiUrl, {
       method: "POST",
       body: JSON.stringify({ email, password }),
@@ -49,13 +52,14 @@ export function AuthForm({
     });
 
     if (result.ok) {
-      toast.success(successText);
+      toast.success(successText, { id: "auth-success" });
       await refresh();
-      onClose();
       if (isLogin) router.push(ROUTES.TODOS);
+      onClose();
     } else {
       toast.error(isLogin ? "Неверный логин или пароль" : "Ошибка регистрации");
     }
+    setIsLoading(false);
   };
 
   return (
@@ -76,7 +80,13 @@ export function AuthForm({
         containerClassname="mb-6"
       />
 
-      <Button text={submitText} type="submit" size="small" className="w-full" />
+      <Button
+        text={submitText}
+        type="submit"
+        size="small"
+        className="w-full"
+        isLoading={isLoading}
+      />
 
       <div className="flex items-center my-4">
         <div className="flex-1 h-px bg-gray-300" />

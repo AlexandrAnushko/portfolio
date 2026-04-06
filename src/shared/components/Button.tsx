@@ -1,6 +1,7 @@
 import { cn } from "../utils/cn";
 import { ButtonMode } from "../types/global";
 import { ReactNode } from "react";
+import { Spinner } from "./loaders/Spinner";
 
 type Props = {
   onClick?: () => void;
@@ -36,7 +37,6 @@ export const Button = ({
       type={type}
       className={cn(
         {
-          "bg-linear-to-r from-blue-400 to-blue-500 animate-pulse": isLoading,
           "bg-primary hover:bg-primary-hover text-asphalt shadow-primary/20":
             mode === "primary",
           "bg-secondary hover:bg-secondary-hover text-white shadow-secondary/20":
@@ -50,8 +50,9 @@ export const Button = ({
           "bg-transparent border border-primary text-primary":
             mode === "transparent",
           "gap-2": rightIcon,
+          "bg-linear-to-r from-blue-300 to-blue-500 animate-pulse": isLoading,
         },
-        `flex items-center justify-center focus:ring-white cursor-pointer py-2 px-4 xl:py-2 xl:px-6 hover:opacity-80
+        `flex items-center justify-center relative focus:ring-white cursor-pointer py-2 px-4 xl:py-2 xl:px-6 hover:opacity-80
         active:scale-90 transition-all duration-300 disabled:opacity-30 disabled:cursor-not-allowed disabled:scale-100
         shadow-lg ${rounded} ${className}`,
         {
@@ -71,6 +72,11 @@ export const Button = ({
         >
           {text}
         </span>
+      )}
+      {isLoading && !rightIcon && (
+        <div className="absolute right-4">
+          <Spinner />
+        </div>
       )}
       {rightIcon && rightIcon}
     </button>
