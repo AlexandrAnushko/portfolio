@@ -22,12 +22,12 @@ export const About = () => {
           <div className="bg-asphalt p-8 rounded-xl border border-primary/30 hover:border-primary/50 transition-colors">
             <div className="text-primary text-4xl mb-4">15+</div>
             <h3 className="text-xl mb-2">Projects Completed</h3>
-            <p className="text-gray-400">Across various industries</p>
+            <p className="text-gray-400">Across various domains</p>
           </div>
           <div className="bg-asphalt p-8 rounded-xl border border-primary/30 hover:border-primary/50 transition-colors">
-            <div className="text-primary text-4xl mb-4">100%</div>
-            <h3 className="text-xl mb-2">Client Satisfaction</h3>
-            <p className="text-gray-400">Quality is my priority</p>
+            <div className="text-primary text-4xl mb-4">2</div>
+            <h3 className="text-xl mb-2">Companies worked in</h3>
+            <p className="text-gray-400">I prefer long-term relationships</p>
           </div>
         </div>
       </div>
