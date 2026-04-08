@@ -3,7 +3,7 @@
 import prisma from "@/lib/db";
 import { getStartAndEndOfDate } from "@/shared/utils/getStartAndEndOfDate";
 import { TODOS_TAGS } from "@/shared/constants/tags";
-import { cacheTag, updateTag } from "next/cache";
+import { cacheTag } from "next/cache";
 import { ActionResult, withAuth } from "./actionUtils";
 import {
   addTodoSchema,
@@ -12,6 +12,7 @@ import {
   todoActionSchema,
   updateTodoSchema,
 } from "@/features/todos/todoSchema";
+import { updateTodosCacheTags } from "@/features/todos/utils/updateTodosCacheTags";
 
 export const getAllTodos = async (userId: string, folderId: string) => {
   "use cache";
@@ -83,10 +84,7 @@ export async function addTodo(
       },
     });
 
-    updateTag(`${TODOS_TAGS.ALL}-${userId}-${parsed.data.folderId}`);
-    updateTag(
-      `${TODOS_TAGS.BY_DATE}-${userId}-${parsed.data.date.slice(0, 10)}-${parsed.data.folderId}`,
-    );
+    updateTodosCacheTags(userId, parsed.data.folderId, parsed.data.date);
 
     return { ...todo, date: todo.date.toISOString() };
   });
@@ -105,10 +103,7 @@ export async function toggleTodo(
       UPDATE "Todo" SET done = NOT done WHERE id = ${parsed.data.id} AND "userId" = ${userId}
     `;
 
-    updateTag(`${TODOS_TAGS.ALL}-${userId}-${parsed.data.folderId}`);
-    updateTag(
-      `${TODOS_TAGS.BY_DATE}-${userId}-${parsed.data.date.slice(0, 10)}-${parsed.data.folderId}`,
-    );
+    updateTodosCacheTags(userId, parsed.data.folderId, parsed.data.date);
 
     return undefined;
   });
@@ -129,10 +124,7 @@ export async function updateTodo(
       data: { text: parsed.data.text, date: new Date(parsed.data.date) },
     });
 
-    updateTag(`${TODOS_TAGS.ALL}-${userId}-${parsed.data.folderId}`);
-    updateTag(
-      `${TODOS_TAGS.BY_DATE}-${userId}-${parsed.data.date.slice(0, 10)}-${parsed.data.folderId}`,
-    );
+    updateTodosCacheTags(userId, parsed.data.folderId, parsed.data.date);
 
     return undefined;
   });
@@ -151,10 +143,7 @@ export async function deleteTodoById(
       where: { id: parsed.data.id, userId },
     });
 
-    updateTag(`${TODOS_TAGS.ALL}-${userId}-${parsed.data.folderId}`);
-    updateTag(
-      `${TODOS_TAGS.BY_DATE}-${userId}-${parsed.data.date.slice(0, 10)}-${parsed.data.folderId}`,
-    );
+    updateTodosCacheTags(userId, parsed.data.folderId, parsed.data.date);
 
     return undefined;
   });
@@ -182,12 +171,7 @@ export async function deleteTodos(
 
     await prisma.todo.deleteMany({ where });
 
-    updateTag(`${TODOS_TAGS.ALL}-${userId}-${parsed.data.folderId}`);
-    if (parsed.data.date) {
-      updateTag(
-        `${TODOS_TAGS.BY_DATE}-${userId}-${parsed.data.date.slice(0, 10)}-${parsed.data.folderId}`,
-      );
-    }
+    updateTodosCacheTags(userId, parsed.data.folderId, parsed.data.date);
 
     return undefined;
   });
@@ -204,7 +188,7 @@ export async function deleteTodosByFolder(
       where: { folderId: parsed.data.folderId, userId },
     });
 
-    updateTag(`${TODOS_TAGS.ALL}-${userId}-${parsed.data.folderId}`);
+    updateTodosCacheTags(userId, parsed.data.folderId);
 
     return undefined;
   });
