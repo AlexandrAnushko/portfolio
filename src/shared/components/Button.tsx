@@ -52,12 +52,13 @@ export const Button = ({
           "gap-2": rightIcon,
           "bg-linear-to-r from-blue-300 to-blue-500 animate-pulse": isLoading,
         },
-        `flex items-center justify-center relative focus:ring-white cursor-pointer py-2 px-4 xl:py-2 xl:px-6 hover:opacity-80
+        `flex items-center justify-center relative focus:ring-white cursor-pointer py-2 px-4 xl:px-6 hover:opacity-80
         active:scale-90 transition-all duration-300 disabled:opacity-30 disabled:cursor-not-allowed disabled:scale-100
         shadow-lg ${rounded} ${className}`,
         {
           "xl:py-3": size === "large",
           "xl:py-4": size === "xl",
+          "xl:py-2": size === "small",
         },
       )}
     >
