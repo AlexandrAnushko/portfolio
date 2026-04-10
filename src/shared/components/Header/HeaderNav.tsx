@@ -10,6 +10,7 @@ import {
 } from "@/shared/constants/routes";
 import { Button } from "../Button";
 import { Link } from "../Link";
+import { LoadingButton } from "../loaders/LoadingButton";
 
 type Props = {
   isAuthorized: boolean | null;
@@ -48,7 +49,9 @@ export const HeaderNav = ({
           </Link>
         ))}
 
-        {isAuthorized ? (
+        {isAuthorized === null ? (
+          <LoadingButton />
+        ) : isAuthorized ? (
           <Button text="Logout" onClick={onLogout} mode="secondary" />
         ) : (
           <div className="flex gap-4">
@@ -93,31 +96,32 @@ export const HeaderNav = ({
                     {l.label}
                   </Link>
                 ))}
-
-                {!isAuthorized && (
-                  <div className="flex flex-col w-32.5 gap-4 mt-2">
+                <div className="flex flex-col w-32.5 gap-4 mt-2">
+                  {isAuthorized === null ? (
+                    <div className="w-full bg-linear-to-r from-blue-300 to-blue-500 animate-pulse" />
+                  ) : !isAuthorized ? (
+                    <>
+                      <Button
+                        text="Sign In"
+                        onClick={onSignInOpen}
+                        className="w-full"
+                      />
+                      <Button
+                        text="Sign Up"
+                        onClick={onSignUpOpen}
+                        mode="secondary"
+                        className="w-full"
+                      />
+                    </>
+                  ) : (
                     <Button
-                      text="Sign In"
-                      onClick={onSignInOpen}
-                      className="w-full"
-                    />
-                    <Button
-                      text="Sign Up"
-                      onClick={onSignUpOpen}
+                      text="Logout"
+                      onClick={onLogout}
                       mode="secondary"
-                      className="w-full"
+                      className="w-32.5"
                     />
-                  </div>
-                )}
-
-                {isAuthorized && (
-                  <Button
-                    text="Logout"
-                    onClick={onLogout}
-                    mode="secondary"
-                    className="w-32.5"
-                  />
-                )}
+                  )}
+                </div>
               </nav>
             </div>,
             document.body,
